@@ -218,7 +218,7 @@
                 phone: document.getElementById('clientPhone').value,
                 email: document.getElementById('clientEmail').value || 'غير محدد',
                 address: document.getElementById('clientAddress').value || 'غير محدد',
-                job_type: document.getElementById('clientJobType').value, // تم التعديل هنا لـ job_type ليطابق عمود السحابة تماماً
+                job_type: document.getElementById('clientJobType').value,
                 price: parseFloat(document.getElementById('clientPrice').value) || 0
             };
 
@@ -282,7 +282,7 @@
 
             filtered.forEach(c => {
                 total += c.price;
-                jobStats[c.job_type] = (jobStats[c.job_type] || 0) + c.price; // تعديل لمطابقة الحقل الجديد
+                jobStats[c.job_type] = (jobStats[c.job_type] || 0) + c.price;
                 const actionBtn = userRole === "admin" ? `<button onclick="deleteClient(${c.id})" class="text-red-500 hover:text-red-300 transition text-xl">🗑</button>` : `<span class="text-gray-600">🔒</span>`;
                 
                 tbody.insertAdjacentHTML('beforeend', `
@@ -291,7 +291,8 @@
                         <td class="p-4 font-bold text-gray-100 text-sm">${c.name}<br><span class="text-[11px] font-normal text-indigo-400">${c.phone}</span></td>
                         <td class="p-4 text-gray-300 font-mono text-[11px] max-w-[150px] truncate" title="${c.email}">${c.email}</td>
                         <td class="p-4 text-gray-300 text-[11px] max-w-[180px] break-words" title="${c.address}">${c.address}</td>
-                        <td class="p-4 text-center"><span class="bg-indigo-900/40 text-indigo-300 px-3 py-1 rounded-full border border-indigo-800/50 text-[10px] font-bold">${c.job_type}</span></td> <td class="p-4 text-emerald-400 font-black text-sm whitespace-nowrap">${c.price.toLocaleString()} EGP</td>
+                        <td class="p-4 text-center"><span class="bg-indigo-900/40 text-indigo-300 px-3 py-1 rounded-full border border-indigo-800/50 text-[10px] font-bold">${c.job_type}</span></td>
+                        <td class="p-4 text-emerald-400 font-black text-sm whitespace-nowrap">${c.price.toLocaleString()} EGP</td>
                         <td class="p-4 text-center">${actionBtn}</td>
                     </tr>`);
             });
@@ -308,7 +309,7 @@
             const ctx1 = document.getElementById('jobChart').getContext('2d');
             jobChartInstance = new Chart(ctx1, { type: 'doughnut', data: { labels: Object.keys(jobData), datasets: [{ data: Object.values(jobData), backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444'], borderWidth: 0 }] }, options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', font: { size: 9 } } } } } });
             const ctx2 = document.getElementById('revenueChart').getContext('2d');
-            revChartInstance = new Chart(ctx2, { type: 'line', data: { labels: filteredData.map(c => c.date).reverse(), datasets: [{ label: 'الربح', data: filteredData.map(c => c.price).reverse(), borderColor: '#10b981', tension: 0.4, fill: true, backgroundColor: 'rgba(16,185,129,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } } });
+            revChartInstance = new Chart(ctx2, { type: 'line', data: { labels: filteredData.map(c => c.date).reverse(), datasets: [{ label: 'الربح', data: filteredData.map(c => c.price).reverse(), borderColor: '#10b981', tension: 0.4, fill: true, backgroundColor: 'rgba(16,185,129,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { display: false } }, scales: { x: { display: false }, y: { display: false } } });
         }
     </script>
 </body>
