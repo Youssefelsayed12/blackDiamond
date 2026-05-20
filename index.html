@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام EL-MARAKBI - النسخة المتكاملة</title>
+    <title>نظام EL-MARAKBI - النسخة المتكاملة (بيانات شاملة)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
@@ -44,35 +44,88 @@
                 <p class="text-xs text-gray-400 mt-1 italic">مرحباً: <span id="currentUserName" class="text-indigo-400 font-bold"></span></p>
             </div>
             <div class="flex gap-2">
+                <button onclick="openSettings()" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-xl text-sm transition-all border border-gray-600">⚙️ الإعدادات</button>
                 <button onclick="location.reload()" class="bg-red-900/30 hover:bg-red-600 text-red-200 px-4 py-2 rounded-xl text-sm transition-all border border-red-800/50">خروج</button>
             </div>
         </header>
+
+        <div id="adminStats" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 text-center">
+            <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 flex flex-col justify-center shadow-lg">
+                <p class="text-gray-400 text-xs uppercase tracking-wider">إجمالي الإيرادات</p>
+                <h3 id="totalRevenue" class="text-4xl font-black text-emerald-400 mt-2">0 EGP</h3>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700 shadow-lg"><div class="chart-container"><canvas id="jobChart"></canvas></div></div>
+            <div class="bg-gray-800 p-4 rounded-2xl border border-gray-700 shadow-lg"><div class="chart-container"><canvas id="revenueChart"></canvas></div></div>
+        </div>
+
+        <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="md:col-span-1">
+                <label class="block text-xs text-gray-500 mb-1 font-bold">🔍 بحث شامل (اسم، هاتف، بريد، عنوان، تاريخ):</label>
+                <input type="text" id="searchInput" oninput="renderDashboard()" placeholder="اكتب للبحث في كافة البيانات..." class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-sm outline-none focus:border-indigo-500 transition-all">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1 font-bold">📅 من تاريخ:</label>
+                <input type="date" id="dateFrom" onchange="renderDashboard()" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-sm outline-none">
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1 font-bold">📅 إلى تاريخ:</label>
+                <input type="date" id="dateTo" onchange="renderDashboard()" class="w-full px-4 py-2.5 rounded-xl bg-gray-900 border border-gray-700 text-sm outline-none">
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <div class="lg:col-span-1">
                 <div class="bg-gray-800 p-6 rounded-2xl border border-gray-700 sticky top-6 shadow-2xl border-t-4 border-t-indigo-500">
                     <h3 class="font-bold mb-6 text-sm text-indigo-400 border-b border-gray-700 pb-2 italic uppercase">✚ إضافة عملية</h3>
                     <form id="clientForm" onsubmit="addClient(event)" class="space-y-4">
-                        <input type="text" id="clientName" placeholder="اسم العميل" required class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
+                        <input type="text" id="clientName" placeholder="اسم العميل" required class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none focus:border-indigo-500">
                         <input type="tel" id="clientPhone" placeholder="رقم الهاتف" required class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
                         <input type="email" id="clientEmail" placeholder="البريد الإلكتروني" class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
-                        <input type="text" id="clientAddress" placeholder="عنوان العميل" class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
+                        <input type="text" id="clientAddress" placeholder="عنوان العميل بالتفصيل" class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
                         <input type="text" id="clientJobType" placeholder="نوع الخدمة" required class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
                         <input type="number" id="clientPrice" placeholder="المبلغ" required class="w-full px-3 py-3 bg-gray-900 border border-gray-700 rounded-xl text-xs outline-none">
-                        <button type="submit" id="submitBtn" class="w-full bg-emerald-600 py-3.5 rounded-xl font-bold text-sm shadow-lg transition-all hover:bg-emerald-700">حفظ في السحابة</button>
+                        <button type="submit" id="submitBtn" class="w-full bg-emerald-600 py-3.5 rounded-xl font-bold text-sm shadow-lg transition-all hover:bg-emerald-700">حفظ وتزامن السحابة</button>
                     </form>
                 </div>
             </div>
 
             <div class="lg:col-span-3 bg-gray-800 rounded-2xl border border-gray-700 shadow-xl overflow-hidden">
-                <table class="w-full text-right text-xs table-auto">
-                    <thead class="bg-gray-900/80 uppercase tracking-widest text-gray-400">
-                        <tr>
-                            <th class="p-4">البيانات</th>
-                        </tr>
-                    </thead>
-                    <tbody id="clientTableBody"></tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right text-xs table-auto">
+                        <thead class="bg-gray-900/80 uppercase tracking-widest text-gray-400">
+                            <tr>
+                                <th class="p-4 font-bold border-b border-gray-700">التاريخ والوقت</th>
+                                <th class="p-4 font-bold border-b border-gray-700">العميل والاتصال</th>
+                                <th class="p-4 font-bold border-b border-gray-700">البريد الإلكتروني</th>
+                                <th class="p-4 font-bold border-b border-gray-700">العنوان</th>
+                                <th class="p-4 font-bold border-b border-gray-700 text-center">الخدمة</th>
+                                <th class="p-4 font-bold border-b border-gray-700">المبلغ</th>
+                                <th class="p-4 font-bold border-b border-gray-700 text-center">إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientTableBody" class="divide-y divide-gray-700/50"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-gray-800 border border-gray-700 p-8 rounded-2xl shadow-2xl w-full max-w-md">
+            <h2 class="text-xl font-bold mb-6 text-white flex items-center gap-2">⚙️ تعديل بيانات الحساب</h2>
+            <div class="space-y-4 text-right">
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">البريد الإلكتروني الجديد</label>
+                    <input type="email" id="newEmail" class="w-full px-4 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-gray-400 mb-1">كلمة المرور الجديدة</label>
+                    <input type="password" id="newPass" class="w-full px-4 py-2.5 rounded-lg bg-gray-900 border border-gray-700 text-white outline-none">
+                </div>
+                <div class="flex gap-2 mt-6">
+                    <button onclick="closeSettings()" class="flex-1 bg-gray-700 py-3 rounded-xl font-bold transition">إلغاء</button>
+                    <button onclick="saveSettings()" class="flex-1 bg-indigo-600 py-3 rounded-xl font-bold transition">حفظ التعديلات</button>
+                </div>
             </div>
         </div>
     </div>
@@ -82,48 +135,159 @@
         const SUPABASE_KEY = "sb_publishable_bcN3M6Ih0Y3Fhf3bk873GQ_Sd4p4BOy";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        let DEFAULT_ACCOUNTS = {
+            admin: { email: "admin@company.com", pass: "Admin123*", name: "يوسف المراكبي (المدير)" },
+            user: { email: "user@company.com", pass: "User123*", name: "موظف المتابعة" }
+        };
+
+        let ACCOUNTS = JSON.parse(localStorage.getItem('el_marakbi_accounts')) || DEFAULT_ACCOUNTS;
+        let clients = [];
+        let userRole = "";
+        let jobChartInstance, revChartInstance;
+
         function handleLogin() {
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPassword').value;
-            if (email === "admin@company.com" && pass === "Admin123*") {
-                document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('dashboardScreen').classList.remove('hidden');
-                loadClientsFromSupabase();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
-            }
+            const emailInput = document.getElementById('loginEmail').value.trim();
+            const passInput = document.getElementById('loginPassword').value.trim();
+            const errorMsg = document.getElementById('loginError');
+
+            if (emailInput === ACCOUNTS.admin.email && passInput === ACCOUNTS.admin.pass) {
+                userRole = "admin"; showDashboard(ACCOUNTS.admin.name);
+            } else if (emailInput === ACCOUNTS.user.email && passInput === ACCOUNTS.user.pass) {
+                userRole = "user"; showDashboard(ACCOUNTS.user.name);
+            } else { errorMsg.classList.remove('hidden'); }
+        }
+
+        function showDashboard(name) {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            document.getElementById('currentUserName').innerText = name;
+            if (userRole === "admin") document.getElementById('adminStats').classList.remove('hidden');
+            loadClientsFromSupabase();
         }
 
         async function loadClientsFromSupabase() {
-            // تم التعديل هنا: اسم الجدول clients1
-            const { data, error } = await _supabase.from('clients1').select('*').order('id', { ascending: false });
-            if (error) console.error(error);
-            else renderTable(data);
+            try {
+                // تم التعديل هنا للجدول الجديد
+                const { data, error } = await _supabase
+                    .from('clients1')
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) {
+                    console.error("خطأ:", error.message);
+                    clients = JSON.parse(localStorage.getItem('my_clients_data')) || [];
+                } else {
+                    clients = data || [];
+                    localStorage.setItem('my_clients_data', JSON.stringify(clients));
+                }
+            } catch (err) {
+                clients = JSON.parse(localStorage.getItem('my_clients_data')) || [];
+            }
+            renderDashboard();
+        }
+
+        function openSettings() {
+            document.getElementById('newEmail').value = ACCOUNTS[userRole].email;
+            document.getElementById('newPass').value = ACCOUNTS[userRole].pass;
+            document.getElementById('settingsModal').classList.remove('hidden');
+        }
+        function closeSettings() { document.getElementById('settingsModal').classList.add('hidden'); }
+        function saveSettings() {
+            ACCOUNTS[userRole].email = document.getElementById('newEmail').value;
+            ACCOUNTS[userRole].pass = document.getElementById('newPass').value;
+            localStorage.setItem('el_marakbi_accounts', JSON.stringify(ACCOUNTS));
+            alert("تم حفظ البيانات!");
+            closeSettings();
         }
 
         async function addClient(e) {
             e.preventDefault();
+            const btn = document.getElementById('submitBtn'); btn.disabled = true;
             const now = new Date();
             const newC = {
+                id: Date.now(),
                 date: now.toISOString().split('T')[0],
-                time: now.toLocaleTimeString(),
+                time: now.toLocaleTimeString('ar-EG', {hour:'2-digit', minute:'2-digit'}),
                 name: document.getElementById('clientName').value,
                 phone: document.getElementById('clientPhone').value,
-                email: document.getElementById('clientEmail').value || 'لا يوجد',
-                address: document.getElementById('clientAddress').value || 'لا يوجد',
+                email: document.getElementById('clientEmail').value || 'غير محدد',
+                address: document.getElementById('clientAddress').value || 'غير محدد',
                 job_type: document.getElementById('clientJobType').value,
-                price: parseFloat(document.getElementById('clientPrice').value)
+                price: parseFloat(document.getElementById('clientPrice').value) || 0
             };
 
-            // تم التعديل هنا: اسم الجدول clients1
-            const { error } = await _supabase.from('clients1').insert([newC]);
-            if (error) alert("خطأ: " + error.message);
-            else { alert("تم الحفظ بنجاح!"); e.target.reset(); loadClientsFromSupabase(); }
+            try {
+                // تم التعديل هنا للجدول الجديد
+                const { error } = await _supabase.from('clients1').insert([newC]);
+                if (error) {
+                    console.error("خطأ:", error.message);
+                    alert("مشكلة في السحابة: " + error.message);
+                }
+            } catch(err) { console.error(err); }
+
+            clients.unshift(newC);
+            localStorage.setItem('my_clients_data', JSON.stringify(clients));
+            e.target.reset(); btn.disabled = false;
+            loadClientsFromSupabase();
         }
 
-        function renderTable(data) {
+        async function deleteClient(id) {
+            if(confirm('هل أنت متأكد؟')) {
+                try {
+                    // تم التعديل هنا للجدول الجديد
+                    await _supabase.from('clients1').delete().eq('id', id);
+                } catch(err) { console.error(err); }
+                clients = clients.filter(c => c.id !== id);
+                localStorage.setItem('my_clients_data', JSON.stringify(clients));
+                renderDashboard();
+            }
+        }
+
+        function renderDashboard() {
             const tbody = document.getElementById('clientTableBody');
-            tbody.innerHTML = data.map(c => `<tr><td class="p-4">${c.name} - ${c.price} EGP</td></tr>`).join('');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const from = document.getElementById('dateFrom').value;
+            const to = document.getElementById('dateTo').value;
+            tbody.innerHTML = ""; let total = 0; let jobStats = {};
+
+            const filtered = clients.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(search) || 
+                                      c.phone.includes(search) || 
+                                      c.date.includes(search);
+                const matchesDate = (!from || c.date >= from) && (!to || c.date <= to);
+                return matchesSearch && matchesDate;
+            });
+
+            filtered.forEach(c => {
+                total += c.price;
+                jobStats[c.job_type] = (jobStats[c.job_type] || 0) + c.price;
+                const actionBtn = userRole === "admin" ? `<button onclick="deleteClient(${c.id})" class="text-red-500 hover:text-red-300 transition text-xl">🗑</button>` : `<span>🔒</span>`;
+                
+                tbody.insertAdjacentHTML('beforeend', `
+                    <tr class="hover:bg-gray-700/40 border-b border-gray-700/30">
+                        <td class="p-4 text-gray-400">${c.date}<br>${c.time}</td>
+                        <td class="p-4 font-bold">${c.name}<br>${c.phone}</td>
+                        <td class="p-4">${c.email}</td>
+                        <td class="p-4">${c.address}</td>
+                        <td class="p-4 text-center">${c.job_type}</td>
+                        <td class="p-4 text-emerald-400 font-black">${c.price.toLocaleString()} EGP</td>
+                        <td class="p-4 text-center">${actionBtn}</td>
+                    </tr>`);
+            });
+
+            if (userRole === "admin") {
+                document.getElementById('totalRevenue').innerText = total.toLocaleString() + " EGP";
+                updateCharts(jobStats, filtered);
+            }
+        }
+
+        function updateCharts(jobData, filteredData) {
+            if (jobChartInstance) jobChartInstance.destroy();
+            if (revChartInstance) revChartInstance.destroy();
+            const ctx1 = document.getElementById('jobChart').getContext('2d');
+            jobChartInstance = new Chart(ctx1, { type: 'doughnut', data: { labels: Object.keys(jobData), datasets: [{ data: Object.values(jobData), backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444'] }] } });
+            const ctx2 = document.getElementById('revenueChart').getContext('2d');
+            revChartInstance = new Chart(ctx2, { type: 'line', data: { labels: filteredData.map(c => c.date).reverse(), datasets: [{ data: filteredData.map(c => c.price).reverse(), borderColor: '#10b981', fill: true }] } });
         }
     </script>
 </body>
