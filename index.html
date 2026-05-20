@@ -95,7 +95,7 @@
         }
 
         async function loadClientsFromSupabase() {
-            // هنا التعديل: اسم الجدول clients1
+            // تم التعديل هنا: اسم الجدول clients1
             const { data, error } = await _supabase.from('clients1').select('*').order('id', { ascending: false });
             if (error) console.error(error);
             else renderTable(data);
@@ -115,7 +115,7 @@
                 price: parseFloat(document.getElementById('clientPrice').value)
             };
 
-            // هنا التعديل: اسم الجدول clients1
+            // تم التعديل هنا: اسم الجدول clients1
             const { error } = await _supabase.from('clients1').insert([newC]);
             if (error) alert("خطأ: " + error.message);
             else { alert("تم الحفظ بنجاح!"); e.target.reset(); loadClientsFromSupabase(); }
