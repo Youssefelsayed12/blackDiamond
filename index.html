@@ -309,7 +309,7 @@
             const ctx1 = document.getElementById('jobChart').getContext('2d');
             jobChartInstance = new Chart(ctx1, { type: 'doughnut', data: { labels: Object.keys(jobData), datasets: [{ data: Object.values(jobData), backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444'], borderWidth: 0 }] }, options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#9ca3af', font: { size: 9 } } } } } });
             const ctx2 = document.getElementById('revenueChart').getContext('2d');
-            revChartInstance = new Chart(ctx2, { type: 'line', data: { labels: filteredData.map(c => c.date).reverse(), datasets: [{ label: 'الربح', data: filteredData.map(c => c.price).reverse(), borderColor: '#10b981', tension: 0.4, fill: true, backgroundColor: 'rgba(16,185,129,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { display: false } }, scales: { x: { display: false }, y: { display: false } } });
+            revChartInstance = new Chart(ctx2, { type: 'line', data: { labels: filteredData.map(c => c.date).reverse(), datasets: [{ label: 'الربح', data: filteredData.map(c => c.price).reverse(), borderColor: '#10b981', tension: 0.4, fill: true, backgroundColor: 'rgba(16,185,129,0.1)' }] }, options: { maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } } });
         }
     </script>
 </body>
