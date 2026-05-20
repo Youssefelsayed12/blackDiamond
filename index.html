@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -167,7 +168,7 @@
 
         async function loadClientsFromSupabase() {
             try {
-                // تم التعديل هنا للجدول الجديد
+                // تم التعديل هنا للجدول الجديد clients1
                 const { data, error } = await _supabase
                     .from('clients1')
                     .select('*')
@@ -217,7 +218,7 @@
             };
 
             try {
-                // تم التعديل هنا للجدول الجديد
+                // تم التعديل هنا للجدول الجديد clients1
                 const { error } = await _supabase.from('clients1').insert([newC]);
                 if (error) {
                     console.error("خطأ:", error.message);
@@ -234,7 +235,7 @@
         async function deleteClient(id) {
             if(confirm('هل أنت متأكد؟')) {
                 try {
-                    // تم التعديل هنا للجدول الجديد
+                    // تم التعديل هنا للجدول الجديد clients1
                     await _supabase.from('clients1').delete().eq('id', id);
                 } catch(err) { console.error(err); }
                 clients = clients.filter(c => c.id !== id);
