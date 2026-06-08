@@ -61,7 +61,6 @@
   .btn-secondary:hover { background: var(--border); }
   .btn-danger { background: var(--red); }
   .btn-danger:hover { background: #dc2626; }
-  .btn-group { display: flex; gap: 10px; margin-top: 10px; }
 
   /* Actions Toolbar */
   .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; gap: 10px; flex-wrap: wrap; }
@@ -131,43 +130,51 @@
   <div class="main-content">
     
     <div style="display:flex; flex-direction:column; gap:20px;">
-      
       <div class="card">
         <div class="card-title" id="formTitle">👤 إضافة عميل جديد</div>
         <form id="customerForm" onsubmit="saveCustomer(event)">
           <input type="hidden" id="cIndex" value="">
+          
           <div class="form-group">
             <label>اسم العميل *</label>
             <input type="text" id="cName" required placeholder="أدخل اسم العميل">
           </div>
+          
           <div class="form-group">
             <label>رقم الهاتف *</label>
             <input type="tel" id="cPhone" required placeholder="01xxxxxxxxx">
           </div>
+          
           <div class="form-group">
             <label>نوع الشغل / الخدمة</label>
             <input type="text" id="cJobType" placeholder="مثلاً: تصميم موقع، صيانة...">
           </div>
+          
           <div class="form-group">
             <label>إجمالي السعر المتفق عليه (ج)*</label>
             <input type="number" id="cPrice" required min="0" placeholder="0" oninput="calculateRemaining()">
           </div>
+
           <div class="form-group">
-            <label>المبلغ المدفع حالياً (ج)</label>
+            <label>المبلغ المدفوع حالياً (ج)</label>
             <input type="number" id="cPaid" min="0" value="0" placeholder="0" oninput="calculateRemaining()">
           </div>
+
           <div class="form-group">
             <label>المبلغ المتبقي تلقائياً (ج)</label>
             <input type="number" id="cRemaining" value="0" readonly style="background:var(--bg); color:var(--gold);">
           </div>
+
           <div class="form-group">
-            <label>تاريخ التعاقد / الإضافة</label>
+            <label>تاريخ التعاقد</label>
             <input type="date" id="cDate">
           </div>
+
           <div class="form-group">
             <label>ملاحظات إضافية</label>
             <textarea id="cNotes" rows="2" placeholder="أي تفاصيل أخرى..."></textarea>
           </div>
+
           <button type="submit" class="btn" id="submitBtn">💾 حفظ بيانات العميل</button>
           <button type="button" class="btn btn-secondary" style="margin-top:8px; display:none;" id="cancelEditBtn" onclick="resetCustomerForm()">إلغاء التعديل</button>
         </form>
@@ -187,11 +194,9 @@
           <button type="submit" class="btn btn-secondary" style="border-color:var(--red); color:var(--red);">➖ إضافة كـ مصروف</button>
         </form>
       </div>
-
     </div>
 
     <div style="display:flex; flex-direction:column; gap:20px;">
-      
       <div class="card" style="flex: 1;">
         <div class="toolbar">
           <div class="search-box">
@@ -224,7 +229,6 @@
           </table>
         </div>
       </div>
-
     </div>
 
   </div>
@@ -263,7 +267,6 @@
     if(saved) {
       try { 
         state = JSON.parse(saved);
-        // حماية إضافية: التأكد من تحويل كل البيانات القديمة للصيغة الجديدة لمنع الـ NaN أو الـ 0
         if(state.customers) {
           state.customers = state.customers.map(c => {
             let p = parseFloat(c.price) || parseFloat(c.amount) || 0;
@@ -283,7 +286,11 @@
       } catch(e) { console.error(e); }
     }
     
-    document.getElementById('cDate').value = new Date().toISOString().split('T')[0];
+    // حماية ضد الـ كراش: نتأكد إن العنصر موجود الأول قبل ما نعدل عليه
+    const dateInput = document.getElementById('cDate');
+    if(dateInput) {
+      dateInput.value = new Date().toISOString().split('T')[0];
+    }
     
     startClock();
     updateStats();
@@ -306,9 +313,15 @@
   }
 
   function calculateRemaining() {
-    const price = parseFloat(document.getElementById('cPrice').value) || 0;
-    const paid = parseFloat(document.getElementById('cPaid').value) || 0;
-    document.getElementById('cRemaining').value = Math.max(0, price - paid);
+    const priceInput = document.getElementById('cPrice');
+    const paidInput = document.getElementById('cPaid');
+    const remainingInput = document.getElementById('cRemaining');
+    
+    if(priceInput && paidInput && remainingInput) {
+      const price = parseFloat(priceInput.value) || 0;
+      const paid = parseFloat(paidInput.value) || 0;
+      remainingInput.value = Math.max(0, price - paid);
+    }
   }
 
   function updateStats() {
@@ -320,12 +333,12 @@
     const totalExpenses = state.expenses.reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
     const netProfit = totalPaid - totalExpenses;
 
-    document.getElementById('statTotalCustomers').innerText = totalCustomers;
-    document.getElementById('statTotalPrices').innerText = totalPrices.toLocaleString() + ' ج';
-    document.getElementById('statTotalPaid').innerText = totalPaid.toLocaleString() + ' ج';
-    document.getElementById('statTotalRemaining').innerText = totalRemaining.toLocaleString() + ' ج';
-    document.getElementById('statTotalExpenses').innerText = totalExpenses.toLocaleString() + ' ج';
-    document.getElementById('statNetProfit').innerText = netProfit.toLocaleString() + ' ج';
+    if(document.getElementById('statTotalCustomers')) document.getElementById('statTotalCustomers').innerText = totalCustomers;
+    if(document.getElementById('statTotalPrices')) document.getElementById('statTotalPrices').innerText = totalPrices.toLocaleString() + ' ج';
+    if(document.getElementById('statTotalPaid')) document.getElementById('statTotalPaid').innerText = totalPaid.toLocaleString() + ' ج';
+    if(document.getElementById('statTotalRemaining')) document.getElementById('statTotalRemaining').innerText = totalRemaining.toLocaleString() + ' ج';
+    if(document.getElementById('statTotalExpenses')) document.getElementById('statTotalExpenses').innerText = totalExpenses.toLocaleString() + ' ج';
+    if(document.getElementById('statNetProfit')) document.getElementById('statNetProfit').innerText = netProfit.toLocaleString() + ' ج';
   }
 
   function saveCustomer(e) {
@@ -343,8 +356,8 @@
       price: price,
       paid: paid,
       remaining: remaining,
-      date: document.getElementById('cDate').value,
-      notes: document.getElementById('cNotes').value.trim()
+      date: document.getElementById('cDate') ? document.getElementById('cDate').value : '',
+      notes: document.getElementById('cNotes') ? document.getElementById('cNotes').value.trim() : ''
     };
 
     if(index === "") {
@@ -363,8 +376,8 @@
     document.getElementById('cIndex').value = "";
     document.getElementById('formTitle').innerText = "👤 إضافة عميل جديد";
     document.getElementById('submitBtn').innerText = "💾 حفظ بيانات العميل";
-    document.getElementById('cancelEditBtn').style.display = "none";
-    document.getElementById('cDate').value = new Date().toISOString().split('T')[0];
+    if(document.getElementById('cancelEditBtn')) document.getElementById('cancelEditBtn').style.display = "none";
+    if(document.getElementById('cDate')) document.getElementById('cDate').value = new Date().toISOString().split('T')[0];
   }
 
   function editCustomer(index) {
@@ -376,12 +389,12 @@
     document.getElementById('cPrice').value = c.price;
     document.getElementById('cPaid').value = c.paid;
     document.getElementById('cRemaining').value = c.remaining;
-    document.getElementById('cDate').value = c.date;
-    document.getElementById('cNotes').value = c.notes || '';
+    if(document.getElementById('cDate')) document.getElementById('cDate').value = c.date;
+    if(document.getElementById('cNotes')) document.getElementById('cNotes').value = c.notes || '';
 
     document.getElementById('formTitle').innerText = "✏️ تعديل بيانات العميل";
     document.getElementById('submitBtn').innerText = "🔄 تحديث البيانات";
-    document.getElementById('cancelEditBtn').style.display = "block";
+    if(document.getElementById('cancelEditBtn')) document.getElementById('cancelEditBtn').style.display = "block";
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -395,6 +408,7 @@
 
   function renderCustomers() {
     const tbody = document.getElementById('customersTableBody');
+    if(!tbody) return;
     tbody.innerHTML = '';
     const search = document.getElementById('searchBar').value.toLowerCase();
 
@@ -446,6 +460,7 @@
 
   function renderExpenses() {
     const tbody = document.getElementById('expensesTableBody');
+    if(!tbody) return;
     tbody.innerHTML = '';
     state.expenses.forEach((e, i) => {
       const tr = document.createElement('tr');
