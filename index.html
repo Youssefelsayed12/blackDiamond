@@ -1473,6 +1473,7 @@ async function doLogin() {
     resetSessionTimer();
     updateDashboard();
     renderCustomersTable();
+    checkTasksAndNotify();
 
   } catch(e) {
     errEl.textContent = '⚠️ خطأ في الاتصال — تحقق من الإنترنت';
@@ -1524,7 +1525,7 @@ function showPage(page, el) {
   if (page === 'dashboard') updateDashboard();
   if (page === 'finance') updateFinancePage();
   if (page === 'settings') { document.getElementById('currentEmailDisp').value = state.currentUser.email; }
-  if (page === 'tasks') { renderTasks(); updateTaskStats(); }
+  if (page === 'tasks') { renderTasks(); updateTaskStats(); checkTasksAndNotify(); }
   if (page === 'cart') { renderCart(); updateCartStats(); }
   if (page === 'jard')    { initReportSelectors(); }
   if (page === 'compare') { initCompareYear(); renderCompareChart(); }
@@ -2781,6 +2782,69 @@ async function deleteUser(id, email) {
   showLoading(false);
   loadUsers();
   showToast('🗑️ تم الحذف');
+}
+
+
+// ============ TASK NOTIFICATIONS ============
+function initNotifications() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function checkTaskNotifications() {
+  if (!state.currentUser) return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+  const today = new Date().toISOString().split('T')[0];
+  const pending = (state.tasks || []).filter(t => !t.done);
+
+  pending.forEach(t => {
+    if (!t.dueDate) return;
+
+    const due  = new Date(t.dueDate);
+    const now  = new Date();
+    due.setHours(0,0,0,0);
+    now.setHours(0,0,0,0);
+    const diff = (due - now) / (1000 * 60 * 60 * 24);
+
+    // Today
+    if (diff === 0) {
+      sendNotification('⏰ مهمة اليوم', `"${t.title}" — موعدها اليوم!`, '🔴');
+    }
+    // Tomorrow
+    else if (diff === 1) {
+      sendNotification('📅 مهمة غداً', `"${t.title}" — موعدها غداً`, '🟡');
+    }
+    // Overdue
+    else if (diff < 0) {
+      sendNotification('⚠️ مهمة متأخرة', `"${t.title}" — تأخرت ${Math.abs(diff)} يوم!`, '🔴');
+    }
+  });
+}
+
+function sendNotification(title, body, icon) {
+  if (Notification.permission !== 'granted') return;
+  // Avoid duplicate notifications using sessionStorage
+  const key = `notif_${title}_${body}`;
+  if (sessionStorage.getItem(key)) return;
+  sessionStorage.setItem(key, '1');
+  try {
+    new Notification(title, {
+      body,
+      icon: 'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4cb.png',
+      badge: 'https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f514.png',
+      tag: key,
+      requireInteraction: false
+    });
+  } catch(e) {}
+}
+
+// Check every time tasks are loaded
+function checkTasksAndNotify() {
+  initNotifications();
+  setTimeout(checkTaskNotifications, 1000);
 }
 
 </script>
