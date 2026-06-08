@@ -507,6 +507,9 @@
         <span class="nav-icon">📈</span> مقارنة الأرباح
       </div>
 
+      <div id="navUsers" class="nav-item" onclick="showPage('users', this)">
+        <span class="nav-icon">👥</span> إدارة المستخدمين
+      </div>
       <div id="navBackup" class="nav-item" onclick="showPage('backup', this)">
         <span class="nav-icon">💾</span> النسخة الاحتياطية
       </div>
@@ -768,7 +771,23 @@
 
 
     <!-- ===== BACKUP PAGE ===== -->
-    <div class="page" id="page-backup">
+    <!-- ===== USERS PAGE ===== -->
+    <div class="page" id="page-users">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div><h2>👥 إدارة المستخدمين</h2><p>إضافة وحذف المستخدمين من النظام</p></div>
+        <button class="btn btn-primary" onclick="openModal('addUserModal')">+ إضافة مستخدم</button>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>#</th><th>الاسم</th><th>البريد الإلكتروني</th><th>الصلاحية</th><th>إجراء</th></tr></thead>
+          <tbody id="usersTable">
+            <tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>جاري التحميل...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+        <div class="page" id="page-backup">
       <div class="page-header">
         <h2>💾 النسخة الاحتياطية</h2>
         <p>تصدير بيانات النظام بصيغة Excel أو PDF</p>
@@ -1059,6 +1078,38 @@
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="saveWithdrawEdit()">💾 حفظ التعديل</button>
       <button class="btn btn-ghost" onclick="closeModal('editWithdrawModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD USER MODAL ===== -->
+<div class="modal-overlay" id="addUserModal">
+  <div class="modal" style="width:460px;">
+    <div class="modal-close" onclick="closeModal('addUserModal')">✕</div>
+    <h3>👤 إضافة مستخدم جديد</h3>
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="uEmail" placeholder="example@email.com" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>كلمة المرور</label>
+      <input type="password" id="uPassword" placeholder="8 أحرف على الأقل">
+    </div>
+    <div class="form-group">
+      <label>الاسم</label>
+      <input type="text" id="uName" placeholder="اسم الموظف">
+    </div>
+    <div class="form-group">
+      <label>الصلاحية</label>
+      <select id="uRole" style="width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;">
+        <option value="employee">موظف</option>
+        <option value="admin">مدير</option>
+      </select>
+    </div>
+    <div id="addUserError" class="error-msg" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="addUser()">✅ إضافة</button>
+      <button class="btn btn-ghost" onclick="closeModal('addUserModal')">إلغاء</button>
     </div>
   </div>
 </div>
@@ -1417,6 +1468,7 @@ async function doLogin() {
     document.getElementById('navCart').style.display    = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navJard').style.display    = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navCompare').style.display = user.role === 'admin' ? 'flex' : 'none';
+    document.getElementById('navUsers').style.display   = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navBackup').style.display  = user.role === 'admin' ? 'flex' : 'none';
     resetSessionTimer();
     updateDashboard();
@@ -1476,6 +1528,7 @@ function showPage(page, el) {
   if (page === 'cart') { renderCart(); updateCartStats(); }
   if (page === 'jard')    { initReportSelectors(); }
   if (page === 'compare') { initCompareYear(); renderCompareChart(); }
+  if (page === 'users')   { loadUsers(); }
   if (page === 'search') renderSearchTable(state.customers);
 }
 
@@ -2637,6 +2690,97 @@ function exportPDF(type) {
   </body></html>`);
   w.document.close();
   setTimeout(()=>w.print(), 500);
+}
+
+
+// ============ USER MANAGEMENT ============
+async function loadUsers() {
+  const tbody = document.getElementById('usersTable');
+  if (!tbody) return;
+  tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="icon">⏳</div><p>جاري التحميل...</p></div></td></tr>`;
+  const rows = await sbGet('users', '');
+  if (!rows || rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>لا يوجد مستخدمون</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = rows.map((u, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td><strong>${esc(u.name||'—')}</strong></td>
+      <td style="color:var(--muted);font-size:13px;">${esc(u.email)}</td>
+      <td>${u.role==='admin'
+        ? '<span class="badge badge-gold">👑 مدير</span>'
+        : '<span class="badge badge-blue">👤 موظف</span>'}</td>
+      <td>${u.id !== state.currentUser.id
+        ? `<button class="btn btn-red btn-sm" onclick="deleteUser(${u.id},'${esc(u.email)}')">🗑 حذف</button>`
+        : '<span style="font-size:11px;color:var(--muted);">حسابك</span>'}</td>
+    </tr>`).join('');
+}
+
+async function addUser() {
+  const email    = document.getElementById('uEmail').value.trim().toLowerCase();
+  const password = document.getElementById('uPassword').value;
+  const name     = document.getElementById('uName').value.trim() || email.split('@')[0];
+  const role     = document.getElementById('uRole').value;
+  const errEl    = document.getElementById('addUserError');
+  const showErr  = msg => { errEl.textContent = msg; errEl.style.cssText = 'display:block;color:var(--red);font-size:13px;padding:8px;background:rgba(239,68,68,.1);border-radius:8px;'; };
+  errEl.style.display = 'none';
+
+  if (!email)          { showErr('⚠️ أدخل البريد الإلكتروني'); return; }
+  if (!password)       { showErr('⚠️ أدخل كلمة المرور');       return; }
+  if (password.length < 8) { showErr('⚠️ 8 أحرف على الأقل');  return; }
+
+  showLoading(true);
+  errEl.textContent = '🔄 جاري الإنشاء...';
+  errEl.style.cssText = 'display:block;color:var(--accent);font-size:12px;';
+
+  try {
+    // Step 1: Supabase Auth signup
+    const authRes  = await fetch(`${SB_AUTH}/signup`, {
+      method: 'POST',
+      headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const authData = await authRes.json();
+    if (authData.error) {
+      showErr('⚠️ ' + (authData.error_description || authData.msg || authData.error));
+      showLoading(false); return;
+    }
+
+    // Step 2: Insert into users table with service role (bypasses RLS + includes password placeholder)
+    const ins = await fetch(`${SB_URL}/users`, {
+      method: 'POST',
+      headers: svcHeaders(),
+      body: JSON.stringify({ email, name, role, password: 'supabase_auth' })
+    });
+    showLoading(false);
+
+    if (!ins.ok) {
+      const errTxt = await ins.text();
+      showErr(`⚠️ (${ins.status}) ${errTxt.substring(0,120)}`);
+      return;
+    }
+
+    closeModal('addUserModal');
+    ['uEmail','uPassword','uName'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('uRole').value = 'employee';
+    errEl.style.display = 'none';
+    loadUsers();
+    showToast(`✅ تم إضافة ${email}`);
+
+  } catch(e) {
+    showErr('⚠️ خطأ: ' + e.message);
+    showLoading(false);
+  }
+}
+
+async function deleteUser(id, email) {
+  if (!confirm('حذف المستخدم؟\n' + email)) return;
+  showLoading(true);
+  await sbAdminDelete('users', id);
+  showLoading(false);
+  loadUsers();
+  showToast('🗑️ تم الحذف');
 }
 
 </script>
