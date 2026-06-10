@@ -510,6 +510,9 @@
       <div id="navUsers" class="nav-item" onclick="showPage('users', this)">
         <span class="nav-icon">👥</span> إدارة المستخدمين
       </div>
+      <div id="navAccounts" class="nav-item" onclick="showPage('accounts', this)">
+        <span class="nav-icon">🔑</span> تخزين الأكونتات
+      </div>
       <div id="navBackup" class="nav-item" onclick="showPage('backup', this)">
         <span class="nav-icon">💾</span> النسخة الاحتياطية
       </div>
@@ -784,6 +787,43 @@
             <tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>جاري التحميل...</p></div></td></tr>
           </tbody>
         </table>
+      </div>
+    </div>
+
+        <!-- ===== ACCOUNTS PAGE ===== -->
+    <div class="page" id="page-accounts">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2>🔑 تخزين الأكونتات</h2>
+          <p>احفظ بياناتك بشكل آمن ومشفر</p>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('addAccountModal')">+ إضافة أكونت</button>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:24px;">
+        <div class="stat-card blue">
+          <div class="stat-icon">🔑</div>
+          <div class="stat-value" id="accStatTotal">0</div>
+          <div class="stat-label">إجمالي الأكونتات</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">🔒</div>
+          <div class="stat-value" id="accStatEncrypted">0</div>
+          <div class="stat-label">باسوردات مشفرة</div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div style="margin-bottom:16px;">
+        <input type="text" id="accSearch" placeholder="🔍 ابحث عن أكونت..." 
+               oninput="renderAccounts()"
+               style="width:100%;padding:12px 16px;background:var(--card);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;">
+      </div>
+
+      <!-- Accounts Grid -->
+      <div id="accountsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">
+        <div class="empty-state"><div class="icon">🔑</div><p>لا توجد أكونتات بعد</p></div>
       </div>
     </div>
 
@@ -1110,6 +1150,43 @@
     <div class="modal-actions">
       <button class="btn btn-primary" onclick="addUser()">✅ إضافة</button>
       <button class="btn btn-ghost" onclick="closeModal('addUserModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD ACCOUNT MODAL ===== -->
+<div class="modal-overlay" id="addAccountModal">
+  <div class="modal" style="width:500px;">
+    <div class="modal-close" onclick="closeModal('addAccountModal')">✕</div>
+    <h3>🔑 إضافة أكونت جديد</h3>
+    <div class="form-group">
+      <label>اسم الأكونت *</label>
+      <input type="text" id="accName" placeholder="مثال: Facebook، Gmail، ...">
+    </div>
+    <div class="form-group">
+      <label>الرابط</label>
+      <input type="url" id="accLink" placeholder="https://...">
+    </div>
+    <div class="form-group">
+      <label>البريد الإلكتروني / اليوزر</label>
+      <input type="text" id="accEmail" placeholder="example@gmail.com">
+    </div>
+    <div class="form-group">
+      <label>كلمة المرور</label>
+      <div style="position:relative;">
+        <input type="password" id="accPassword" placeholder="كلمة المرور" style="width:100%;padding-left:44px;">
+        <button type="button" onclick="togglePassInput('accPassword', this)"
+                style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--muted);cursor:pointer;font-size:18px;">👁</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>ملاحظات</label>
+      <textarea id="accNotes" placeholder="أي ملاحظات إضافية..." rows="2" style="width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;resize:vertical;"></textarea>
+    </div>
+    <div id="addAccountError" class="error-msg" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="addAccount()">🔒 حفظ مشفراً</button>
+      <button class="btn btn-ghost" onclick="closeModal('addAccountModal')">إلغاء</button>
     </div>
   </div>
 </div>
@@ -1469,11 +1546,14 @@ async function doLogin() {
     document.getElementById('navJard').style.display    = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navCompare').style.display = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navUsers').style.display   = user.role === 'admin' ? 'flex' : 'none';
+    document.getElementById('navAccounts').style.display = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navBackup').style.display  = user.role === 'admin' ? 'flex' : 'none';
     resetSessionTimer();
     updateDashboard();
     renderCustomersTable();
     checkTasksAndNotify();
+    // Pre-load accounts
+    sbGet('accounts', '').then(rows => { state.accounts = (rows||[]).map(mapAccount); });
 
   } catch(e) {
     errEl.textContent = '⚠️ خطأ في الاتصال — تحقق من الإنترنت';
@@ -1529,7 +1609,8 @@ function showPage(page, el) {
   if (page === 'cart') { renderCart(); updateCartStats(); }
   if (page === 'jard')    { initReportSelectors(); }
   if (page === 'compare') { initCompareYear(); renderCompareChart(); }
-  if (page === 'users')   { loadUsers(); }
+  if (page === 'users')    { loadUsers(); }
+  if (page === 'accounts') { renderAccounts(); updateAccStats(); }
   if (page === 'search') renderSearchTable(state.customers);
 }
 
@@ -2845,6 +2926,215 @@ function sendNotification(title, body, icon) {
 function checkTasksAndNotify() {
   initNotifications();
   setTimeout(checkTaskNotifications, 1000);
+}
+
+
+// ============ ACCOUNTS (Password Manager) ============
+
+// Encryption key derived from project ref
+const ENC_SALT = 'cbfaybsuzjthuwftfuac_accounts_2026';
+
+async function getEncKey() {
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(ENC_SALT),
+    { name: 'PBKDF2' }, false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: new TextEncoder().encode('acc_salt'), iterations: 100000, hash: 'SHA-256' },
+    keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
+}
+
+async function encryptText(text) {
+  if (!text) return '';
+  try {
+    const key = await getEncKey();
+    const iv  = crypto.getRandomValues(new Uint8Array(12));
+    const enc = await crypto.subtle.encrypt(
+      { name: 'AES-GCM', iv },
+      key, new TextEncoder().encode(text)
+    );
+    const combined = new Uint8Array(iv.length + enc.byteLength);
+    combined.set(iv); combined.set(new Uint8Array(enc), iv.length);
+    return btoa(String.fromCharCode(...combined));
+  } catch { return text; }
+}
+
+async function decryptText(cipher) {
+  if (!cipher) return '';
+  try {
+    const combined = Uint8Array.from(atob(cipher), c => c.charCodeAt(0));
+    const iv  = combined.slice(0, 12);
+    const enc = combined.slice(12);
+    const key = await getEncKey();
+    const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, enc);
+    return new TextDecoder().decode(dec);
+  } catch { return '🔒 مشفر'; }
+}
+
+// State for accounts
+if (!state.accounts) state.accounts = [];
+
+function mapAccount(r) {
+  return { id: r.id, name: r.name, link: r.link||'', email: r.email||'', password: r.password||'', notes: r.notes||'', createdAt: r.created_at||'' };
+}
+
+async function loadAccountsFromDB() {
+  const rows = await sbGet('accounts', '');
+  state.accounts = (rows || []).map(mapAccount);
+  renderAccounts();
+  updateAccStats();
+}
+
+function renderAccounts() {
+  const grid     = document.getElementById('accountsGrid');
+  if (!grid) return;
+  const search   = (document.getElementById('accSearch')?.value || '').toLowerCase();
+  const filtered = state.accounts.filter(a =>
+    a.name.toLowerCase().includes(search) ||
+    a.email.toLowerCase().includes(search) ||
+    (a.link||'').toLowerCase().includes(search)
+  );
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🔑</div><p>${search ? 'مفيش نتايج' : 'لا توجد أكونتات بعد'}</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(a => `
+    <div class="card" style="padding:20px;">
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔑</div>
+          <div>
+            <div style="font-weight:800;font-size:15px;">${esc(a.name)}</div>
+            ${a.link ? `<a href="${a.link}" target="_blank" style="font-size:11px;color:var(--accent);">🔗 فتح الرابط</a>` : ''}
+          </div>
+        </div>
+        <button class="btn btn-red btn-sm" onclick="deleteAccount(${a.id})">🗑</button>
+      </div>
+
+      <!-- Email -->
+      ${a.email ? `
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">📧 البريد / اليوزر</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:8px;padding:8px 12px;">
+          <span style="font-size:13px;font-weight:600;">${esc(a.email)}</span>
+          <button onclick="copyText('${esc(a.email)}', this)" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;">📋</button>
+        </div>
+      </div>` : ''}
+
+      <!-- Password -->
+      ${a.password ? `
+      <div style="margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">🔒 كلمة المرور</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:8px;padding:8px 12px;gap:8px;">
+          <span id="pass_${a.id}" style="font-size:13px;font-weight:600;flex:1;letter-spacing:2px;">••••••••</span>
+          <button onclick="toggleAccPass(${a.id}, '${a.password}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;" id="eye_${a.id}">👁</button>
+          <button onclick="copyAccPass(${a.id}, '${a.password}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;">📋</button>
+        </div>
+      </div>` : ''}
+
+      <!-- Notes -->
+      ${a.notes ? `
+      <div style="background:var(--surface);border-radius:8px;padding:8px 12px;">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:2px;">📝 ملاحظات</div>
+        <div style="font-size:12px;color:var(--text);">${esc(a.notes)}</div>
+      </div>` : ''}
+    </div>`).join('');
+}
+
+function updateAccStats() {
+  const total = state.accounts.length;
+  const enc   = state.accounts.filter(a => a.password).length;
+  const totalEl = document.getElementById('accStatTotal');
+  const encEl   = document.getElementById('accStatEncrypted');
+  if (totalEl) totalEl.textContent = total;
+  if (encEl)   encEl.textContent   = enc;
+}
+
+// Toggle password visibility
+const _passVisible = {};
+async function toggleAccPass(id, cipher) {
+  const el  = document.getElementById(`pass_${id}`);
+  const eye = document.getElementById(`eye_${id}`);
+  if (!el) return;
+  if (_passVisible[id]) {
+    el.textContent     = '••••••••';
+    el.style.letterSpacing = '2px';
+    eye.textContent    = '👁';
+    _passVisible[id]   = false;
+  } else {
+    el.textContent     = '🔄 جاري فك التشفير...';
+    const plain        = await decryptText(cipher);
+    el.textContent     = plain;
+    el.style.letterSpacing = 'normal';
+    eye.textContent    = '🙈';
+    _passVisible[id]   = true;
+  }
+}
+
+async function copyAccPass(id, cipher) {
+  const plain = await decryptText(cipher);
+  navigator.clipboard?.writeText(plain).then(() => showToast('✅ تم نسخ كلمة المرور'));
+}
+
+function copyText(text, btn) {
+  navigator.clipboard?.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✅';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+function togglePassInput(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  if (inp.type === 'password') { inp.type = 'text';     btn.textContent = '🙈'; }
+  else                         { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+async function addAccount() {
+  const name     = sanitizeInput(document.getElementById('accName').value, 100);
+  const link     = document.getElementById('accLink').value.trim();
+  const email    = document.getElementById('accEmail').value.trim();
+  const password = document.getElementById('accPassword').value;
+  const notes    = sanitizeInput(document.getElementById('accNotes').value, 500);
+  const errEl    = document.getElementById('addAccountError');
+  errEl.style.display = 'none';
+
+  if (!name) { errEl.textContent = '⚠️ أدخل اسم الأكونت'; errEl.style.display = 'block'; return; }
+
+  showLoading(true);
+  // Encrypt password before storing
+  const encPass = password ? await encryptText(password) : '';
+  const row = await sbPost('accounts', { name, link, email, password: encPass, notes });
+  showLoading(false);
+
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+
+  state.accounts.unshift(mapAccount(row));
+  closeModal('addAccountModal');
+  ['accName','accLink','accEmail','accPassword','accNotes'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  errEl.style.display = 'none';
+  renderAccounts();
+  updateAccStats();
+  showToast('🔒 تم الحفظ بشكل مشفر');
+}
+
+async function deleteAccount(id) {
+  if (!confirm('حذف هذا الأكونت؟')) return;
+  showLoading(true);
+  await sbDelete('accounts', id);
+  showLoading(false);
+  state.accounts = state.accounts.filter(a => a.id !== id);
+  renderAccounts();
+  updateAccStats();
+  showToast('🗑️ تم الحذف');
 }
 
 </script>
