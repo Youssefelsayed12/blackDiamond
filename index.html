@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام إدارة العملاء</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -435,30 +436,674 @@
   .alert { padding: 12px 16px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; display: none; }
   .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
   .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
+
+/* ===== LANDING PAGE STYLES ===== */
+
+:root {
+  --void: #070709;
+  --deep: #0D0D14;
+  --card: #13131C;
+  --border: rgba(255,255,255,0.06);
+  --gold: #C9A84C;
+  --gold2: #F0D080;
+  --blue: #1E90FF;
+  --green: #00C896;
+  --red: #FF4560;
+  --text: #F0F0F0;
+  --muted: #6B7280;
+  --subtle: #2A2A3A;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--text);
+  font-family: 'Cairo', 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ===== LANGUAGE TOGGLE ===== */
+.lang-ar .en { display: none !important; }
+.lang-en .ar { display: none !important; }
+.lang-en { direction: ltr; text-align: left; }
+
+/* ===== NAV ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(7,7,9,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { display: flex; align-items: center; gap: 12px; }
+.nav-logo img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+.nav-logo-text { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+.nav-links { display: flex; align-items: center; gap: 24px; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color .2s; }
+.nav-links a:hover { color: var(--text); }
+.lang-btn {
+  padding: 6px 16px; border-radius: 99px;
+  border: 1px solid var(--gold); color: var(--gold);
+  background: transparent; cursor: pointer;
+  font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
+  transition: all .2s;
+}
+.lang-btn:hover { background: var(--gold); color: #000; }
+.subscribe-nav {
+  padding: 8px 20px; border-radius: 99px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000; font-weight: 800; font-size: 14px;
+  text-decoration: none; transition: all .3s;
+}
+.subscribe-nav:hover { transform: scale(1.05); box-shadow: 0 0 24px rgba(201,168,76,.4); }
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; text-align: center;
+  position: relative; overflow: hidden;
+  padding: 120px 20px 80px;
+}
+
+/* Candlestick canvas background */
+#heroCanvas {
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.2;
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 18px; border-radius: 99px;
+  border: 1px solid rgba(201,168,76,.3);
+  background: rgba(201,168,76,.08);
+  color: var(--gold); font-size: 13px; font-weight: 700;
+  margin-bottom: 32px; letter-spacing: 1px;
+}
+
+.hero-logo { width: 120px; height: 120px; border-radius: 24px; margin: 0 auto 32px; display: block; object-fit: cover; filter: drop-shadow(0 0 40px rgba(201,168,76,.5)); }
+
+.hero-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(40px, 8vw, 80px);
+  font-weight: 900; line-height: 1.05;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, #fff 30%, var(--gold) 70%, var(--gold2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+.hero-subtitle-brand {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(14px, 2.5vw, 20px);
+  color: var(--gold); letter-spacing: 6px; font-weight: 400;
+  margin-bottom: 24px;
+}
+.hero-desc {
+  font-size: clamp(15px, 2.5vw, 18px);
+  color: var(--muted); line-height: 1.8;
+  margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto;
+}
+
+.hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-gold {
+  padding: 16px 40px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  color: #000; font-weight: 800; font-size: 16px;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: all .3s; font-family: 'Cairo', sans-serif;
+  box-shadow: 0 8px 32px rgba(201,168,76,.3);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(201,168,76,.4); }
+.btn-outline {
+  padding: 16px 40px; border-radius: 12px;
+  border: 1px solid var(--border); color: var(--text);
+  font-weight: 700; font-size: 16px; text-decoration: none;
+  transition: all .3s; font-family: 'Cairo', sans-serif;
+  background: rgba(255,255,255,.04);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ===== SCROLL INDICATOR ===== */
+.scroll-indicator {
+  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  color: var(--muted); font-size: 11px; letter-spacing: 2px;
+  animation: bounce 2s infinite;
+}
+.scroll-indicator::after {
+  content: '↓'; font-size: 20px; color: var(--gold);
+}
+@keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+/* ===== SECTION ===== */
+section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+.section-eyebrow {
+  font-size: 12px; letter-spacing: 3px; font-weight: 700;
+  color: var(--gold); text-transform: uppercase; margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700; line-height: 1.2; margin-bottom: 16px;
+}
+.section-desc { color: var(--muted); font-size: 16px; line-height: 1.8; max-width: 560px; }
+.text-center { text-align: center; }
+.text-center .section-desc { margin: 0 auto; }
+
+/* divider */
+.divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0;
+}
+
+/* ===== HOW IT WORKS ===== */
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 24px; margin-top: 60px; }
+.step-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 20px; padding: 32px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s, transform .3s;
+}
+.step-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-4px); }
+.step-number {
+  font-family: 'Cinzel', serif; font-size: 64px; font-weight: 900;
+  color: rgba(201,168,76,.08); position: absolute; top: 16px; right: 20px;
+  line-height: 1;
+}
+.lang-en .step-number { right: auto; left: 20px; }
+.step-icon { font-size: 36px; margin-bottom: 16px; }
+.step-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.step-desc { color: var(--muted); font-size: 14px; line-height: 1.8; }
+
+/* ===== FEATURES ===== */
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 16px; margin-top: 60px; }
+.feature-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px;
+  transition: border-color .3s, transform .3s;
+}
+.feature-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-3px); }
+.feature-icon { font-size: 28px; margin-bottom: 12px; }
+.feature-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+.feature-desc { color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+/* ===== PRICING ===== */
+.pricing-wrapper { display: flex; justify-content: center; margin-top: 60px; }
+.pricing-card {
+  background: var(--card); border: 1px solid rgba(201,168,76,.3);
+  border-radius: 24px; padding: 48px; max-width: 440px; width: 100%;
+  position: relative; overflow: hidden;
+  box-shadow: 0 0 80px rgba(201,168,76,.08);
+}
+.pricing-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold2), transparent);
+}
+.pricing-tag {
+  display: inline-block; padding: 4px 14px; border-radius: 99px;
+  background: rgba(201,168,76,.12); color: var(--gold);
+  font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+.pricing-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.pricing-price {
+  font-size: 64px; font-weight: 900; line-height: 1;
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 4px;
+}
+.pricing-price span { font-size: 24px; font-weight: 400; }
+.pricing-period { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+.pricing-features { list-style: none; margin-bottom: 36px; }
+.pricing-features li {
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--text);
+}
+.pricing-features li:last-child { border: none; }
+.pricing-features li::before { content: '✦'; color: var(--gold); font-size: 10px; flex-shrink: 0; }
+.lang-en .pricing-features li { flex-direction: row; }
+
+/* ===== FAQ ===== */
+.faq-list { margin-top: 60px; display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+  transition: border-color .3s;
+}
+.faq-item.open { border-color: rgba(201,168,76,.3); }
+.faq-q {
+  padding: 20px 24px; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  font-weight: 700; font-size: 15px; user-select: none;
+}
+.faq-q span { transition: transform .3s; font-size: 18px; color: var(--gold); }
+.faq-item.open .faq-q span { transform: rotate(45deg); }
+.faq-a {
+  max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s;
+  color: var(--muted); font-size: 14px; line-height: 1.8; padding: 0 24px;
+}
+.faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  text-align: center; padding: 100px 20px;
+  background: linear-gradient(180deg, transparent, rgba(201,168,76,.04), transparent);
+}
+.cta-section .section-title { margin-bottom: 20px; }
+.cta-section .section-desc { margin: 0 auto 40px; }
+
+/* ===== FOOTER ===== */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 40px; text-align: center;
+  color: var(--muted); font-size: 13px;
+}
+.footer-logo { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+.footer-disclaimer { font-size: 11px; color: #444; margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+/* ===== GLOW ORBS ===== */
+.orb {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); opacity: 0.12;
+}
+.orb-1 { width: 600px; height: 600px; background: var(--gold); top: -200px; right: -200px; }
+.orb-2 { width: 400px; height: 400px; background: var(--blue); bottom: 10%; left: -100px; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  nav { padding: 12px 20px; }
+  .nav-links { display: none; }
+  section { padding: 60px 16px; }
+  .pricing-card { padding: 32px 24px; }
+}
+
+/* ===== SHIMMER ANIMATION ===== */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold2) 50%, var(--gold) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Override: hide landing when logged in */
+#landingPage { display: block; }
+#landingPage.hidden { display: none !important; }
+/* Login modal overlay */
+#loginModalOverlay {
+  display:none; position:fixed; inset:0; z-index:9999;
+  background:rgba(0,0,0,0.85); backdrop-filter:blur(8px);
+  align-items:center; justify-content:center;
+}
+#loginModalOverlay.open { display:flex; }
+.login-modal-box {
+  background:#13131C; border:1px solid rgba(201,168,76,.2);
+  border-radius:24px; padding:48px 40px; width:420px; max-width:90vw;
+  position:relative; box-shadow:0 0 80px rgba(201,168,76,.1);
+}
+.login-modal-box::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg,transparent,#C9A84C,#F0D080,transparent);
+  border-radius:24px 24px 0 0;
+}
+.login-modal-box .login-logo-text {
+  font-family:'Cinzel',serif; font-size:22px; font-weight:700;
+  color:#C9A84C; text-align:center; margin-bottom:6px;
+}
+.login-modal-box .login-sub {
+  text-align:center; color:#6B7280; font-size:13px; margin-bottom:32px;
+}
+.login-modal-close {
+  position:absolute; top:16px; left:16px;
+  background:none; border:none; color:#6B7280;
+  font-size:20px; cursor:pointer; transition:color .2s;
+}
+.login-modal-close:hover { color:#fff; }
 </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body>
+<body class="lang-ar">
 
 <!-- ============ LOGIN PAGE ============ -->
-<div id="loginPage">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="icon">👥</div>
-      <h1>نظام إدارة العملاء</h1>
-      <p>سجّل دخولك للمتابعة</p>
-    </div>
-    <div class="form-group">
-      <label>البريد الإلكتروني</label>
-      <input type="email" id="loginEmail" placeholder="أدخل البريد الإلكتروني">
-    </div>
-    <div class="form-group">
-      <label>كلمة المرور</label>
-      <input type="password" id="loginPass" placeholder="أدخل كلمة المرور">
-    </div>
-    <p class="error-msg" id="loginError">البريد الإلكتروني أو كلمة المرور غير صحيحة</p>
-    <button class="btn btn-primary" onclick="doLogin()">🔐 تسجيل الدخول</button>
+<!-- ===== LANDING PAGE ===== -->
+<div id="landingPage">
+<!-- Glow orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="nav-logo">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 44'%3E%3Crect width='44' height='44' rx='10' fill='%23070709'/%3E%3Ctext x='22' y='30' text-anchor='middle' font-size='24'%3E💎%3C/text%3E%3C/svg%3E" alt="BD">
+    <div class="nav-logo-text">BLACK DIAMOND</div>
+  </div>
+  <div class="nav-links">
+    <a href="#how" class="ar">كيف يعمل</a>
+    <a href="#how" class="en">How It Works</a>
+    <a href="#features" class="ar">المميزات</a>
+    <a href="#features" class="en">Features</a>
+    <a href="#pricing" class="ar">الأسعار</a>
+    <a href="#pricing" class="en">Pricing</a>
+    <a href="#faq" class="ar">الأسئلة الشائعة</a>
+    <a href="#faq" class="en">FAQ</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="lang-btn" onclick="toggleLang()">
+      <span class="ar">English</span>
+      <span class="en">العربية</span>
+    </button>
+    <button onclick="openLoginModal()" style="padding:8px 20px;border-radius:99px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:#fff;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-left:8px;" onmouseover="this.style.borderColor='#C9A84C';this.style.color='#C9A84C'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='#fff'">
+      <span class="ar">🔐 تسجيل الدخول</span>
+      <span class="en">🔐 Sign In</span>
+    </button>
+    <a href="#pricing" class="subscribe-nav ar">اشترك الآن</a>
+    <a href="#pricing" class="subscribe-nav en">Subscribe Now</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" style="max-width:100%;padding-top:0;">
+  <canvas id="heroCanvas"></canvas>
+
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span>💎</span>
+      <span class="ar">نظام تداول آلي احترافي</span>
+      <span class="en">Professional Automated Trading System</span>
+    </div>
+
+    <h1 class="hero-title">Black Diamond</h1>
+    <p class="hero-subtitle-brand">✦ FOREX TRADING ✦</p>
+
+    <p class="hero-desc ar">
+      بوت فوركس ذكي يعمل على MetaTrader 5 — يتداول بدلاً عنك على مدار الساعة بدقة واحترافية عالية
+    </p>
+    <p class="hero-desc en">
+      An intelligent Forex EA running on MetaTrader 5 — trades for you 24/7 with precision and professional accuracy
+    </p>
+
+    <div class="hero-cta">
+      <a href="#pricing" class="btn-gold ar">💎 اشترك الآن — $250/شهر</a>
+      <a href="#pricing" class="btn-gold en">💎 Subscribe Now — $250/mo</a>
+      <a href="#how" class="btn-outline ar">كيف يعمل؟</a>
+      <a href="#how" class="btn-outline en">How it works?</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span class="ar" style="font-size:10px;letter-spacing:2px;">اكتشف أكثر</span>
+    <span class="en" style="font-size:10px;letter-spacing:2px;">DISCOVER MORE</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section id="how">
+  <div class="text-center" style="margin-bottom:0;">
+    <p class="section-eyebrow ar">كيف يعمل</p>
+    <p class="section-eyebrow en">How It Works</p>
+    <h2 class="section-title ar">ابدأ في 3 خطوات بسيطة</h2>
+    <h2 class="section-title en">Start in 3 Simple Steps</h2>
+    <p class="section-desc ar">لا تحتاج خبرة تداول — البوت يعمل تلقائياً بمجرد الإعداد</p>
+    <p class="section-desc en">No trading experience needed — the bot runs automatically once set up</p>
+  </div>
+
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">01</div>
+      <div class="step-icon">📩</div>
+      <div class="step-title ar">اشترك وتواصل</div>
+      <div class="step-title en">Subscribe & Connect</div>
+      <p class="step-desc ar">ادفع رسوم الاشتراك الشهرية وتواصل معنا للحصول على ملف الـ EA</p>
+      <p class="step-desc en">Pay the monthly subscription fee and contact us to receive the EA file</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">02</div>
+      <div class="step-icon">⚙️</div>
+      <div class="step-title ar">ثبّت على MT5</div>
+      <div class="step-title en">Install on MT5</div>
+      <p class="step-desc ar">ثبّت الـ Expert Advisor على MetaTrader 5 واضبط الإعدادات المطلوبة</p>
+      <p class="step-desc en">Install the Expert Advisor on MetaTrader 5 and configure the required settings</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">03</div>
+      <div class="step-icon">🚀</div>
+      <div class="step-title ar">دع البوت يعمل</div>
+      <div class="step-title en">Let the Bot Work</div>
+      <p class="step-desc ar">البوت يتداول تلقائياً 24/5 — أنت فقط تتابع الأرباح</p>
+      <p class="step-desc en">The bot trades automatically 24/5 — you just watch the profits</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== FEATURES ===== -->
+<section id="features">
+  <div class="text-center">
+    <p class="section-eyebrow ar">المميزات</p>
+    <p class="section-eyebrow en">Features</p>
+    <h2 class="section-title ar">لماذا Black Diamond؟</h2>
+    <h2 class="section-title en">Why Black Diamond?</h2>
+    <p class="section-desc ar">نظام متكامل يجمع بين التحليل الفني والذكاء الاصطناعي لتحقيق أفضل النتائج</p>
+    <p class="section-desc en">A complete system combining technical analysis and smart automation for the best results</p>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title ar">تداول آلي بالكامل</div>
+      <div class="feature-title en">Fully Automated</div>
+      <p class="feature-desc ar">يعمل بدون تدخل بشري على مدار الساعة</p>
+      <p class="feature-desc en">Operates without human intervention 24/7</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title ar">تحليل فني متقدم</div>
+      <div class="feature-title en">Advanced Technical Analysis</div>
+      <p class="feature-desc ar">يستخدم مؤشرات فنية متعددة لتحديد أفضل نقاط الدخول</p>
+      <p class="feature-desc en">Uses multiple indicators to identify the best entry points</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛡️</div>
+      <div class="feature-title ar">إدارة مخاطر ذكية</div>
+      <div class="feature-title en">Smart Risk Management</div>
+      <p class="feature-desc ar">Stop Loss و Take Profit تلقائي لحماية رأس مالك</p>
+      <p class="feature-desc en">Automatic Stop Loss and Take Profit to protect your capital</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title ar">تنفيذ سريع</div>
+      <div class="feature-title en">Fast Execution</div>
+      <p class="feature-desc ar">تنفيذ الصفقات في ميلي ثانية بدون تأخير</p>
+      <p class="feature-desc en">Orders executed in milliseconds without delay</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🕐</div>
+      <div class="feature-title ar">تحليل زمني</div>
+      <div class="feature-title en">Time-Based Analysis</div>
+      <p class="feature-desc ar">يحدد أفضل أوقات التداول تلقائياً</p>
+      <p class="feature-desc en">Automatically identifies the best trading sessions</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <div class="feature-title ar">Price Action</div>
+      <div class="feature-title en">Price Action</div>
+      <p class="feature-desc ar">يقرأ حركة السعر الحقيقية بدون مؤشرات معقدة</p>
+      <p class="feature-desc en">Reads real price movement without complex indicators</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== PRICING ===== -->
+<section id="pricing">
+  <div class="text-center">
+    <p class="section-eyebrow ar">الأسعار</p>
+    <p class="section-eyebrow en">Pricing</p>
+    <h2 class="section-title ar">اشتراك شهري واحد — بدون تعقيد</h2>
+    <h2 class="section-title en">One Monthly Plan — Simple & Clear</h2>
+  </div>
+
+  <div class="pricing-wrapper">
+    <div class="pricing-card">
+      <div class="pricing-tag ar">الباقة الاحترافية</div>
+      <div class="pricing-tag en">Professional Plan</div>
+      <div class="pricing-name">Black Diamond EA</div>
+      <div class="pricing-price"><span>$</span>250</div>
+      <p class="pricing-period ar">/ شهرياً — يُجدَّد كل شهر</p>
+      <p class="pricing-period en">/ per month — renewed monthly</p>
+
+      <ul class="pricing-features">
+        <li class="ar">ملف الـ Expert Advisor كاملاً</li>
+        <li class="en">Full Expert Advisor file</li>
+        <li class="ar">دعم فني مباشر على مدار الساعة</li>
+        <li class="en">24/7 direct technical support</li>
+        <li class="ar">تحديثات مجانية طوال فترة الاشتراك</li>
+        <li class="en">Free updates throughout subscription</li>
+        <li class="ar">إعداد وتهيئة مجانية للأعضاء الجدد</li>
+        <li class="en">Free setup & configuration for new members</li>
+        <li class="ar">يعمل على MetaTrader 5 فقط</li>
+        <li class="en">Works on MetaTrader 5 only</li>
+      </ul>
+
+      <a href="https://wa.me/" class="btn-gold" style="display:block;text-align:center;text-decoration:none;">
+        <span class="ar">💎 اشترك الآن عبر واتساب</span>
+        <span class="en">💎 Subscribe Now via WhatsApp</span>
+      </a>
+
+      <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);" class="ar">لا توجد عقود طويلة — يمكن الإلغاء في أي وقت</p>
+      <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);" class="en">No long contracts — cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ===== FAQ ===== -->
+<section id="faq" style="max-width:740px;">
+  <div class="text-center">
+    <p class="section-eyebrow ar">الأسئلة الشائعة</p>
+    <p class="section-eyebrow en">FAQ</p>
+    <h2 class="section-title ar">أسئلة وأجوبة</h2>
+    <h2 class="section-title en">Common Questions</h2>
+  </div>
+
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="ar">هل أحتاج خبرة في التداول؟</span>
+        <span class="en">Do I need trading experience?</span>
+        <span>+</span>
+      </div>
+      <div class="faq-a ar">لا — البوت يعمل تلقائياً بالكامل. فقط تحتاج حساب على أي بروكر يدعم MT5 ورأس مال للبدء.</div>
+      <div class="faq-a en">No — the bot works fully automatically. You just need an MT5-compatible broker account and starting capital.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="ar">ما هو الحد الأدنى لرأس المال؟</span>
+        <span class="en">What is the minimum capital required?</span>
+        <span>+</span>
+      </div>
+      <div class="faq-a ar">ننصح بالبدء بـ $500 على الأقل للحصول على نتائج مناسبة مع إدارة المخاطر الصحيحة.</div>
+      <div class="faq-a en">We recommend starting with at least $500 for proper results with correct risk management.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="ar">على أي عملات يعمل البوت؟</span>
+        <span class="en">Which currency pairs does the bot trade?</span>
+        <span>+</span>
+      </div>
+      <div class="faq-a ar">يعمل البوت على أزواج العملات الرئيسية مثل EUR/USD، GBP/USD، وغيرها. سيتم تحديد الأزواج المناسبة عند الإعداد.</div>
+      <div class="faq-a en">The bot works on major currency pairs like EUR/USD, GBP/USD, and others. Suitable pairs will be determined during setup.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="ar">هل هناك ضمان للأرباح؟</span>
+        <span class="en">Is there a profit guarantee?</span>
+        <span>+</span>
+      </div>
+      <div class="faq-a ar">التداول في الفوركس ينطوي على مخاطر. لا يوجد نظام يضمن الأرباح 100% — لكننا نسعى لتحقيق أفضل النتائج مع إدارة المخاطر.</div>
+      <div class="faq-a en">Forex trading involves risk. No system guarantees 100% profits — but we strive for the best results with proper risk management.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        <span class="ar">كيف أتواصل للاشتراك؟</span>
+        <span class="en">How do I subscribe?</span>
+        <span>+</span>
+      </div>
+      <div class="faq-a ar">تواصل معنا عبر واتساب من زرار الاشتراك أعلاه وسيتم توجيهك لإتمام عملية الدفع واستلام الـ EA.</div>
+      <div class="faq-a en">Contact us via WhatsApp using the subscribe button above and you'll be guided through payment and EA delivery.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<div class="cta-section">
+  <p class="section-eyebrow ar" style="text-align:center;">ابدأ الآن</p>
+  <p class="section-eyebrow en" style="text-align:center;">Get Started</p>
+  <h2 class="section-title shimmer ar">دع Black Diamond يتداول بدلاً عنك</h2>
+  <h2 class="section-title shimmer en">Let Black Diamond Trade For You</h2>
+  <p class="section-desc ar" style="margin:0 auto 40px;">انضم إلينا اليوم واحصل على إعداد مجاني للبوت</p>
+  <p class="section-desc en" style="margin:0 auto 40px;">Join us today and get free bot setup</p>
+  <a href="#pricing" class="btn-gold ar">💎 اشترك الآن — $250/شهر</a>
+  <a href="#pricing" class="btn-gold en">💎 Subscribe Now — $250/mo</a>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-logo">BLACK DIAMOND ✦ FOREX TRADING</div>
+  <p class="ar" style="margin-top:8px;">جميع الحقوق محفوظة © 2026</p>
+  <p class="en" style="margin-top:8px;">All Rights Reserved © 2026</p>
+  <p class="footer-disclaimer ar">
+    تحذير: تداول الفوركس ينطوي على مخاطر عالية وقد يؤدي إلى خسارة رأس المال. التداول الآلي لا يضمن الأرباح. تأكد من فهم المخاطر قبل الاستثمار.
+  </p>
+  <p class="footer-disclaimer en">
+    Risk Warning: Forex trading involves high risk and may result in capital loss. Automated trading does not guarantee profits. Ensure you understand the risks before investing.
+  </p>
+</footer>
+
+
+</div>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div id="loginModalOverlay" onclick="if(event.target===this)closeLoginModal()">
+  <div class="login-modal-box">
+    <button class="login-modal-close" onclick="closeLoginModal()">✕</button>
+    <div class="login-logo-text">💎 BLACK DIAMOND</div>
+    <p class="login-sub ar">سجّل دخولك لنظام الإدارة</p>
+    <p class="login-sub en">Sign in to the management system</p>
+    <div class="form-group">
+      <label class="ar">البريد الإلكتروني</label>
+      <label class="en">Email</label>
+      <input type="email" id="loginEmail" placeholder="example@email.com" autocomplete="email"
+             onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()">
+    </div>
+    <div class="form-group">
+      <label class="ar">كلمة المرور</label>
+      <label class="en">Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••"
+             onkeydown="if(event.key==='Enter') doLogin()">
+    </div>
+    <p class="error-msg" id="loginError" style="display:none;"></p>
+    <button class="btn-gold" style="width:100%;margin-top:8px;" onclick="doLogin()">
+      <span class="ar">🔐 تسجيل الدخول</span>
+      <span class="en">🔐 Sign In</span>
+    </button>
   </div>
 </div>
 
@@ -1534,7 +2179,8 @@ async function doLogin() {
     state.cart        = (cart       || []).map(mapCart);
 
     showLoading(false);
-    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('landingPage').classList.add('hidden');
+    document.getElementById('loginModalOverlay').classList.remove('open');
     document.getElementById('appPage').style.display   = 'block';
     document.getElementById('userName').textContent    = state.currentUser.name;
     document.getElementById('userRole').textContent    = user.role === 'admin' ? 'مدير النظام' : 'موظف';
@@ -1583,8 +2229,8 @@ function doLogout() {
   state.tasks       = [];
   state.cart        = [];
   state.currentUser = null;
-  document.getElementById('appPage').style.display   = 'none';
-  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('appPage').style.display = 'none';
+  document.getElementById('landingPage').classList.remove('hidden');
   document.getElementById('loginEmail').value = '';
   document.getElementById('loginPass').value  = '';
   document.getElementById('loginError').style.display = 'none';
@@ -3137,6 +3783,90 @@ async function deleteAccount(id) {
   showToast('🗑️ تم الحذف');
 }
 
+
+// ===== LANDING PAGE JS =====
+function openLoginModal() {
+  document.getElementById('loginModalOverlay').classList.add('open');
+  setTimeout(() => document.getElementById('loginEmail').focus(), 100);
+}
+function closeLoginModal() {
+  document.getElementById('loginModalOverlay').classList.remove('open');
+  document.getElementById('loginError').style.display = 'none';
+}
+
+// Landing language toggle (separate from app lang)
+function toggleLang() {
+  const body = document.body;
+  if (body.classList.contains('lang-ar')) {
+    body.classList.remove('lang-ar'); body.classList.add('lang-en');
+    body.setAttribute('dir','ltr'); body.setAttribute('lang','en');
+  } else {
+    body.classList.remove('lang-en'); body.classList.add('lang-ar');
+    body.setAttribute('dir','rtl'); body.setAttribute('lang','ar');
+  }
+}
+
+// Candlestick canvas
+const canvas = document.getElementById('heroCanvas');
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  let candles = [], W, H, frame = 0;
+  function resizeCanvas() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  function randCandle(x) {
+    const open=H*0.3+Math.random()*H*0.4, close=open+(Math.random()-0.5)*80;
+    return {x,open,close,high:Math.min(open,close)-Math.random()*30,low:Math.max(open,close)+Math.random()*30,alpha:Math.random()};
+  }
+  function initCandles() { candles=[]; for(let x=0;x<W+40;x+=40) candles.push(randCandle(x)); }
+  function drawCandle(c) {
+    const g=c.close<c.open, color=g?'#00C896':'#FF4560';
+    ctx.globalAlpha=c.alpha*0.5; ctx.strokeStyle=color; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(c.x,c.high); ctx.lineTo(c.x,c.low); ctx.stroke();
+    ctx.fillStyle=color; ctx.fillRect(c.x-6,Math.min(c.open,c.close),12,Math.abs(c.open-c.close)||2);
+    ctx.globalAlpha=1;
+  }
+  function animateCanvas() {
+    ctx.clearRect(0,0,W,H); frame++;
+    candles.forEach((c,i)=>{
+      c.alpha+=0.005*(Math.sin(frame*0.02+i)>0?1:-1);
+      c.alpha=Math.max(0.05,Math.min(1,c.alpha));
+      c.high-=0.2;c.low-=0.2;c.open-=0.2;c.close-=0.2;
+      if(c.low<-50)Object.assign(c,randCandle(c.x));
+      drawCandle(c);
+    });
+    requestAnimationFrame(animateCanvas);
+  }
+  window.addEventListener('resize',()=>{resizeCanvas();initCandles();});
+  resizeCanvas(); initCandles(); animateCanvas();
+}
+
+// FAQ toggle
+function toggleFaq(el) {
+  const item=el.parentElement, isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen) item.classList.add('open');
+}
+
+// Scroll reveal for landing
+const revealObs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}
+  });
+},{threshold:0.1});
+document.querySelectorAll('.step-card,.feature-card,.pricing-card,.faq-item').forEach(el=>{
+  el.style.opacity='0'; el.style.transform='translateY(24px)';
+  el.style.transition='opacity .6s ease, transform .6s ease';
+  revealObs.observe(el);
+});
+
+// Also allow Enter on loginPass from modal
+document.addEventListener('DOMContentLoaded', function() {
+  const lp = document.getElementById('loginPass');
+  if (lp) lp.addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+  const loginModalOverlay = document.getElementById('loginModalOverlay');
+  if (loginModalOverlay) {
+    loginModalOverlay.addEventListener('keydown', e => { if(e.key==='Escape') closeLoginModal(); });
+  }
+});
 </script>
 </body>
 </html>
