@@ -30,26 +30,7 @@
     direction: rtl;
   }
 
-  /* ===== LOGIN ===== */
-  #loginPage {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at 60% 40%, #1a2a4a 0%, #0a0e1a 70%);
-    position: relative;
-    overflow: hidden;
-  }
-  #loginPage::before {
-    content: '';
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
-    top: -150px; left: -150px;
-    animation: pulse 6s infinite alternate;
-  }
-  @keyframes pulse { to { transform: scale(1.2); opacity: 0.5; } }
+  /* ===== LOGIN MODAL ===== */
   .login-box {
     background: var(--card);
     border: 1px solid var(--border);
@@ -456,9 +437,9 @@
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
-html { scroll-behavior: smooth; }
+#landingPage html { scroll-behavior: smooth; }
 
-body {
+#landingPage body {
   background: var(--void);
   color: var(--text);
   font-family: 'Cairo', 'Inter', sans-serif;
@@ -466,12 +447,12 @@ body {
 }
 
 /* ===== LANGUAGE TOGGLE ===== */
-.lang-ar .en { display: none !important; }
-.lang-en .ar { display: none !important; }
-.lang-en { direction: ltr; text-align: left; }
+.lang-ar #landingPage .en { display: none !important; }
+.lang-en #landingPage .ar { display: none !important; }
+.lang-en #landingPage { direction: ltr; text-align: left; }
 
 /* ===== NAV ===== */
-nav {
+#landingPage nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
   padding: 16px 40px;
@@ -479,30 +460,30 @@ nav {
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
 }
-.nav-logo { display: flex; align-items: center; gap: 12px; }
-.nav-logo img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
-.nav-logo-text { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
-.nav-links { display: flex; align-items: center; gap: 24px; }
-.nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color .2s; }
-.nav-links a:hover { color: var(--text); }
-.lang-btn {
+#landingPage .nav-logo { display: flex; align-items: center; gap: 12px; }
+#landingPage .nav-logo img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; }
+#landingPage .nav-logo-text { font-family: 'Cinzel', serif; font-size: 16px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+#landingPage .nav-links { display: flex; align-items: center; gap: 24px; }
+#landingPage .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color .2s; }
+#landingPage .nav-links a:hover { color: var(--text); }
+#landingPage .lang-btn {
   padding: 6px 16px; border-radius: 99px;
   border: 1px solid var(--gold); color: var(--gold);
   background: transparent; cursor: pointer;
   font-family: 'Cairo', sans-serif; font-size: 13px; font-weight: 700;
   transition: all .2s;
 }
-.lang-btn:hover { background: var(--gold); color: #000; }
-.subscribe-nav {
+#landingPage .lang-btn:hover { background: var(--gold); color: #000; }
+#landingPage .subscribe-nav {
   padding: 8px 20px; border-radius: 99px;
   background: linear-gradient(135deg, var(--gold), var(--gold2));
   color: #000; font-weight: 800; font-size: 14px;
   text-decoration: none; transition: all .3s;
 }
-.subscribe-nav:hover { transform: scale(1.05); box-shadow: 0 0 24px rgba(201,168,76,.4); }
+#landingPage .subscribe-nav:hover { transform: scale(1.05); box-shadow: 0 0 24px rgba(201,168,76,.4); }
 
 /* ===== HERO ===== */
-.hero {
+#landingPage .hero {
   min-height: 100vh;
   display: flex; align-items: center; justify-content: center;
   flex-direction: column; text-align: center;
@@ -511,13 +492,13 @@ nav {
 }
 
 /* Candlestick canvas background */
-#heroCanvas {
+#landingPage #heroCanvas {
   position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.2;
 }
 
-.hero-content { position: relative; z-index: 2; max-width: 800px; }
+#landingPage .hero-content { position: relative; z-index: 2; max-width: 800px; }
 
-.hero-badge {
+#landingPage .hero-badge {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 6px 18px; border-radius: 99px;
   border: 1px solid rgba(201,168,76,.3);
@@ -526,9 +507,9 @@ nav {
   margin-bottom: 32px; letter-spacing: 1px;
 }
 
-.hero-logo { width: 120px; height: 120px; border-radius: 24px; margin: 0 auto 32px; display: block; object-fit: cover; filter: drop-shadow(0 0 40px rgba(201,168,76,.5)); }
+#landingPage .hero-logo { width: 120px; height: 120px; border-radius: 24px; margin: 0 auto 32px; display: block; object-fit: cover; filter: drop-shadow(0 0 40px rgba(201,168,76,.5)); }
 
-.hero-title {
+#landingPage .hero-title {
   font-family: 'Cinzel', serif;
   font-size: clamp(40px, 8vw, 80px);
   font-weight: 900; line-height: 1.05;
@@ -538,20 +519,20 @@ nav {
   background-clip: text;
   margin-bottom: 8px;
 }
-.hero-subtitle-brand {
+#landingPage .hero-subtitle-brand {
   font-family: 'Cinzel', serif;
   font-size: clamp(14px, 2.5vw, 20px);
   color: var(--gold); letter-spacing: 6px; font-weight: 400;
   margin-bottom: 24px;
 }
-.hero-desc {
+#landingPage .hero-desc {
   font-size: clamp(15px, 2.5vw, 18px);
   color: var(--muted); line-height: 1.8;
   margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto;
 }
 
-.hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-.btn-gold {
+#landingPage .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+#landingPage .btn-gold {
   padding: 16px 40px; border-radius: 12px;
   background: linear-gradient(135deg, var(--gold), var(--gold2));
   color: #000; font-weight: 800; font-size: 16px;
@@ -559,170 +540,170 @@ nav {
   transition: all .3s; font-family: 'Cairo', sans-serif;
   box-shadow: 0 8px 32px rgba(201,168,76,.3);
 }
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(201,168,76,.4); }
-.btn-outline {
+#landingPage .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(201,168,76,.4); }
+#landingPage .btn-outline {
   padding: 16px 40px; border-radius: 12px;
   border: 1px solid var(--border); color: var(--text);
   font-weight: 700; font-size: 16px; text-decoration: none;
   transition: all .3s; font-family: 'Cairo', sans-serif;
   background: rgba(255,255,255,.04);
 }
-.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+#landingPage .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
 /* ===== SCROLL INDICATOR ===== */
-.scroll-indicator {
+#landingPage .scroll-indicator {
   position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   color: var(--muted); font-size: 11px; letter-spacing: 2px;
   animation: bounce 2s infinite;
 }
-.scroll-indicator::after {
+#landingPage .scroll-indicator::after {
   content: '↓'; font-size: 20px; color: var(--gold);
 }
 @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
 
 /* ===== SECTION ===== */
-section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
-.section-eyebrow {
+#landingPage section { padding: 100px 20px; max-width: 1100px; margin: 0 auto; }
+#landingPage .section-eyebrow {
   font-size: 12px; letter-spacing: 3px; font-weight: 700;
   color: var(--gold); text-transform: uppercase; margin-bottom: 12px;
 }
-.section-title {
+#landingPage .section-title {
   font-family: 'Cinzel', serif;
   font-size: clamp(28px, 5vw, 48px);
   font-weight: 700; line-height: 1.2; margin-bottom: 16px;
 }
-.section-desc { color: var(--muted); font-size: 16px; line-height: 1.8; max-width: 560px; }
-.text-center { text-align: center; }
-.text-center .section-desc { margin: 0 auto; }
+#landingPage .section-desc { color: var(--muted); font-size: 16px; line-height: 1.8; max-width: 560px; }
+#landingPage .text-center { text-align: center; }
+#landingPage .text-center .section-desc { margin: 0 auto; }
 
 /* divider */
-.divider {
+#landingPage .divider {
   width: 100%; height: 1px;
   background: linear-gradient(90deg, transparent, var(--border), transparent);
   margin: 0;
 }
 
 /* ===== HOW IT WORKS ===== */
-.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 24px; margin-top: 60px; }
-.step-card {
+#landingPage .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 24px; margin-top: 60px; }
+#landingPage .step-card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 20px; padding: 32px;
   position: relative; overflow: hidden;
   transition: border-color .3s, transform .3s;
 }
-.step-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-4px); }
-.step-number {
+#landingPage .step-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-4px); }
+#landingPage .step-number {
   font-family: 'Cinzel', serif; font-size: 64px; font-weight: 900;
   color: rgba(201,168,76,.08); position: absolute; top: 16px; right: 20px;
   line-height: 1;
 }
-.lang-en .step-number { right: auto; left: 20px; }
-.step-icon { font-size: 36px; margin-bottom: 16px; }
-.step-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-.step-desc { color: var(--muted); font-size: 14px; line-height: 1.8; }
+.lang-en #landingPage .step-number { right: auto; left: 20px; }
+#landingPage .step-icon { font-size: 36px; margin-bottom: 16px; }
+#landingPage .step-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+#landingPage .step-desc { color: var(--muted); font-size: 14px; line-height: 1.8; }
 
 /* ===== FEATURES ===== */
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 16px; margin-top: 60px; }
-.feature-card {
+#landingPage .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 16px; margin-top: 60px; }
+#landingPage .feature-card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 16px; padding: 24px;
   transition: border-color .3s, transform .3s;
 }
-.feature-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-3px); }
-.feature-icon { font-size: 28px; margin-bottom: 12px; }
-.feature-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
-.feature-desc { color: var(--muted); font-size: 13px; line-height: 1.7; }
+#landingPage .feature-card:hover { border-color: rgba(201,168,76,.3); transform: translateY(-3px); }
+#landingPage .feature-icon { font-size: 28px; margin-bottom: 12px; }
+#landingPage .feature-title { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+#landingPage .feature-desc { color: var(--muted); font-size: 13px; line-height: 1.7; }
 
 /* ===== PRICING ===== */
-.pricing-wrapper { display: flex; justify-content: center; margin-top: 60px; }
-.pricing-card {
+#landingPage .pricing-wrapper { display: flex; justify-content: center; margin-top: 60px; }
+#landingPage .pricing-card {
   background: var(--card); border: 1px solid rgba(201,168,76,.3);
   border-radius: 24px; padding: 48px; max-width: 440px; width: 100%;
   position: relative; overflow: hidden;
   box-shadow: 0 0 80px rgba(201,168,76,.08);
 }
-.pricing-card::before {
+#landingPage .pricing-card::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 2px;
   background: linear-gradient(90deg, transparent, var(--gold), var(--gold2), transparent);
 }
-.pricing-tag {
+#landingPage .pricing-tag {
   display: inline-block; padding: 4px 14px; border-radius: 99px;
   background: rgba(201,168,76,.12); color: var(--gold);
   font-size: 12px; font-weight: 700; letter-spacing: 1px;
   margin-bottom: 24px;
 }
-.pricing-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
-.pricing-price {
+#landingPage .pricing-name { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+#landingPage .pricing-price {
   font-size: 64px; font-weight: 900; line-height: 1;
   background: linear-gradient(135deg, var(--gold), var(--gold2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text; margin-bottom: 4px;
 }
-.pricing-price span { font-size: 24px; font-weight: 400; }
-.pricing-period { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
-.pricing-features { list-style: none; margin-bottom: 36px; }
-.pricing-features li {
+#landingPage .pricing-price span { font-size: 24px; font-weight: 400; }
+#landingPage .pricing-period { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+#landingPage .pricing-features { list-style: none; margin-bottom: 36px; }
+#landingPage .pricing-features li {
   padding: 10px 0; border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 10px;
   font-size: 14px; color: var(--text);
 }
-.pricing-features li:last-child { border: none; }
-.pricing-features li::before { content: '✦'; color: var(--gold); font-size: 10px; flex-shrink: 0; }
-.lang-en .pricing-features li { flex-direction: row; }
+#landingPage .pricing-features li:last-child { border: none; }
+#landingPage .pricing-features li::before { content: '✦'; color: var(--gold); font-size: 10px; flex-shrink: 0; }
+.lang-en #landingPage .pricing-features li { flex-direction: row; }
 
 /* ===== FAQ ===== */
-.faq-list { margin-top: 60px; display: flex; flex-direction: column; gap: 12px; }
-.faq-item {
+#landingPage .faq-list { margin-top: 60px; display: flex; flex-direction: column; gap: 12px; }
+#landingPage .faq-item {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 14px; overflow: hidden;
   transition: border-color .3s;
 }
-.faq-item.open { border-color: rgba(201,168,76,.3); }
-.faq-q {
+#landingPage .faq-item.open { border-color: rgba(201,168,76,.3); }
+#landingPage .faq-q {
   padding: 20px 24px; cursor: pointer;
   display: flex; align-items: center; justify-content: space-between;
   font-weight: 700; font-size: 15px; user-select: none;
 }
-.faq-q span { transition: transform .3s; font-size: 18px; color: var(--gold); }
-.faq-item.open .faq-q span { transform: rotate(45deg); }
-.faq-a {
+#landingPage .faq-q span { transition: transform .3s; font-size: 18px; color: var(--gold); }
+#landingPage .faq-item.open .faq-q span { transform: rotate(45deg); }
+#landingPage .faq-a {
   max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s;
   color: var(--muted); font-size: 14px; line-height: 1.8; padding: 0 24px;
 }
-.faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+#landingPage .faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
 
 /* ===== CTA SECTION ===== */
-.cta-section {
+#landingPage .cta-section {
   text-align: center; padding: 100px 20px;
   background: linear-gradient(180deg, transparent, rgba(201,168,76,.04), transparent);
 }
-.cta-section .section-title { margin-bottom: 20px; }
-.cta-section .section-desc { margin: 0 auto 40px; }
+#landingPage .cta-section .section-title { margin-bottom: 20px; }
+#landingPage .cta-section .section-desc { margin: 0 auto 40px; }
 
 /* ===== FOOTER ===== */
-footer {
+#landingPage footer {
   border-top: 1px solid var(--border);
   padding: 40px 40px; text-align: center;
   color: var(--muted); font-size: 13px;
 }
-.footer-logo { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
-.footer-disclaimer { font-size: 11px; color: #444; margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+#landingPage .footer-logo { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: var(--gold); margin-bottom: 8px; }
+#landingPage .footer-disclaimer { font-size: 11px; color: #444; margin-top: 16px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6; }
 
 /* ===== GLOW ORBS ===== */
-.orb {
+#landingPage .orb {
   position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); opacity: 0.12;
 }
-.orb-1 { width: 600px; height: 600px; background: var(--gold); top: -200px; right: -200px; }
-.orb-2 { width: 400px; height: 400px; background: var(--blue); bottom: 10%; left: -100px; }
+#landingPage .orb-1 { width: 600px; height: 600px; background: var(--gold); top: -200px; right: -200px; }
+#landingPage .orb-2 { width: 400px; height: 400px; background: var(--blue); bottom: 10%; left: -100px; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  nav { padding: 12px 20px; }
-  .nav-links { display: none; }
-  section { padding: 60px 16px; }
-  .pricing-card { padding: 32px 24px; }
+  #landingPage nav { padding: 12px 20px; }
+  #landingPage .nav-links { display: none; }
+  #landingPage section { padding: 60px 16px; }
+  #landingPage .pricing-card { padding: 32px 24px; }
 }
 
 /* ===== SHIMMER ANIMATION ===== */
@@ -730,7 +711,7 @@ footer {
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
-.shimmer {
+#landingPage .shimmer {
   background: linear-gradient(90deg, var(--gold) 0%, var(--gold2) 50%, var(--gold) 100%);
   background-size: 200% auto;
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
@@ -808,8 +789,8 @@ footer {
       <span class="ar">🔐 تسجيل الدخول</span>
       <span class="en">🔐 Sign In</span>
     </button>
-    <a href="#pricing" class="subscribe-nav ar">اشترك الآن</a>
-    <a href="#pricing" class="subscribe-nav en">Subscribe Now</a>
+    <button onclick="openSubscribeModal()" class="subscribe-nav ar" style="border:none;cursor:pointer;">اشترك الآن</button>
+    <button onclick="openSubscribeModal()" class="subscribe-nav en" style="border:none;cursor:pointer;">Subscribe Now</button>
   </div>
 </nav>
 
@@ -835,8 +816,8 @@ footer {
     </p>
 
     <div class="hero-cta">
-      <a href="#pricing" class="btn-gold ar">💎 اشترك الآن — $250/شهر</a>
-      <a href="#pricing" class="btn-gold en">💎 Subscribe Now — $250/mo</a>
+      <button onclick="openSubscribeModal()" class="btn-gold ar">💎 اشترك الآن — $250/شهر</button>
+      <button onclick="openSubscribeModal()" class="btn-gold en">💎 Subscribe Now — $250/mo</button>
       <a href="#how" class="btn-outline ar">كيف يعمل؟</a>
       <a href="#how" class="btn-outline en">How it works?</a>
     </div>
@@ -981,10 +962,10 @@ footer {
         <li class="en">Works on MetaTrader 5 only</li>
       </ul>
 
-      <a href="https://wa.me/" class="btn-gold" style="display:block;text-align:center;text-decoration:none;">
-        <span class="ar">💎 اشترك الآن عبر واتساب</span>
-        <span class="en">💎 Subscribe Now via WhatsApp</span>
-      </a>
+      <button onclick="openSubscribeModal()" class="btn-gold" style="display:block;width:100%;text-align:center;border:none;cursor:pointer;">
+        <span class="ar">💎 اشترك الآن</span>
+        <span class="en">💎 Subscribe Now</span>
+      </button>
 
       <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);" class="ar">لا توجد عقود طويلة — يمكن الإلغاء في أي وقت</p>
       <p style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);" class="en">No long contracts — cancel anytime</p>
@@ -1060,7 +1041,7 @@ footer {
   <h2 class="section-title shimmer en">Let Black Diamond Trade For You</h2>
   <p class="section-desc ar" style="margin:0 auto 40px;">انضم إلينا اليوم واحصل على إعداد مجاني للبوت</p>
   <p class="section-desc en" style="margin:0 auto 40px;">Join us today and get free bot setup</p>
-  <a href="#pricing" class="btn-gold ar">💎 اشترك الآن — $250/شهر</a>
+  <button onclick="openSubscribeModal()" class="btn-gold ar">💎 اشترك الآن — $250/شهر</button>
   <a href="#pricing" class="btn-gold en">💎 Subscribe Now — $250/mo</a>
 </div>
 
@@ -1078,6 +1059,88 @@ footer {
 </footer>
 
 
+
+<!-- ===== SUBSCRIPTION MODAL ===== -->
+<div id="subscribeModalOverlay" onclick="if(event.target===this)closeSubscribeModal()"
+     style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
+  <div style="background:#13131C;border:1px solid rgba(201,168,76,.25);border-radius:24px;padding:40px;width:480px;max-width:92vw;position:relative;box-shadow:0 0 80px rgba(201,168,76,.08);">
+    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#C9A84C,#F0D080,transparent);border-radius:24px 24px 0 0;"></div>
+    <button onclick="closeSubscribeModal()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#6B7280;font-size:20px;cursor:pointer;">✕</button>
+    
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:36px;margin-bottom:8px;">💎</div>
+      <div style="font-family:Cinzel,serif;font-size:20px;font-weight:700;color:#C9A84C;margin-bottom:4px;">BLACK DIAMOND</div>
+      <p class="ar" style="color:#6B7280;font-size:13px;">أدخل بيانات حساب MT5 للاشتراك</p>
+      <p class="en" style="color:#6B7280;font-size:13px;">Enter your MT5 account details to subscribe</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px;">
+      <div id="subStep1Dot" style="width:32px;height:32px;border-radius:50%;background:#C9A84C;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000;">1</div>
+      <div style="width:40px;height:2px;background:rgba(255,255,255,0.1);"></div>
+      <div id="subStep2Dot" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#6B7280;">2</div>
+    </div>
+
+    <!-- Step 1: Account Details -->
+    <div id="subStep1">
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">🔢 رقم حساب MT5 (Account ID)</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">🔢 MT5 Account ID</label>
+        <input type="text" id="subAccountId" placeholder="مثال: 12345678"
+               style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+               onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">🌐 اسم السيرفر (Server Name)</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">🌐 Server Name</label>
+        <input type="text" id="subServerName" placeholder="مثال: ICMarkets-Live01"
+               style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+               onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">🔑 الرقم السري للحساب (Investor Password)</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">🔑 Account Password (Investor)</label>
+        <div style="position:relative;">
+          <input type="password" id="subPassword" placeholder="••••••••"
+                 style="width:100%;padding:12px 44px 12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+                 onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+          <button onclick="toggleSubPass()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6B7280;cursor:pointer;font-size:16px;" id="subEyeBtn">👁</button>
+        </div>
+      </div>
+      <div style="margin-bottom:24px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">💵 رأس المال في الحساب (بالدولار)</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">💵 Account Balance (USD)</label>
+        <input type="number" id="subBalance" placeholder="مثال: 1000" min="0"
+               style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+               onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+      <div id="subError" style="display:none;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:16px;"></div>
+      <button onclick="submitSubscription()" class="btn-gold" style="width:100%;border:none;cursor:pointer;">
+        <span class="ar">💎 تأكيد الاشتراك</span>
+        <span class="en">💎 Confirm Subscription</span>
+      </button>
+      <p style="text-align:center;margin-top:12px;font-size:11px;color:#6B7280;" class="ar">🔒 بياناتك مشفرة بالكامل ولا يمكن لأحد الوصول إليها</p>
+      <p style="text-align:center;margin-top:12px;font-size:11px;color:#6B7280;" class="en">🔒 Your data is fully encrypted and secure</p>
+    </div>
+
+    <!-- Step 2: Success -->
+    <div id="subStep2" style="display:none;text-align:center;">
+      <div style="font-size:64px;margin-bottom:16px;">✅</div>
+      <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="ar">تم تسجيل طلبك بنجاح!</div>
+      <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="en">Subscription Submitted Successfully!</div>
+      <p style="color:#6B7280;font-size:14px;line-height:1.8;margin-bottom:24px;" class="ar">
+        سيتواصل معك فريقنا خلال 24 ساعة لتأكيد الاشتراك وتسليم الـ EA
+      </p>
+      <p style="color:#6B7280;font-size:14px;line-height:1.8;margin-bottom:24px;" class="en">
+        Our team will contact you within 24 hours to confirm your subscription and deliver the EA
+      </p>
+      <button onclick="closeSubscribeModal()" class="btn-gold" style="border:none;cursor:pointer;padding:14px 40px;">
+        <span class="ar">حسناً، شكراً!</span>
+        <span class="en">OK, Thank you!</span>
+      </button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- ===== LOGIN MODAL ===== -->
@@ -1154,6 +1217,9 @@ footer {
 
       <div id="navUsers" class="nav-item" onclick="showPage('users', this)">
         <span class="nav-icon">👥</span> إدارة المستخدمين
+      </div>
+      <div id="navSubs" class="nav-item" onclick="showPage('subs', this)">
+        <span class="nav-icon">📋</span> الاشتراكات
       </div>
       <div id="navAccounts" class="nav-item" onclick="showPage('accounts', this)">
         <span class="nav-icon">🔑</span> تخزين الأكونتات
@@ -1430,6 +1496,54 @@ footer {
           <thead><tr><th>#</th><th>الاسم</th><th>البريد الإلكتروني</th><th>الصلاحية</th><th>إجراء</th></tr></thead>
           <tbody id="usersTable">
             <tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div><p>جاري التحميل...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+        <!-- ===== SUBSCRIPTIONS PAGE ===== -->
+    <div class="page" id="page-subs">
+      <div class="page-header">
+        <h2>📋 الاشتراكات</h2>
+        <p>طلبات الاشتراك الواردة من العملاء</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:24px;">
+        <div class="stat-card blue">
+          <div class="stat-icon">📋</div>
+          <div class="stat-value" id="subsStatTotal">0</div>
+          <div class="stat-label">إجمالي الطلبات</div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-value" id="subsStatPending">0</div>
+          <div class="stat-label">قيد المراجعة</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value" id="subsStatActive">0</div>
+          <div class="stat-label">نشط</div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>رقم الحساب</th>
+              <th>السيرفر</th>
+              <th>الرقم السري</th>
+              <th>رأس المال</th>
+              <th>الحالة</th>
+              <th>التاريخ</th>
+              <th>إجراء</th>
+            </tr>
+          </thead>
+          <tbody id="subsTable">
+            <tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>جاري التحميل...</p></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -2112,22 +2226,21 @@ async function doLogin() {
   const emailRaw = document.getElementById('loginEmail').value.trim();
   const passRaw  = document.getElementById('loginPass').value;
   const errEl    = document.getElementById('loginError');
-  const btnEl    = document.querySelector('#loginPage button');
+  const btnEl    = document.querySelector('#loginModalOverlay .btn-gold') || {};
 
   const lockSecs = isLockedOut();
   if (lockSecs) {
     errEl.textContent = `⛔ تم تجاوز عدد المحاولات — انتظر ${lockSecs} ثانية`;
-    errEl.style.display = 'block'; return;
+    errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return;
   }
 
   const email = sanitizeInput(emailRaw, 100);
   const pass  = passRaw;
-  if (!email || !pass) { errEl.textContent = '⚠️ أدخل البريد وكلمة المرور'; errEl.style.display = 'block'; return; }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = '⚠️ صيغة البريد غير صحيحة'; errEl.style.display = 'block'; return; }
+  if (!email || !pass) { errEl.textContent = '⚠️ أدخل البريد وكلمة المرور'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { errEl.textContent = '⚠️ صيغة البريد غير صحيحة'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
 
   errEl.style.display = 'none';
-  btnEl.textContent = '⏳ جاري التحقق...';
-  btnEl.disabled = true;
+  if(btnEl&&btnEl.tagName){btnEl.textContent='⏳ جاري...';btnEl.disabled=true;}
   showLoading(true);
 
   try {
@@ -2146,8 +2259,8 @@ async function doLogin() {
       errEl.textContent = left > 0
         ? `⚠️ بيانات خاطئة — متبقي ${left} محاولة`
         : '⛔ تم قفل الحساب مؤقتاً لمدة 5 دقائق';
-      errEl.style.display = 'block';
-      showLoading(false); btnEl.textContent = 'تسجيل الدخول'; btnEl.disabled = false;
+      errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;';
+      showLoading(false); if(btnEl&&btnEl.tagName){btnEl.textContent='تسجيل الدخول';btnEl.disabled=false;}
       return;
     }
 
@@ -2161,9 +2274,9 @@ async function doLogin() {
     const rows = await sbGet('users', `email=eq.${encodeURIComponent(email)}&limit=1`);
     if (!rows || rows.length === 0) {
       errEl.textContent = '⚠️ لم يتم العثور على بيانات المستخدم — تأكد من إضافته في جدول users';
-      errEl.style.display = 'block';
+      errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;';
       _token = _refreshToken = null;
-      showLoading(false); btnEl.textContent = 'تسجيل الدخول'; btnEl.disabled = false;
+      showLoading(false); if(btnEl&&btnEl.tagName){btnEl.textContent='تسجيل الدخول';btnEl.disabled=false;}
       return;
     }
 
@@ -2192,6 +2305,7 @@ async function doLogin() {
     document.getElementById('navJard').style.display    = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navCompare').style.display = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navUsers').style.display   = user.role === 'admin' ? 'flex' : 'none';
+    document.getElementById('navSubs').style.display     = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navAccounts').style.display = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navBackup').style.display  = user.role === 'admin' ? 'flex' : 'none';
     resetSessionTimer();
@@ -2203,10 +2317,10 @@ async function doLogin() {
 
   } catch(e) {
     errEl.textContent = '⚠️ خطأ في الاتصال — تحقق من الإنترنت';
-    errEl.style.display = 'block';
+    errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;';
     showLoading(false);
   }
-  btnEl.textContent = 'تسجيل الدخول'; btnEl.disabled = false;
+  if(btnEl&&btnEl.tagName){btnEl.textContent='💎 تسجيل الدخول';btnEl.disabled=false;}
 }
 
 document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
@@ -2256,6 +2370,7 @@ function showPage(page, el) {
   if (page === 'jard')    { initReportSelectors(); }
   if (page === 'compare') { initCompareYear(); renderCompareChart(); }
   if (page === 'users')    { loadUsers(); }
+  if (page === 'subs')     { loadSubscriptions(); }
   if (page === 'accounts') { renderAccounts(); updateAccStats(); }
   if (page === 'search') renderSearchTable(state.customers);
 }
@@ -2281,13 +2396,13 @@ async function addCustomer() {
   const errEl   = document.getElementById('addError');
   if (!name || !phone || !jobType) {
     errEl.textContent = '⚠️ الرجاء ملء الحقول المطلوبة (الاسم، الهاتف، نوع الشغل)';
-    errEl.style.display = 'block'; return;
+    errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return;
   }
   errEl.style.display = 'none';
   showLoading(true);
   const row = await sbPost('customers', { name, phone, address, email, job_type: jobType, price, date, added_by: state.currentUser.name });
   showLoading(false);
-  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   state.customers.unshift(mapCustomer(row));
   closeModal('addModal');
   clearAddForm();
@@ -2418,16 +2533,16 @@ async function addTask() {
   const startTime = document.getElementById('tStartTime').value;
   const endTime   = document.getElementById('tEndTime').value;
   const errEl     = document.getElementById('taskError');
-  if (!title)     { errEl.textContent = '⚠️ أدخل عنوان المهمة'; errEl.style.display = 'block'; return; }
-  if (!dueDate)   { errEl.textContent = '⚠️ أدخل التاريخ';      errEl.style.display = 'block'; return; }
-  if (!startTime) { errEl.textContent = '⚠️ أدخل وقت البداية';   errEl.style.display = 'block'; return; }
-  if (!endTime)   { errEl.textContent = '⚠️ أدخل وقت النهاية';   errEl.style.display = 'block'; return; }
-  if (startTime >= endTime) { errEl.textContent = '⚠️ وقت النهاية لازم بعد البداية'; errEl.style.display = 'block'; return; }
+  if (!title)     { errEl.textContent = '⚠️ أدخل عنوان المهمة'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (!dueDate)   { errEl.textContent = '⚠️ أدخل التاريخ';      errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (!startTime) { errEl.textContent = '⚠️ أدخل وقت البداية';   errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (!endTime)   { errEl.textContent = '⚠️ أدخل وقت النهاية';   errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (startTime >= endTime) { errEl.textContent = '⚠️ وقت النهاية لازم بعد البداية'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   errEl.style.display = 'none';
   showLoading(true);
   const row = await sbPost('tasks', { title, description: desc, priority, due_date: dueDate, start_time: startTime, end_time: endTime, done: false });
   showLoading(false);
-  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   state.tasks.unshift(mapTask(row));
   closeModal('addTaskModal');
   renderTasks();
@@ -2525,12 +2640,12 @@ async function doWithdraw() {
   const errEl  = document.getElementById('withdrawError');
   const sucEl  = document.getElementById('withdrawSuccess');
   errEl.style.display = sucEl.style.display = 'none';
-  if (amount <= 0) { errEl.textContent = '⚠️ أدخل مبلغاً أكبر من صفر'; errEl.style.display = 'block'; return; }
-  if (amount > getBalance()) { errEl.textContent = '⚠️ يتجاوز الرصيد المتاح (' + getBalance().toLocaleString() + ' ج)'; errEl.style.display = 'block'; return; }
+  if (amount <= 0) { errEl.textContent = '⚠️ أدخل مبلغاً أكبر من صفر'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (amount > getBalance()) { errEl.textContent = '⚠️ يتجاوز الرصيد المتاح (' + getBalance().toLocaleString() + ' ج)'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   showLoading(true);
   const row = await sbPost('withdrawals', { amount, note: note || 'سحب نقدي', date: new Date().toISOString().split('T')[0], by_user: state.currentUser.name });
   showLoading(false);
-  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   state.withdrawals.unshift(mapWithdrawal(row));
   document.getElementById('withdrawAmount').value = '';
   document.getElementById('withdrawNote').value   = '';
@@ -2580,13 +2695,13 @@ async function saveWithdrawEdit() {
   const note   = sanitizeInput(document.getElementById('editWithdrawNote').value, 200);
   const date   = document.getElementById('editWithdrawDate').value;
   const errEl  = document.getElementById('editWithdrawError');
-  if (amount <= 0) { errEl.textContent = '⚠️ أدخل مبلغاً أكبر من صفر'; errEl.style.display = 'block'; return; }
-  if (!note)       { errEl.textContent = '⚠️ أدخل سبب السحب';           errEl.style.display = 'block'; return; }
-  if (!date)       { errEl.textContent = '⚠️ أدخل التاريخ';             errEl.style.display = 'block'; return; }
+  if (amount <= 0) { errEl.textContent = '⚠️ أدخل مبلغاً أكبر من صفر'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (!note)       { errEl.textContent = '⚠️ أدخل سبب السحب';           errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+  if (!date)       { errEl.textContent = '⚠️ أدخل التاريخ';             errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   showLoading(true);
   const row = await sbPatch('withdrawals', id, { amount, note, date });
   showLoading(false);
-  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   const w = state.withdrawals.find(x => x.id === id);
   if (w) { w.amount = amount; w.note = note; w.date = date; }
   closeModal('editWithdrawModal');
@@ -2662,12 +2777,12 @@ async function addCartItem() {
   const priceUSD = parseFloat(document.getElementById('pPriceUSD').value) || 0;
   const notes    = document.getElementById('pNotes').value.trim();
   const errEl    = document.getElementById('cartError');
-  if (!name) { errEl.textContent = '⚠️ أدخل اسم المنتج'; errEl.style.display = 'block'; return; }
+  if (!name) { errEl.textContent = '⚠️ أدخل اسم المنتج'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   errEl.style.display = 'none';
   showLoading(true);
   const row = await sbPost('cart_items', { name, link, quantity: qty, price_egp: priceEGP, price_usd: priceUSD, notes, purchased: false, added_date: new Date().toISOString().split('T')[0] });
   showLoading(false);
-  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
   state.cart.unshift(mapCart(row));
   closeModal('addCartModal');
   renderCart();
@@ -3750,7 +3865,7 @@ async function addAccount() {
   const errEl    = document.getElementById('addAccountError');
   errEl.style.display = 'none';
 
-  if (!name) { errEl.textContent = '⚠️ أدخل اسم الأكونت'; errEl.style.display = 'block'; return; }
+  if (!name) { errEl.textContent = '⚠️ أدخل اسم الأكونت'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
 
   showLoading(true);
   // Encrypt password before storing
@@ -3758,7 +3873,7 @@ async function addAccount() {
   const row = await sbPost('accounts', { name, link, email, password: encPass, notes });
   showLoading(false);
 
-  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display = 'block'; return; }
+  if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
 
   state.accounts.unshift(mapAccount(row));
   closeModal('addAccountModal');
@@ -3867,6 +3982,217 @@ document.addEventListener('DOMContentLoaded', function() {
     loginModalOverlay.addEventListener('keydown', e => { if(e.key==='Escape') closeLoginModal(); });
   }
 });
+
+// ===== SUBSCRIPTION MODAL =====
+function openSubscribeModal() {
+  document.getElementById('subscribeModalOverlay').style.display = 'flex';
+  document.getElementById('subStep1').style.display = 'block';
+  document.getElementById('subStep2').style.display = 'none';
+  document.getElementById('subStep1Dot').style.background = '#C9A84C';
+  document.getElementById('subStep1Dot').style.color = '#000';
+  document.getElementById('subStep2Dot').style.background = 'rgba(255,255,255,0.1)';
+  document.getElementById('subStep2Dot').style.color = '#6B7280';
+  ['subAccountId','subServerName','subPassword','subBalance'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+  document.getElementById('subError').style.display = 'none';
+}
+
+function closeSubscribeModal() {
+  document.getElementById('subscribeModalOverlay').style.display = 'none';
+}
+
+function toggleSubPass() {
+  const inp = document.getElementById('subPassword');
+  const btn = document.getElementById('subEyeBtn');
+  if(inp.type === 'password') { inp.type='text'; btn.textContent='🙈'; }
+  else { inp.type='password'; btn.textContent='👁'; }
+}
+
+async function submitSubscription() {
+  const accountId  = document.getElementById('subAccountId').value.trim();
+  const serverName = document.getElementById('subServerName').value.trim();
+  const password   = document.getElementById('subPassword').value;
+  const balance    = parseFloat(document.getElementById('subBalance').value) || 0;
+  const errEl      = document.getElementById('subError');
+  errEl.style.display = 'none';
+
+  if (!accountId)  { errEl.textContent='⚠️ أدخل رقم الحساب'; errEl.style.display='block'; return; }
+  if (!serverName) { errEl.textContent='⚠️ أدخل اسم السيرفر'; errEl.style.display='block'; return; }
+  if (!password)   { errEl.textContent='⚠️ أدخل الرقم السري'; errEl.style.display='block'; return; }
+  if (balance <= 0){ errEl.textContent='⚠️ أدخل رأس المال'; errEl.style.display='block'; return; }
+
+  const btn = document.querySelector('#subscribeModalOverlay .btn-gold');
+  btn.textContent = '⏳ جاري الحفظ...'; btn.disabled = true;
+
+  try {
+    // Encrypt sensitive fields
+    const encPassword   = await encryptSubData(password);
+    const encAccountId  = await encryptSubData(accountId);
+
+    const res = await fetch('https://cbfaybsuzjthuwftfuac.supabase.co/rest/v1/subscriptions', {
+      method: 'POST',
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk',
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        account_id:       encAccountId,
+        server_name:      serverName,
+        account_password: encPassword,
+        balance:          balance,
+        status:           'pending'
+      })
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      errEl.textContent = '⚠️ خطأ: ' + txt.substring(0,100);
+      errEl.style.display = 'block';
+      btn.textContent = '💎 تأكيد الاشتراك'; btn.disabled = false;
+      return;
+    }
+
+    // Show success step
+    document.getElementById('subStep1').style.display = 'none';
+    document.getElementById('subStep2').style.display = 'block';
+    document.getElementById('subStep2Dot').style.background = '#00C896';
+    document.getElementById('subStep2Dot').style.color = '#fff';
+
+  } catch(e) {
+    errEl.textContent = '⚠️ خطأ في الاتصال: ' + e.message;
+    errEl.style.display = 'block';
+    btn.textContent = '💎 تأكيد الاشتراك'; btn.disabled = false;
+  }
+}
+
+// Encryption for subscription data (separate salt from accounts)
+const SUB_SALT = 'cbfaybsuzjthuwftfuac_subscriptions_2026';
+async function encryptSubData(text) {
+  if (!text) return '';
+  try {
+    const keyMat = await crypto.subtle.importKey('raw', new TextEncoder().encode(SUB_SALT), {name:'PBKDF2'}, false, ['deriveKey']);
+    const key    = await crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt:new TextEncoder().encode('sub_salt'), iterations:100000, hash:'SHA-256'},
+      keyMat, {name:'AES-GCM',length:256}, false, ['encrypt','decrypt']
+    );
+    const iv  = crypto.getRandomValues(new Uint8Array(12));
+    const enc = await crypto.subtle.encrypt({name:'AES-GCM',iv}, key, new TextEncoder().encode(text));
+    const combined = new Uint8Array(iv.length + enc.byteLength);
+    combined.set(iv); combined.set(new Uint8Array(enc), iv.length);
+    return btoa(String.fromCharCode(...combined));
+  } catch { return text; }
+}
+async function decryptSubData(cipher) {
+  if (!cipher) return '';
+  try {
+    const combined = Uint8Array.from(atob(cipher), c=>c.charCodeAt(0));
+    const iv  = combined.slice(0,12);
+    const enc = combined.slice(12);
+    const keyMat = await crypto.subtle.importKey('raw', new TextEncoder().encode(SUB_SALT), {name:'PBKDF2'}, false, ['deriveKey']);
+    const key    = await crypto.subtle.deriveKey(
+      {name:'PBKDF2', salt:new TextEncoder().encode('sub_salt'), iterations:100000, hash:'SHA-256'},
+      keyMat, {name:'AES-GCM',length:256}, false, ['encrypt','decrypt']
+    );
+    const dec = await crypto.subtle.decrypt({name:'AES-GCM',iv}, key, enc);
+    return new TextDecoder().decode(dec);
+  } catch { return '🔒 مشفر'; }
+}
+
+
+// ============ SUBSCRIPTIONS MANAGEMENT ============
+if (!state.subscriptions) state.subscriptions = [];
+
+async function loadSubscriptions() {
+  const tbody = document.getElementById('subsTable');
+  if (!tbody) return;
+  tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="icon">⏳</div><p>جاري التحميل...</p></div></td></tr>`;
+  showLoading(true);
+  const rows = await sbGet('subscriptions', '');
+  showLoading(false);
+  state.subscriptions = rows || [];
+
+  // Update stats
+  const total   = rows.length;
+  const pending = rows.filter(r=>r.status==='pending').length;
+  const active  = rows.filter(r=>r.status==='active').length;
+  document.getElementById('subsStatTotal').textContent   = total;
+  document.getElementById('subsStatPending').textContent = pending;
+  document.getElementById('subsStatActive').textContent  = active;
+
+  if (rows.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>لا توجد اشتراكات بعد</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = rows.map((r,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>
+        <span id="subAccId_${r.id}" style="font-family:monospace;">••••••••</span>
+        <button onclick="toggleSubField('subAccId_${r.id}','${r.account_id}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;margin-right:6px;">👁</button>
+      </td>
+      <td style="font-size:13px;">${esc(r.server_name)}</td>
+      <td>
+        <span id="subPass_${r.id}" style="font-family:monospace;">••••••••</span>
+        <button onclick="toggleSubField('subPass_${r.id}','${r.account_password}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;margin-right:6px;">👁</button>
+        <button onclick="copySubField('${r.account_password}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;">📋</button>
+      </td>
+      <td style="color:var(--green);font-weight:700;">$${(r.balance||0).toLocaleString()}</td>
+      <td>
+        <select onchange="updateSubStatus(${r.id}, this.value)"
+                style="padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:Cairo,sans-serif;font-size:12px;">
+          <option value="pending"  ${r.status==='pending' ?'selected':''}>⏳ قيد المراجعة</option>
+          <option value="active"   ${r.status==='active'  ?'selected':''}>✅ نشط</option>
+          <option value="expired"  ${r.status==='expired' ?'selected':''}>❌ منتهي</option>
+          <option value="rejected" ${r.status==='rejected'?'selected':''}>🚫 مرفوض</option>
+        </select>
+      </td>
+      <td style="color:var(--muted);font-size:12px;">${r.created_at ? formatDate(r.created_at.split('T')[0]) : '—'}</td>
+      <td>
+        <button class="btn btn-red btn-sm" onclick="deleteSubscription(${r.id})">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+const _subFieldVisible = {};
+async function toggleSubField(elId, cipher) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  if (_subFieldVisible[elId]) {
+    el.textContent = '••••••••'; _subFieldVisible[elId] = false;
+  } else {
+    el.textContent = '🔄...';
+    const plain = await decryptSubData(cipher);
+    el.textContent = plain; _subFieldVisible[elId] = true;
+  }
+}
+
+async function copySubField(cipher) {
+  const plain = await decryptSubData(cipher);
+  navigator.clipboard?.writeText(plain).then(() => showToast('✅ تم النسخ'));
+}
+
+async function updateSubStatus(id, status) {
+  showLoading(true);
+  await sbPatch('subscriptions', id, { status });
+  showLoading(false);
+  loadSubscriptions();
+  showToast('✅ تم تحديث الحالة');
+}
+
+async function deleteSubscription(id) {
+  if (!confirm('حذف هذا الاشتراك؟')) return;
+  showLoading(true);
+  await sbDelete('subscriptions', id);
+  showLoading(false);
+  loadSubscriptions();
+  showToast('🗑️ تم الحذف');
+}
+
 </script>
 </body>
 </html>
