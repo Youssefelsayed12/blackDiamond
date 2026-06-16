@@ -698,12 +698,73 @@
 #landingPage .orb-1 { width: 600px; height: 600px; background: var(--gold); top: -200px; right: -200px; }
 #landingPage .orb-2 { width: 400px; height: 400px; background: var(--blue); bottom: 10%; left: -100px; }
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE — MOBILE FIRST ===== */
 @media (max-width: 768px) {
-  #landingPage nav { padding: 12px 20px; }
+  /* Nav */
+  #landingPage nav { padding: 12px 16px; }
   #landingPage .nav-links { display: none; }
+  #landingPage .nav-logo-text { font-size: 13px; }
+  #landingPage .subscribe-nav { padding: 7px 14px; font-size: 12px; }
+  #landingPage .lang-btn { padding: 5px 12px; font-size: 12px; }
+
+  /* Hero */
+  #landingPage .hero { padding: 100px 16px 60px; min-height: 100svh; }
+  #landingPage .hero-logo { width: 80px; height: 80px; margin-bottom: 20px; }
+  #landingPage .hero-title { font-size: clamp(32px,10vw,52px); }
+  #landingPage .hero-subtitle-brand { font-size: 12px; letter-spacing: 4px; }
+  #landingPage .hero-desc { font-size: 14px; padding: 0 4px; }
+  #landingPage .hero-badge { font-size: 11px; padding: 5px 14px; }
+  #landingPage .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+  #landingPage .btn-gold { padding: 14px 28px; font-size: 14px; width: 100%; max-width: 300px; }
+  #landingPage .btn-outline { padding: 14px 28px; font-size: 14px; width: 100%; max-width: 300px; }
+
+  /* Sections */
   #landingPage section { padding: 60px 16px; }
-  #landingPage .pricing-card { padding: 32px 24px; }
+  #landingPage .section-title { font-size: clamp(22px,6vw,36px); }
+  #landingPage .section-desc { font-size: 14px; }
+
+  /* Steps grid */
+  #landingPage .steps-grid { grid-template-columns: 1fr; gap: 16px; margin-top: 40px; }
+  #landingPage .step-card { padding: 24px 20px; }
+  #landingPage .step-number { font-size: 48px; }
+
+  /* Features grid */
+  #landingPage .features-grid { grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 40px; }
+  #landingPage .feature-card { padding: 18px 14px; }
+  #landingPage .feature-icon { font-size: 22px; }
+  #landingPage .feature-title { font-size: 13px; }
+  #landingPage .feature-desc { font-size: 12px; }
+
+  /* Pricing */
+  #landingPage .pricing-wrapper { padding: 0 4px; }
+  #landingPage .pricing-card { padding: 28px 20px; }
+  #landingPage .pricing-price { font-size: 52px; }
+
+  /* FAQ */
+  #landingPage .faq-q { font-size: 14px; padding: 16px 18px; }
+  #landingPage .faq-a { font-size: 13px; padding: 0 18px; }
+  #landingPage .faq-item.open .faq-a { padding: 0 18px 16px; }
+
+  /* CTA section */
+  #landingPage .cta-section { padding: 60px 16px; }
+
+  /* Footer */
+  #landingPage footer { padding: 32px 16px; font-size: 12px; }
+
+  /* Orbs - reduce on mobile */
+  #landingPage .orb-1 { width: 300px; height: 300px; }
+  #landingPage .orb-2 { width: 200px; height: 200px; }
+
+  /* Login modal */
+  .login-modal-box { padding: 32px 20px !important; margin: 16px; }
+
+  /* Subscribe modal */
+  #subscribeModalOverlay > div { padding: 28px 16px !important; margin: 12px; }
+}
+
+@media (max-width: 400px) {
+  #landingPage .features-grid { grid-template-columns: 1fr; }
+  #landingPage .hero-title { font-size: 30px; }
 }
 
 /* ===== SHIMMER ANIMATION ===== */
@@ -780,17 +841,17 @@
     <a href="#faq" class="ar">الأسئلة الشائعة</a>
     <a href="#faq" class="en">FAQ</a>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
+  <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
     <button class="lang-btn" onclick="toggleLang()">
-      <span class="ar">English</span>
-      <span class="en">العربية</span>
+      <span class="ar">EN</span>
+      <span class="en">ع</span>
     </button>
-    <button onclick="openLoginModal()" style="padding:8px 20px;border-radius:99px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:#fff;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;margin-left:8px;" onmouseover="this.style.borderColor='#C9A84C';this.style.color='#C9A84C'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='#fff'">
-      <span class="ar">🔐 تسجيل الدخول</span>
-      <span class="en">🔐 Sign In</span>
+    <button onclick="openLoginModal()" style="padding:7px 14px;border-radius:99px;background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fff;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;" onmouseover="this.style.borderColor='#C9A84C';this.style.color='#C9A84C'" onmouseout="this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='#fff'">
+      <span class="ar">🔐 دخول</span>
+      <span class="en">🔐 Login</span>
     </button>
-    <button onclick="openSubscribeModal()" class="subscribe-nav ar" style="border:none;cursor:pointer;">اشترك الآن</button>
-    <button onclick="openSubscribeModal()" class="subscribe-nav en" style="border:none;cursor:pointer;">Subscribe Now</button>
+    <button onclick="openSubscribeModal()" class="subscribe-nav ar" style="border:none;cursor:pointer;white-space:nowrap;padding:8px 16px;font-size:13px;">اشترك</button>
+    <button onclick="openSubscribeModal()" class="subscribe-nav en" style="border:none;cursor:pointer;white-space:nowrap;padding:8px 16px;font-size:13px;">Subscribe</button>
   </div>
 </nav>
 
@@ -1062,42 +1123,53 @@
 
 <!-- ===== SUBSCRIPTION MODAL ===== -->
 <div id="subscribeModalOverlay" onclick="if(event.target===this)closeSubscribeModal()"
-     style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;">
-  <div style="background:#13131C;border:1px solid rgba(201,168,76,.25);border-radius:24px;padding:40px;width:480px;max-width:92vw;position:relative;box-shadow:0 0 80px rgba(201,168,76,.08);">
+     style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);align-items:center;justify-content:center;overflow-y:auto;padding:20px 0;">
+  <div style="background:#13131C;border:1px solid rgba(201,168,76,.25);border-radius:24px;padding:40px;width:500px;max-width:92vw;position:relative;box-shadow:0 0 80px rgba(201,168,76,.08);margin:auto;">
     <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#C9A84C,#F0D080,transparent);border-radius:24px 24px 0 0;"></div>
     <button onclick="closeSubscribeModal()" style="position:absolute;top:16px;left:16px;background:none;border:none;color:#6B7280;font-size:20px;cursor:pointer;">✕</button>
     
-    <div style="text-align:center;margin-bottom:28px;">
-      <div style="font-size:36px;margin-bottom:8px;">💎</div>
-      <div style="font-family:Cinzel,serif;font-size:20px;font-weight:700;color:#C9A84C;margin-bottom:4px;">BLACK DIAMOND</div>
-      <p class="ar" style="color:#6B7280;font-size:13px;">أدخل بيانات حساب MT5 للاشتراك</p>
-      <p class="en" style="color:#6B7280;font-size:13px;">Enter your MT5 account details to subscribe</p>
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="font-size:32px;margin-bottom:6px;">💎</div>
+      <div style="font-family:Cinzel,serif;font-size:18px;font-weight:700;color:#C9A84C;margin-bottom:2px;">BLACK DIAMOND</div>
+      <p class="ar" style="color:#6B7280;font-size:12px;">نظام تداول آلي احترافي</p>
+      <p class="en" style="color:#6B7280;font-size:12px;">Professional Automated Trading</p>
     </div>
 
-    <!-- Step indicator -->
-    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:28px;">
-      <div id="subStep1Dot" style="width:32px;height:32px;border-radius:50%;background:#C9A84C;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000;">1</div>
-      <div style="width:40px;height:2px;background:rgba(255,255,255,0.1);"></div>
-      <div id="subStep2Dot" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#6B7280;">2</div>
+    <!-- Step indicator — 3 steps -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:28px;">
+      <div id="subStep1Dot" style="width:30px;height:30px;border-radius:50%;background:#C9A84C;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#000;transition:all .3s;">1</div>
+      <div id="subLine12" style="width:32px;height:2px;background:rgba(255,255,255,0.1);transition:background .3s;"></div>
+      <div id="subStep2Dot" style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#6B7280;transition:all .3s;">2</div>
+      <div id="subLine23" style="width:32px;height:2px;background:rgba(255,255,255,0.1);transition:background .3s;"></div>
+      <div id="subStep3Dot" style="width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#6B7280;transition:all .3s;">3</div>
+      <div style="margin-right:8px;display:flex;gap:6px;font-size:10px;color:#6B7280;"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-size:10px;color:#6B7280;margin-top:-20px;margin-bottom:20px;padding:0 4px;">
+      <span class="ar" style="text-align:center;flex:1;">بيانات الحساب</span>
+      <span class="ar" style="text-align:center;flex:1;">بياناتك الشخصية</span>
+      <span class="ar" style="text-align:center;flex:1;">الدفع</span>
+      <span class="en" style="text-align:center;flex:1;">Account</span>
+      <span class="en" style="text-align:center;flex:1;">Your Info</span>
+      <span class="en" style="text-align:center;flex:1;">Payment</span>
     </div>
 
-    <!-- Step 1: Account Details -->
+    <!-- ===== STEP 1: MT5 Account Details ===== -->
     <div id="subStep1">
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:14px;">
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">🔢 رقم حساب MT5 (Account ID)</label>
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">🔢 MT5 Account ID</label>
         <input type="text" id="subAccountId" placeholder="مثال: 12345678"
                style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
                onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
       </div>
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:14px;">
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">🌐 اسم السيرفر (Server Name)</label>
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">🌐 Server Name</label>
         <input type="text" id="subServerName" placeholder="مثال: ICMarkets-Live01"
                style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
                onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
       </div>
-      <div style="margin-bottom:16px;">
+      <div style="margin-bottom:14px;">
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">🔑 الرقم السري للحساب (Investor Password)</label>
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">🔑 Account Password (Investor)</label>
         <div style="position:relative;">
@@ -1107,7 +1179,7 @@
           <button onclick="toggleSubPass()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#6B7280;cursor:pointer;font-size:16px;" id="subEyeBtn">👁</button>
         </div>
       </div>
-      <div style="margin-bottom:24px;">
+      <div style="margin-bottom:20px;">
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">💵 رأس المال في الحساب (بالدولار)</label>
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">💵 Account Balance (USD)</label>
         <input type="number" id="subBalance" placeholder="مثال: 1000" min="0"
@@ -1116,27 +1188,138 @@
       </div>
       <div id="subError" style="display:none;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:16px;"></div>
       <button onclick="submitSubscription()" class="btn-gold" style="width:100%;border:none;cursor:pointer;">
-        <span class="ar">💎 تأكيد الاشتراك</span>
-        <span class="en">💎 Confirm Subscription</span>
+        <span class="ar">التالي ← بياناتك الشخصية</span>
+        <span class="en">Next ← Your Details</span>
       </button>
-      <p style="text-align:center;margin-top:12px;font-size:11px;color:#6B7280;" class="ar">🔒 بياناتك مشفرة بالكامل ولا يمكن لأحد الوصول إليها</p>
-      <p style="text-align:center;margin-top:12px;font-size:11px;color:#6B7280;" class="en">🔒 Your data is fully encrypted and secure</p>
+      <p style="text-align:center;margin-top:10px;font-size:11px;color:#6B7280;" class="ar">🔒 بياناتك مشفرة بالكامل ولا يمكن لأحد الوصول إليها</p>
+      <p style="text-align:center;margin-top:10px;font-size:11px;color:#6B7280;" class="en">🔒 Your data is fully encrypted and secure</p>
     </div>
 
-    <!-- Step 2: Success -->
-    <div id="subStep2" style="display:none;text-align:center;">
+    <!-- ===== STEP 2: Personal Info ===== -->
+    <div id="subStep2" style="display:none;">
+      <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:12px;padding:14px;margin-bottom:20px;">
+        <div style="font-size:12px;color:#C9A84C;font-weight:700;margin-bottom:4px;" class="ar">✅ تم حفظ بيانات حساب MT5</div>
+        <div style="font-size:12px;color:#C9A84C;font-weight:700;margin-bottom:4px;" class="en">✅ MT5 Account Details Saved</div>
+        <div id="subStep2Summary" style="font-size:11px;color:#6B7280;"></div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">👤 الاسم الكامل *</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">👤 Full Name *</label>
+        <input type="text" id="subClientName" placeholder="اسمك الكامل"
+               style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+               onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">📧 البريد الإلكتروني *</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">📧 Email Address *</label>
+        <input type="email" id="subClientEmail" placeholder="example@gmail.com"
+               style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+               onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">📱 رقم الهاتف (واتساب) *</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">📱 Phone Number (WhatsApp) *</label>
+        <input type="tel" id="subClientPhone" placeholder="مثال: 01012345678"
+               style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
+               onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+      </div>
+      <div id="subStep2Error" style="display:none;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:16px;"></div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="subGoBack(1)" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:13px;cursor:pointer;" class="ar">← رجوع</button>
+        <button onclick="subGoBack(1)" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:13px;cursor:pointer;" class="en">← Back</button>
+        <button onclick="submitPersonalInfo()" class="btn-gold" style="flex:2;border:none;cursor:pointer;padding:12px;">
+          <span class="ar">التالي ← الدفع 💳</span>
+          <span class="en">Next ← Payment 💳</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3: Payment ===== -->
+    <div id="subStep3" style="display:none;">
+      <div style="background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.15);border-radius:12px;padding:14px;margin-bottom:20px;">
+        <div style="font-size:12px;color:#C9A84C;font-weight:700;margin-bottom:6px;" class="ar">✅ تم حفظ بياناتك — آخر خطوة!</div>
+        <div style="font-size:12px;color:#C9A84C;font-weight:700;margin-bottom:6px;" class="en">✅ Details Saved — Final Step!</div>
+        <div id="subStep3ClientSummary" style="font-size:11px;color:#9CA3AF;line-height:1.8;"></div>
+      </div>
+
+      <!-- USDT Payment Box -->
+      <div style="background:linear-gradient(135deg,rgba(22,163,74,.08),rgba(20,184,166,.05));border:1px solid rgba(22,163,74,.25);border-radius:14px;padding:20px;margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <div style="width:36px;height:36px;background:linear-gradient(135deg,#16a34a,#0d9488);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">₮</div>
+          <div>
+            <div style="font-weight:800;font-size:14px;color:#fff;" class="ar">ادفع رسوم الاشتراك عبر USDT</div>
+            <div style="font-weight:800;font-size:14px;color:#fff;" class="en">Pay Subscription via USDT</div>
+            <div style="font-size:11px;color:#6B7280;" class="ar">شبكة TRC20 — الرسوم $250/شهر</div>
+            <div style="font-size:11px;color:#6B7280;" class="en">TRC20 Network — Fee $250/month</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:10px;">
+          <div style="font-size:11px;color:#6B7280;margin-bottom:6px;" class="ar">📋 عنوان المحفظة (USDT TRC20):</div>
+          <div style="font-size:11px;color:#6B7280;margin-bottom:6px;" class="en">📋 Wallet Address (USDT TRC20):</div>
+          <div style="display:flex;align-items:center;gap:8px;background:#0d0d14;border:1px solid rgba(22,163,74,.3);border-radius:10px;padding:12px 14px;">
+            <span id="walletAddressText" style="font-family:monospace;font-size:12px;color:#4ade80;word-break:break-all;flex:1;letter-spacing:0.5px;">TTfhuzpUFd9ie2Q5mUb4xZJVUjYa4y8zSM</span>
+            <button onclick="copyWalletAddress()" title="نسخ العنوان" style="background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.3);border-radius:7px;color:#4ade80;cursor:pointer;padding:6px 10px;font-size:12px;flex-shrink:0;font-family:Cairo,sans-serif;transition:all .2s;" onmouseover="this.style.background='rgba(74,222,128,.25)'" onmouseout="this.style.background='rgba(74,222,128,.15)'">
+              📋 <span class="ar">نسخ</span><span class="en">Copy</span>
+            </button>
+          </div>
+          <div id="walletCopyMsg" style="display:none;font-size:11px;color:#4ade80;margin-top:4px;text-align:center;">✅ تم النسخ!</div>
+        </div>
+
+        <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;font-size:11px;color:#fbbf24;line-height:1.7;" class="ar">
+          ⚠️ تأكد من اختيار شبكة <strong>TRC20</strong> عند الإرسال — أي شبكة أخرى ستؤدي لخسارة الأموال
+        </div>
+        <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:8px;padding:10px 12px;font-size:11px;color:#fbbf24;line-height:1.7;" class="en">
+          ⚠️ Make sure to select <strong>TRC20</strong> network when sending — any other network will result in loss of funds
+        </div>
+      </div>
+
+      <!-- Screenshot Upload -->
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:8px;" class="ar">📸 أرفق سكرين شوت تأكيد الدفع *</label>
+        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:8px;" class="en">📸 Attach Payment Confirmation Screenshot *</label>
+        <div id="screenshotDropZone" onclick="document.getElementById('subScreenshot').click()"
+             style="border:2px dashed rgba(201,168,76,.3);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .3s;background:rgba(201,168,76,.03);"
+             onmouseover="this.style.borderColor='#C9A84C';this.style.background='rgba(201,168,76,.07)'"
+             onmouseout="this.style.borderColor='rgba(201,168,76,.3)';this.style.background='rgba(201,168,76,.03)'"
+             ondragover="event.preventDefault();this.style.borderColor='#C9A84C'"
+             ondrop="handleScreenshotDrop(event)">
+          <div id="screenshotPreviewArea">
+            <div style="font-size:32px;margin-bottom:8px;">📷</div>
+            <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="ar">اضغط أو اسحب الصورة هنا</div>
+            <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="en">Click or drag image here</div>
+            <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="ar">PNG، JPG، JPEG — حجم أقصى 5MB</div>
+            <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="en">PNG, JPG, JPEG — Max 5MB</div>
+          </div>
+        </div>
+        <input type="file" id="subScreenshot" accept="image/*" style="display:none;" onchange="previewScreenshot(this)">
+      </div>
+
+      <div id="subStep3Error" style="display:none;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;"></div>
+      <div style="display:flex;gap:10px;">
+        <button onclick="subGoBack(2)" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:13px;cursor:pointer;" class="ar">← رجوع</button>
+        <button onclick="subGoBack(2)" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:13px;cursor:pointer;" class="en">← Back</button>
+        <button onclick="finalSubmitSubscription()" class="btn-gold" style="flex:2;border:none;cursor:pointer;padding:12px;">
+          <span class="ar">✅ إرسال الطلب</span>
+          <span class="en">✅ Submit Request</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4: Final Success ===== -->
+    <div id="subStep4" style="display:none;text-align:center;">
       <div style="font-size:64px;margin-bottom:16px;">✅</div>
-      <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="ar">تم تسجيل طلبك بنجاح!</div>
-      <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="en">Subscription Submitted Successfully!</div>
-      <p style="color:#6B7280;font-size:14px;line-height:1.8;margin-bottom:24px;" class="ar">
-        سيتواصل معك فريقنا خلال 24 ساعة لتأكيد الاشتراك وتسليم الـ EA
+      <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="ar">تم إرسال طلبك!</div>
+      <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="en">Request Sent!</div>
+      <p style="color:#6B7280;font-size:13px;line-height:1.9;margin-bottom:20px;" class="ar">
+        تم فتح واتساب ببياناتك — فاضل بس ترسل الرسالة والسكرين شوت 📲
       </p>
-      <p style="color:#6B7280;font-size:14px;line-height:1.8;margin-bottom:24px;" class="en">
-        Our team will contact you within 24 hours to confirm your subscription and deliver the EA
+      <p style="color:#6B7280;font-size:13px;line-height:1.9;margin-bottom:20px;" class="en">
+        WhatsApp opened with your details — just send the message and screenshot 📲
       </p>
-      <button onclick="closeSubscribeModal()" class="btn-gold" style="border:none;cursor:pointer;padding:14px 40px;">
-        <span class="ar">حسناً، شكراً!</span>
-        <span class="en">OK, Thank you!</span>
+      <button onclick="closeSubscribeModal()" class="btn-gold" style="border:none;cursor:pointer;padding:12px 40px;">
+        <span class="ar">إغلاق</span>
+        <span class="en">Close</span>
       </button>
     </div>
   </div>
@@ -1145,28 +1328,120 @@
 
 <!-- ===== LOGIN MODAL ===== -->
 <div id="loginModalOverlay" onclick="if(event.target===this)closeLoginModal()">
-  <div class="login-modal-box">
+  <div class="login-modal-box" style="width:460px;">
     <button class="login-modal-close" onclick="closeLoginModal()">✕</button>
     <div class="login-logo-text">💎 BLACK DIAMOND</div>
-    <p class="login-sub ar">سجّل دخولك لنظام الإدارة</p>
-    <p class="login-sub en">Sign in to the management system</p>
-    <div class="form-group">
-      <label class="ar">البريد الإلكتروني</label>
-      <label class="en">Email</label>
-      <input type="email" id="loginEmail" placeholder="example@email.com" autocomplete="email"
-             onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()">
+
+    <!-- Tabs -->
+    <div style="display:flex;border-radius:10px;overflow:hidden;border:1px solid rgba(201,168,76,.2);margin-bottom:24px;">
+      <button id="loginTab1" onclick="switchLoginTab(1)"
+              style="flex:1;padding:10px;background:#C9A84C;color:#000;border:none;font-family:Cairo,sans-serif;font-size:13px;font-weight:800;cursor:pointer;">
+        <span class="ar">👑 مدير / موظف</span>
+        <span class="en">👑 Admin / Staff</span>
+      </button>
+      <button id="loginTab2" onclick="switchLoginTab(2)"
+              style="flex:1;padding:10px;background:transparent;color:#6B7280;border:none;font-family:Cairo,sans-serif;font-size:13px;font-weight:800;cursor:pointer;">
+        <span class="ar">📊 حسابي</span>
+        <span class="en">📊 My Account</span>
+      </button>
     </div>
-    <div class="form-group">
-      <label class="ar">كلمة المرور</label>
-      <label class="en">Password</label>
-      <input type="password" id="loginPass" placeholder="••••••••"
-             onkeydown="if(event.key==='Enter') doLogin()">
+
+    <!-- Tab 1: Admin/Staff -->
+    <div id="loginPanel1">
+      <div class="form-group">
+        <label class="ar">البريد الإلكتروني</label>
+        <label class="en">Email</label>
+        <input type="email" id="loginEmail" placeholder="example@email.com" autocomplete="email"
+               onkeydown="if(event.key==='Enter') document.getElementById('loginPass').focus()">
+      </div>
+      <div class="form-group">
+        <label class="ar">كلمة المرور</label>
+        <label class="en">Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••"
+               onkeydown="if(event.key==='Enter') doLogin()">
+      </div>
+      <p class="error-msg" id="loginError" style="display:none;margin-bottom:12px;"></p>
+      <button class="btn-gold" style="width:100%;border:none;cursor:pointer;" onclick="doLogin()">
+        <span class="ar">🔐 دخول</span>
+        <span class="en">🔐 Sign In</span>
+      </button>
     </div>
-    <p class="error-msg" id="loginError" style="display:none;"></p>
-    <button class="btn-gold" style="width:100%;margin-top:8px;" onclick="doLogin()">
-      <span class="ar">🔐 تسجيل الدخول</span>
-      <span class="en">🔐 Sign In</span>
-    </button>
+
+    <!-- Tab 2: Client -->
+    <div id="loginPanel2" style="display:none;">
+      <div class="form-group">
+        <label class="ar">🔢 رقم حساب MT5</label>
+        <label class="en">🔢 MT5 Account ID</label>
+        <input type="text" id="clientAccountId" placeholder="مثال: 12345678"
+               onkeydown="if(event.key==='Enter') document.getElementById('clientPassword').focus()"
+               style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;">
+      </div>
+      <div class="form-group">
+        <label class="ar">🔑 الرقم السري للحساب</label>
+        <label class="en">🔑 Account Password</label>
+        <input type="password" id="clientPassword" placeholder="••••••••"
+               onkeydown="if(event.key==='Enter') doClientLogin()"
+               style="width:100%;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;">
+      </div>
+      <p id="clientLoginError" style="display:none;margin-bottom:12px;"></p>
+      <button class="btn-gold" style="width:100%;border:none;cursor:pointer;" onclick="doClientLogin()">
+        <span class="ar">📊 دخول حسابي</span>
+        <span class="en">📊 View My Account</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<!-- ===== CLIENT PORTAL ===== -->
+<div id="clientPortal" style="display:none;min-height:100vh;background:#070709;direction:rtl;font-family:Cairo,sans-serif;">
+  <div style="background:#13131C;border-bottom:1px solid rgba(201,168,76,.15);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-family:Cinzel,serif;font-size:18px;font-weight:700;color:#C9A84C;">💎 BLACK DIAMOND</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div style="text-align:right;">
+        <div id="clientName" style="font-weight:700;font-size:14px;color:#fff;">—</div>
+        <div id="clientStatus" style="font-size:11px;"></div>
+      </div>
+      <button onclick="doClientLogout()" style="padding:8px 16px;border-radius:8px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#f87171;font-family:Cairo,sans-serif;font-size:12px;cursor:pointer;">خروج</button>
+    </div>
+  </div>
+  <div style="max-width:900px;margin:0 auto;padding:32px 16px;">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px;">
+      <div style="background:#13131C;border:1px solid rgba(201,168,76,.15);border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:11px;color:#6B7280;margin-bottom:6px;">💵 الإيداع</div>
+        <div id="clientBalance" style="font-size:28px;font-weight:900;color:#C9A84C;">—</div>
+        <div style="font-size:11px;color:#6B7280;">دولار</div>
+      </div>
+      <div style="background:#13131C;border:1px solid rgba(0,200,150,.15);border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:11px;color:#6B7280;margin-bottom:6px;">📈 إجمالي الأرباح</div>
+        <div id="clientTotalProfit" style="font-size:28px;font-weight:900;color:#00C896;">—</div>
+        <div style="font-size:11px;color:#6B7280;">دولار</div>
+      </div>
+      <div style="background:#13131C;border:1px solid rgba(99,102,241,.15);border-radius:16px;padding:20px;text-align:center;">
+        <div style="font-size:11px;color:#6B7280;margin-bottom:6px;">📅 أيام الاشتراك</div>
+        <div id="clientDays" style="font-size:28px;font-weight:900;color:#6366f1;">—</div>
+        <div style="font-size:11px;color:#6B7280;">يوم</div>
+      </div>
+    </div>
+    <div style="background:#13131C;border:1px solid rgba(255,255,255,0.06);border-radius:16px;overflow:hidden;">
+      <div style="padding:20px 24px;border-bottom:1px solid rgba(255,255,255,0.06);font-weight:800;font-size:16px;">📊 سجل الأرباح اليومية</div>
+      <div id="clientProfitsTable" style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;">
+          <thead>
+            <tr style="background:rgba(255,255,255,0.03);">
+              <th style="padding:12px 16px;text-align:right;font-size:12px;color:#6B7280;">التاريخ</th>
+              <th style="padding:12px 16px;text-align:right;font-size:12px;color:#6B7280;">ربح اليوم</th>
+              <th style="padding:12px 16px;text-align:right;font-size:12px;color:#6B7280;">الرصيد</th>
+              <th style="padding:12px 16px;text-align:right;font-size:12px;color:#6B7280;">ملاحظات</th>
+            </tr>
+          </thead>
+          <tbody id="clientProfitsBody">
+            <tr><td colspan="4" style="padding:40px;text-align:center;color:#6B7280;">لا توجد بيانات بعد</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1220,6 +1495,9 @@
       </div>
       <div id="navSubs" class="nav-item" onclick="showPage('subs', this)">
         <span class="nav-icon">📋</span> الاشتراكات
+      </div>
+      <div id="navProfits" class="nav-item" onclick="showPage('profits', this)">
+        <span class="nav-icon">💹</span> إدخال الأرباح
       </div>
       <div id="navAccounts" class="nav-item" onclick="showPage('accounts', this)">
         <span class="nav-icon">🔑</span> تخزين الأكونتات
@@ -1501,11 +1779,27 @@
       </div>
     </div>
 
+        <!-- ===== PROFITS ENTRY PAGE ===== -->
+    <div class="page" id="page-profits">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div><h2>💹 إدخال الأرباح اليومية</h2><p>أدخل أرباح كل حساب يومياً</p></div>
+        <button class="btn btn-primary" onclick="openModal('addProfitModal')">+ إضافة ربح</button>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>#</th><th>رقم الحساب</th><th>التاريخ</th><th>ربح اليوم</th><th>الرصيد</th><th>ملاحظات</th><th>إجراء</th></tr></thead>
+          <tbody id="profitsTable">
+            <tr><td colspan="7"><div class="empty-state"><div class="icon">💹</div><p>لا توجد بيانات بعد</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
         <!-- ===== SUBSCRIPTIONS PAGE ===== -->
     <div class="page" id="page-subs">
       <div class="page-header">
         <h2>📋 الاشتراكات</h2>
-        <p>طلبات الاشتراك الواردة من العملاء</p>
+        <p>اضغط على أي صف لعرض التفاصيل والتعديل</p>
       </div>
 
       <!-- Stats -->
@@ -1525,20 +1819,25 @@
           <div class="stat-value" id="subsStatActive">0</div>
           <div class="stat-label">نشط</div>
         </div>
+        <div class="stat-card red">
+          <div class="stat-icon">👤</div>
+          <div class="stat-value" id="subsStatAccounts">0</div>
+          <div class="stat-label">حسابات فريدة</div>
+        </div>
       </div>
 
       <!-- Table -->
-      <div class="card">
+      <div class="card" style="overflow-x:auto;">
         <table>
           <thead>
             <tr>
               <th>#</th>
-              <th>رقم الحساب</th>
               <th>السيرفر</th>
-              <th>الرقم السري</th>
               <th>رأس المال</th>
+              <th>نسبة الربح</th>
               <th>الحالة</th>
               <th>التاريخ</th>
+              <th>اشتراكات</th>
               <th>إجراء</th>
             </tr>
           </thead>
@@ -1950,6 +2249,148 @@
   </div>
 </div>
 
+<!-- ===== EDIT SUBSCRIPTION MODAL ===== -->
+<div class="modal-overlay" id="editSubModal">
+  <div class="modal" style="width:560px;max-height:90vh;overflow-y:auto;">
+    <div class="modal-close" onclick="closeModal('editSubModal')">✕</div>
+    <h3 id="editSubTitle">📋 تفاصيل الاشتراك</h3>
+    <input type="hidden" id="editSubId">
+
+    <!-- Account Info (read-only display) -->
+    <div style="background:var(--surface);border-radius:12px;padding:16px;margin-bottom:20px;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">معلومات الحساب</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:var(--muted);">رقم الحساب</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span id="editSubAccIdDisp" style="font-family:monospace;font-size:13px;">••••••••</span>
+            <button onclick="revealEditField('editSubAccIdDisp','editSubAccIdEnc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;">👁</button>
+            <span id="editSubAccIdEnc" style="display:none;"></span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);">السيرفر</div>
+          <div id="editSubServerDisp" style="font-size:13px;font-weight:700;margin-top:4px;">—</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);">الرقم السري</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span id="editSubPassDisp" style="font-family:monospace;font-size:13px;">••••••••</span>
+            <button onclick="revealEditField('editSubPassDisp','editSubPassEnc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;">👁</button>
+            <button onclick="copyEditField('editSubPassEnc')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;">📋</button>
+            <span id="editSubPassEnc" style="display:none;"></span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);">تاريخ الاشتراك</div>
+          <div id="editSubDateDisp" style="font-size:13px;margin-top:4px;">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subscription History for this account -->
+    <div id="editSubHistory" style="margin-bottom:20px;"></div>
+
+    <!-- Editable Fields -->
+    <div class="form-group">
+      <label>💰 رأس المال ($)</label>
+      <input type="number" id="editSubBalance" placeholder="0" step="0.01" min="0">
+    </div>
+    <div class="form-group">
+      <label>📈 نسبة الربح (%)</label>
+      <input type="number" id="editSubProfitPct" placeholder="0" step="0.1" min="0">
+    </div>
+    <div class="form-group">
+      <label>الحالة</label>
+      <select id="editSubStatus" style="width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;">
+        <option value="pending">⏳ قيد المراجعة</option>
+        <option value="active">✅ نشط</option>
+        <option value="expired">❌ منتهي</option>
+        <option value="rejected">🚫 مرفوض</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>ملاحظات</label>
+      <textarea id="editSubNotes" rows="2" placeholder="أي ملاحظات..." style="width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;resize:vertical;"></textarea>
+    </div>
+    <div id="editSubError" class="error-msg" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveSubEdit()">💾 حفظ التعديل</button>
+      <button class="btn btn-ghost" onclick="closeModal('editSubModal')">إغلاق</button>
+      <button class="btn btn-red btn-sm" id="editSubDeleteBtn" onclick="">🗑 حذف</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD PROFIT MODAL ===== -->
+<div class="modal-overlay" id="addProfitModal">
+  <div class="modal" style="width:460px;">
+    <div class="modal-close" onclick="closeModal('addProfitModal')">✕</div>
+    <h3>💹 إضافة ربح يومي</h3>
+    <div class="form-group">
+      <label>اختر الحساب</label>
+      <select id="profAccountSelect" onchange="profAccountSelectChanged(this.value)" style="width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;">
+        <option value="">-- اختر أو اكتب رقم الحساب --</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>رقم الحساب (Account ID)</label>
+      <input type="text" id="profAccountId" placeholder="رقم الحساب">
+    </div>
+    <div class="form-group">
+      <label>التاريخ</label>
+      <input type="date" id="profDate">
+    </div>
+    <div class="form-group">
+      <label>ربح اليوم ($)</label>
+      <input type="number" id="profDailyProfit" placeholder="12.50" step="0.01">
+    </div>
+    <div class="form-group">
+      <label>الرصيد الحالي ($)</label>
+      <input type="number" id="profBalance" placeholder="1012.50" step="0.01">
+    </div>
+    <div class="form-group">
+      <label>ملاحظات (اختياري)</label>
+      <input type="text" id="profNotes" placeholder="أي ملاحظات...">
+    </div>
+    <div id="profitError" class="error-msg" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="addProfit()">💾 حفظ</button>
+      <button class="btn btn-ghost" onclick="closeModal('addProfitModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT PROFIT MODAL ===== -->
+<div class="modal-overlay" id="editProfitModal">
+  <div class="modal" style="width:460px;">
+    <div class="modal-close" onclick="closeModal('editProfitModal')">✕</div>
+    <h3>✏️ تعديل الربح</h3>
+    <input type="hidden" id="editProfitId">
+    <div class="form-group">
+      <label>التاريخ</label>
+      <input type="date" id="editProfitDate">
+    </div>
+    <div class="form-group">
+      <label>ربح اليوم ($)</label>
+      <input type="number" id="editProfitDaily" placeholder="12.50" step="0.01">
+    </div>
+    <div class="form-group">
+      <label>الرصيد الحالي ($)</label>
+      <input type="number" id="editProfitBalance" placeholder="1012.50" step="0.01">
+    </div>
+    <div class="form-group">
+      <label>ملاحظات</label>
+      <input type="text" id="editProfitNotes" placeholder="ملاحظات...">
+    </div>
+    <div id="editProfitError" class="error-msg" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveEditProfit()">💾 حفظ التعديل</button>
+      <button class="btn btn-ghost" onclick="closeModal('editProfitModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== ADD TASK MODAL ===== -->
 <div class="modal-overlay" id="addTaskModal">
   <div class="modal">
@@ -2306,6 +2747,7 @@ async function doLogin() {
     document.getElementById('navCompare').style.display = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navUsers').style.display   = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navSubs').style.display     = user.role === 'admin' ? 'flex' : 'none';
+    document.getElementById('navProfits').style.display  = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navAccounts').style.display = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navBackup').style.display  = user.role === 'admin' ? 'flex' : 'none';
     resetSessionTimer();
@@ -2371,6 +2813,7 @@ function showPage(page, el) {
   if (page === 'compare') { initCompareYear(); renderCompareChart(); }
   if (page === 'users')    { loadUsers(); }
   if (page === 'subs')     { loadSubscriptions(); }
+  if (page === 'profits')  { loadProfits(); }
   if (page === 'accounts') { renderAccounts(); updateAccStats(); }
   if (page === 'search') renderSearchTable(state.customers);
 }
@@ -2811,20 +3254,20 @@ async function markPurchased(id) {
   const item = state.cart.find(p => p.id === id);
   if (!item) return;
   const total = item.priceEGP * item.qty;
-  if (!confirm(`هل تأكد شراء "${item.name}"؟\nسيتم خصم ${total.toLocaleString()} ج من الأرباح`)) return;
+  if (!confirm(`هل تأكد شراء "${esc(item.name)}"؟\nسيتم خصم ${total.toLocaleString()} ج من الأرباح`)) return;
   if (total > 0 && total > getBalance()) { showToast('⚠️ الرصيد غير كافي!'); return; }
   const today = new Date().toISOString().split('T')[0];
   showLoading(true);
   await sbPatch('cart_items', id, { purchased: true, purchase_date: today });
   let wRow = null;
   if (total > 0) {
-    wRow = await sbPost('withdrawals', { amount: total, note: `🛒 شراء: ${item.name}`, date: today, by_user: state.currentUser.name, cart_id: id });
+    wRow = await sbPost('withdrawals', { amount: total, note: `🛒 شراء: ${esc(item.name)}`, date: today, by_user: state.currentUser.name, cart_id: id });
   }
   showLoading(false);
   item.purchased = true; item.purchaseDate = today;
   if (wRow) state.withdrawals.unshift(mapWithdrawal(wRow));
   renderCart(); updateCartStats(); updateDashboard();
-  showToast(`✅ تم شراء "${item.name}"${total > 0 ? ' — خُصم ' + total.toLocaleString() + ' ج' : ''}`);
+  showToast(`✅ تم شراء "${esc(item.name)}"${total > 0 ? ' — خُصم ' + total.toLocaleString() + ' ج' : ''}`);
 }
 
 async function unmarkPurchased(id) {
@@ -2855,14 +3298,14 @@ async function confirmPurchaseFromModal(id) {
   await sbPatch('cart_items', id, { purchased: true, purchase_date: today });
   let wRow = null;
   if (total > 0) {
-    wRow = await sbPost('withdrawals', { amount: total, note: `🛒 شراء: ${item.name}`, date: today, by_user: state.currentUser.name, cart_id: id });
+    wRow = await sbPost('withdrawals', { amount: total, note: `🛒 شراء: ${esc(item.name)}`, date: today, by_user: state.currentUser.name, cart_id: id });
   }
   showLoading(false);
   item.purchased = true; item.purchaseDate = today;
   if (wRow) state.withdrawals.unshift(mapWithdrawal(wRow));
   closeModal('viewCartModal');
   renderCart(); updateCartStats(); updateDashboard();
-  showToast(`✅ تم شراء "${item.name}"${total > 0 ? ' — خُصم ' + total.toLocaleString() + ' ج من الأرباح' : ''}`);
+  showToast(`✅ تم شراء "${esc(item.name)}"${total > 0 ? ' — خُصم ' + total.toLocaleString() + ' ج من الأرباح' : ''}`);
 }
 
 function viewCartItem(id) {
@@ -2927,7 +3370,7 @@ function viewCartItem(id) {
       ${p.link ? `
       <div style="grid-column:1/-1;background:var(--surface);border-radius:10px;padding:12px;">
         <div style="font-size:11px;color:var(--muted);margin-bottom:6px;">🔗 رابط المنتج</div>
-        <a href="${p.link}" target="_blank" style="color:var(--accent);font-weight:600;font-size:13px;word-break:break-all;display:block;">${p.link}</a>
+        <a href="${safeUrl(p.link)}" target="_blank" style="color:var(--accent);font-weight:600;font-size:13px;word-break:break-all;display:block;">${safeUrl(p.link)}</a>
       </div>` : ''}
 
       ${p.notes ? `
@@ -3095,8 +3538,36 @@ function openAddModal() {
   document.getElementById('cDate').value = new Date().toISOString().split('T')[0];
   openModal('addModal');
 }
-function openModal(id) { document.getElementById(id).classList.add('open'); }
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  if (id === 'addProfitModal') populateProfitAccountDropdown();
+}
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Populate profit account selector with decrypted account IDs
+async function populateProfitAccountDropdown() {
+  const sel = document.getElementById('profAccountSelect');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">-- اختر حساباً أو اكتب يدوياً --</option>';
+  const subs = state.subscriptions || [];
+  const seen = new Set();
+  for (const sub of subs) {
+    const key = sub.account_id_hash || String(sub.id);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const plain = await decryptSubData(sub.account_id);
+    if (plain && plain !== '🔒 مشفر') {
+      const opt = document.createElement('option');
+      opt.value = plain;
+      opt.textContent = `${plain} — ${sub.server_name||''} (${sub.status||''})`;
+      sel.appendChild(opt);
+    }
+  }
+}
+
+function profAccountSelectChanged(val) {
+  if (val) document.getElementById('profAccountId').value = val;
+}
 document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
 });
@@ -3338,7 +3809,7 @@ function renderCompareChart() {
         return `
           <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;cursor:pointer;"
                onclick="jumpToMonth(${mo.m})"
-               title="${mo.name}: إيرادات ${mo.rev.toLocaleString()} ج | مصاريف ${mo.exp.toLocaleString()} ج | صافي ${mo.net.toLocaleString()} ج">
+               title="${esc(mo.name)}: إيرادات ${mo.rev.toLocaleString()} ج | مصاريف ${mo.exp.toLocaleString()} ج | صافي ${mo.net.toLocaleString()} ج">
             <div style="width:100%;display:flex;align-items:flex-end;justify-content:center;gap:1px;height:160px;">
               <div style="width:30%;background:var(--green);border-radius:3px 3px 0 0;height:${revH}px;opacity:${hasData?1:.15};transition:height .5s;"></div>
               <div style="width:30%;background:var(--red);border-radius:3px 3px 0 0;height:${expH}px;opacity:${hasData?1:.15};transition:height .5s;"></div>
@@ -3377,7 +3848,7 @@ function renderCompareChart() {
       <div style="font-size:24px;">🏆</div>
       <div>
         <div style="font-size:12px;color:var(--muted);">أفضل شهر في ${year}</div>
-        <div style="font-weight:800;font-size:15px;">${bestMonth.name} — صافي <span style="color:var(--gold);">${bestMonth.net.toLocaleString()} ج</span></div>
+        <div style="font-weight:800;font-size:15px;">${esc(bestMonth.name)} — صافي <span style="color:var(--gold);">${bestMonth.net.toLocaleString()} ج</span></div>
       </div>
     </div>` : ''}
     <!-- Monthly breakdown table -->
@@ -3397,7 +3868,7 @@ function renderCompareChart() {
           const barW = mo.rev>0 ? Math.max(0,Math.min(Math.abs(pct),100)) : 0;
           const barC = mo.net>=0 ? 'var(--green)' : 'var(--red)';
           return `<tr style="cursor:pointer;" onclick="jumpToMonth(${mo.m})">
-            <td><strong>${mo.name}</strong></td>
+            <td><strong>${esc(mo.name)}</strong></td>
             <td style="color:var(--green);font-weight:700;">${mo.rev.toLocaleString()} ج</td>
             <td style="color:var(--red);font-weight:700;">${mo.exp.toLocaleString()} ج</td>
             <td style="font-weight:800;color:${mo.net>=0?'var(--accent)':'var(--red)'};">${mo.net.toLocaleString()} ج</td>
@@ -3499,7 +3970,7 @@ function exportPDF(type) {
       </tbody></table>
       <h2>💸 سجل المسحوبات</h2>
       <table><thead><tr><th>#</th><th>السبب</th><th>المبلغ</th><th>التاريخ</th><th>النوع</th></tr></thead>
-      <tbody>${state.withdrawals.map((w,i)=>`<tr><td>${i+1}</td><td>${w.note}</td><td>${w.amount.toLocaleString()} ج</td><td>${w.date||''}</td><td>${w.cartId?'مشتريات':'سحب'}</td></tr>`).join('')}</tbody>
+      <tbody>${state.withdrawals.map((w,i)=>`<tr><td>${i+1}</td><td>${esc(w.note)}</td><td>${w.amount.toLocaleString()} ج</td><td>${w.date||''}</td><td>${w.cartId?'مشتريات':'سحب'}</td></tr>`).join('')}</tbody>
       </table>`;
   }
 
@@ -3507,7 +3978,7 @@ function exportPDF(type) {
     body += `
       <h2>👥 العملاء (${state.customers.length})</h2>
       <table><thead><tr><th>#</th><th>الاسم</th><th>الهاتف</th><th>نوع الشغل</th><th>السعر</th><th>التاريخ</th></tr></thead>
-      <tbody>${state.customers.map((c,i)=>`<tr><td>${i+1}</td><td>${c.name}</td><td>${c.phone}</td><td>${c.jobType}</td><td>${(c.price||0).toLocaleString()} ج</td><td>${c.date||''}</td></tr>`).join('')}</tbody>
+      <tbody>${state.customers.map((c,i)=>`<tr><td>${i+1}</td><td>${esc(c.name)}</td><td>${esc(c.phone)}</td><td>${c.jobType}</td><td>${(c.price||0).toLocaleString()} ج</td><td>${c.date||''}</td></tr>`).join('')}</tbody>
       </table>`;
   }
 
@@ -3653,15 +4124,15 @@ function checkTaskNotifications() {
 
     // Today
     if (diff === 0) {
-      sendNotification('⏰ مهمة اليوم', `"${t.title}" — موعدها اليوم!`, '🔴');
+      sendNotification('⏰ مهمة اليوم', `"${esc(t.title)}" — موعدها اليوم!`, '🔴');
     }
     // Tomorrow
     else if (diff === 1) {
-      sendNotification('📅 مهمة غداً', `"${t.title}" — موعدها غداً`, '🟡');
+      sendNotification('📅 مهمة غداً', `"${esc(t.title)}" — موعدها غداً`, '🟡');
     }
     // Overdue
     else if (diff < 0) {
-      sendNotification('⚠️ مهمة متأخرة', `"${t.title}" — تأخرت ${Math.abs(diff)} يوم!`, '🔴');
+      sendNotification('⚠️ مهمة متأخرة', `"${esc(t.title)}" — تأخرت ${Math.abs(diff)} يوم!`, '🔴');
     }
   });
 }
@@ -3770,7 +4241,7 @@ function renderAccounts() {
           <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">🔑</div>
           <div>
             <div style="font-weight:800;font-size:15px;">${esc(a.name)}</div>
-            ${a.link ? `<a href="${a.link}" target="_blank" style="font-size:11px;color:var(--accent);">🔗 فتح الرابط</a>` : ''}
+            ${a.link ? `<a href="${safeUrl(a.link)}" target="_blank" style="font-size:11px;color:var(--accent);">🔗 فتح الرابط</a>` : ''}
           </div>
         </div>
         <button class="btn btn-red btn-sm" onclick="deleteAccount(${a.id})">🗑</button>
@@ -3986,17 +4457,46 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== SUBSCRIPTION MODAL =====
 function openSubscribeModal() {
   document.getElementById('subscribeModalOverlay').style.display = 'flex';
-  document.getElementById('subStep1').style.display = 'block';
-  document.getElementById('subStep2').style.display = 'none';
-  document.getElementById('subStep1Dot').style.background = '#C9A84C';
-  document.getElementById('subStep1Dot').style.color = '#000';
-  document.getElementById('subStep2Dot').style.background = 'rgba(255,255,255,0.1)';
-  document.getElementById('subStep2Dot').style.color = '#6B7280';
-  ['subAccountId','subServerName','subPassword','subBalance'].forEach(id => {
+  subShowStep(1);
+  ['subAccountId','subServerName','subPassword','subBalance','subClientName','subClientEmail','subClientPhone'].forEach(id => {
     const el = document.getElementById(id);
     if(el) el.value = '';
   });
   document.getElementById('subError').style.display = 'none';
+  document.getElementById('subStep2Error').style.display = 'none';
+  document.getElementById('subStep3Error').style.display = 'none';
+  // Reset screenshot
+  document.getElementById('subScreenshot').value = '';
+  document.getElementById('screenshotPreviewArea').innerHTML = `
+    <div style="font-size:32px;margin-bottom:8px;">📷</div>
+    <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="ar">اضغط أو اسحب الصورة هنا</div>
+    <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="en">Click or drag image here</div>
+    <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="ar">PNG، JPG، JPEG — حجم أقصى 5MB</div>
+    <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="en">PNG, JPG, JPEG — Max 5MB</div>`;
+  window._subScreenshotBase64 = null;
+  window._subSavedId = null;
+}
+
+function subShowStep(n) {
+  [1,2,3,4].forEach(i => {
+    const el = document.getElementById('subStep'+i);
+    if(el) el.style.display = (i===n)?'block':'none';
+  });
+  // Update dots
+  const colors = ['#C9A84C','rgba(255,255,255,0.1)'];
+  [1,2,3].forEach(i => {
+    const dot = document.getElementById('subStep'+i+'Dot');
+    if(!dot) return;
+    if(i < n) { dot.style.background='#00C896'; dot.style.color='#fff'; }
+    else if(i === n) { dot.style.background='#C9A84C'; dot.style.color='#000'; }
+    else { dot.style.background='rgba(255,255,255,0.1)'; dot.style.color='#6B7280'; }
+  });
+  if(document.getElementById('subLine12')) document.getElementById('subLine12').style.background = n>=2?'#00C896':'rgba(255,255,255,0.1)';
+  if(document.getElementById('subLine23')) document.getElementById('subLine23').style.background = n>=3?'#00C896':'rgba(255,255,255,0.1)';
+}
+
+function subGoBack(toStep) {
+  subShowStep(toStep);
 }
 
 function closeSubscribeModal() {
@@ -4008,6 +4508,51 @@ function toggleSubPass() {
   const btn = document.getElementById('subEyeBtn');
   if(inp.type === 'password') { inp.type='text'; btn.textContent='🙈'; }
   else { inp.type='password'; btn.textContent='👁'; }
+}
+
+function copyWalletAddress() {
+  const addr = 'TTfhuzpUFd9ie2Q5mUb4xZJVUjYa4y8zSM';
+  navigator.clipboard?.writeText(addr).then(()=>{
+    const msg = document.getElementById('walletCopyMsg');
+    if(msg){ msg.style.display='block'; setTimeout(()=>msg.style.display='none',2500); }
+  }).catch(()=>{
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = addr; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    const msg = document.getElementById('walletCopyMsg');
+    if(msg){ msg.style.display='block'; setTimeout(()=>msg.style.display='none',2500); }
+  });
+}
+
+function previewScreenshot(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5*1024*1024) {
+    alert('حجم الصورة أكبر من 5MB — اختر صورة أصغر');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    window._subScreenshotBase64 = e.target.result;
+    document.getElementById('screenshotPreviewArea').innerHTML = `
+      <img src="${e.target.result}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;" alt="preview">
+      <div style="margin-top:8px;font-size:11px;color:#4ade80;">✅ <span class="ar">تم اختيار الصورة</span><span class="en">Image selected</span></div>
+      <div style="font-size:11px;color:#6B7280;margin-top:2px;">${file.name}</div>`;
+  };
+  reader.readAsDataURL(file);
+}
+
+function handleScreenshotDrop(e) {
+  e.preventDefault();
+  const file = e.dataTransfer?.files?.[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  const dt = new DataTransfer();
+  dt.items.add(file);
+  const input = document.getElementById('subScreenshot');
+  input.files = dt.files;
+  previewScreenshot(input);
+  e.currentTarget.style.borderColor = 'rgba(201,168,76,.3)';
 }
 
 async function submitSubscription() {
@@ -4023,50 +4568,74 @@ async function submitSubscription() {
   if (!password)   { errEl.textContent='⚠️ أدخل الرقم السري'; errEl.style.display='block'; return; }
   if (balance <= 0){ errEl.textContent='⚠️ أدخل رأس المال'; errEl.style.display='block'; return; }
 
-  const btn = document.querySelector('#subscribeModalOverlay .btn-gold');
-  btn.textContent = '⏳ جاري الحفظ...'; btn.disabled = true;
+  // Store for later use in final submit
+  window._subData = { accountId, serverName, password, balance };
 
-  try {
-    // Encrypt sensitive fields
-    const encPassword   = await encryptSubData(password);
-    const encAccountId  = await encryptSubData(accountId);
+  // Show step 2 summary
+  const summaryEl = document.getElementById('subStep2Summary');
+  if (summaryEl) summaryEl.textContent = `حساب: ${accountId} | سيرفر: ${serverName} | رأس المال: $${balance.toLocaleString()}`;
 
-    const res = await fetch('https://cbfaybsuzjthuwftfuac.supabase.co/rest/v1/subscriptions', {
-      method: 'POST',
-      headers: {
-        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk',
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({
-        account_id:       encAccountId,
-        server_name:      serverName,
-        account_password: encPassword,
-        balance:          balance,
-        status:           'pending'
-      })
-    });
+  subShowStep(2);
+}
 
-    if (!res.ok) {
-      const txt = await res.text();
-      errEl.textContent = '⚠️ خطأ: ' + txt.substring(0,100);
-      errEl.style.display = 'block';
-      btn.textContent = '💎 تأكيد الاشتراك'; btn.disabled = false;
-      return;
-    }
+async function submitPersonalInfo() {
+  const name  = document.getElementById('subClientName').value.trim();
+  const email = document.getElementById('subClientEmail').value.trim();
+  const phone = document.getElementById('subClientPhone').value.trim();
+  const errEl = document.getElementById('subStep2Error');
+  errEl.style.display = 'none';
 
-    // Show success step
-    document.getElementById('subStep1').style.display = 'none';
-    document.getElementById('subStep2').style.display = 'block';
-    document.getElementById('subStep2Dot').style.background = '#00C896';
-    document.getElementById('subStep2Dot').style.color = '#fff';
+  if (!name)  { errEl.textContent='⚠️ أدخل اسمك الكامل'; errEl.style.display='block'; return; }
+  if (!email || !email.includes('@')) { errEl.textContent='⚠️ أدخل بريد إلكتروني صحيح'; errEl.style.display='block'; return; }
+  if (!phone) { errEl.textContent='⚠️ أدخل رقم الهاتف'; errEl.style.display='block'; return; }
 
-  } catch(e) {
-    errEl.textContent = '⚠️ خطأ في الاتصال: ' + e.message;
+  window._subData = { ...(window._subData||{}), clientName: name, clientEmail: email, clientPhone: phone };
+
+  // Show step 3 client summary
+  const s3 = document.getElementById('subStep3ClientSummary');
+  if (s3) s3.innerHTML = `👤 ${name}<br>📧 ${email}<br>📱 ${phone}<br>💵 حساب: ${window._subData?.accountId||''} | $${(window._subData?.balance||0).toLocaleString()}`;
+
+  subShowStep(3);
+}
+
+async function finalSubmitSubscription() {
+  const errEl = document.getElementById('subStep3Error');
+  errEl.style.display = 'none';
+
+  if (!window._subScreenshotBase64) {
+    errEl.textContent = '⚠️ يجب إرفاق سكرين شوت تأكيد الدفع';
     errEl.style.display = 'block';
-    btn.textContent = '💎 تأكيد الاشتراك'; btn.disabled = false;
+    return;
   }
+
+  const d = window._subData || {};
+
+  // Build WhatsApp message with all details
+  const msg = [
+    '💎 *طلب اشتراك جديد — BLACK DIAMOND*',
+    '',
+    '👤 *البيانات الشخصية:*',
+    `• الاسم: ${d.clientName || '—'}`,
+    `• البريد: ${d.clientEmail || '—'}`,
+    `• الهاتف: ${d.clientPhone || '—'}`,
+    '',
+    '📊 *بيانات حساب MT5:*',
+    `• رقم الحساب: ${d.accountId || '—'}`,
+    `• السيرفر: ${d.serverName || '—'}`,
+    `• رأس المال: $${(d.balance || 0).toLocaleString()}`,
+    '',
+    '💳 *تفاصيل الدفع:*',
+    '• طريقة الدفع: USDT TRC20',
+    `• المحفظة: TTfhuzpUFd9ie2Q5mUb4xZJVUjYa4y8zSM`,
+    '',
+    '📸 *سكرين شوت الدفع مرفق مع هذه الرسالة*'
+  ].join('\n');
+
+  const waURL = `https://wa.me/201090934546?text=${encodeURIComponent(msg)}`;
+  window.open(waURL, '_blank');
+
+  // Show step 4
+  subShowStep(4);
 }
 
 // Encryption for subscription data (separate salt from accounts)
@@ -4115,47 +4684,191 @@ async function loadSubscriptions() {
   showLoading(false);
   state.subscriptions = rows || [];
 
-  // Update stats
-  const total   = rows.length;
-  const pending = rows.filter(r=>r.status==='pending').length;
-  const active  = rows.filter(r=>r.status==='active').length;
-  document.getElementById('subsStatTotal').textContent   = total;
-  document.getElementById('subsStatPending').textContent = pending;
-  document.getElementById('subsStatActive').textContent  = active;
+  const total    = rows.length;
+  const pending  = rows.filter(r=>r.status==='pending').length;
+  const active   = rows.filter(r=>r.status==='active').length;
+  const uniqueAcc = new Set(rows.map(r=>r.account_id_hash||r.id)).size;
+  document.getElementById('subsStatTotal').textContent    = total;
+  document.getElementById('subsStatPending').textContent  = pending;
+  document.getElementById('subsStatActive').textContent   = active;
+  document.getElementById('subsStatAccounts').textContent = uniqueAcc;
 
   if (rows.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>لا توجد اشتراكات بعد</p></div></td></tr>`;
     return;
   }
 
-  tbody.innerHTML = rows.map((r,i) => `
-    <tr>
-      <td>${i+1}</td>
+  // Group by account_id_hash
+  const grouped = {};
+  rows.forEach(r => {
+    const key = r.account_id_hash || String(r.id);
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(r);
+  });
+
+  const statusColor = { pending:'var(--gold)', active:'var(--green)', expired:'var(--red)', rejected:'var(--red)' };
+  const statusLabel = { pending:'⏳ قيد المراجعة', active:'✅ نشط', expired:'❌ منتهي', rejected:'🚫 مرفوض' };
+
+  tbody.innerHTML = Object.entries(grouped).map(([hash, subs], gi) => {
+    const latest = subs[0]; // most recent
+    const count  = subs.length;
+    // Count active subscriptions
+    const activeCount = subs.filter(s=>s.status==='active').length;
+    return `
+    <tr style="cursor:pointer;transition:background .15s;" 
+        onclick="openEditSub(${latest.id},'${hash}')"
+        onmouseover="this.style.background='rgba(201,168,76,0.05)'"
+        onmouseout="this.style.background=''">
+      <td>${gi+1}</td>
+      <td style="font-size:13px;font-weight:600;">${esc(latest.server_name)}</td>
+      <td style="color:var(--green);font-weight:800;">$${(latest.balance||0).toLocaleString()}</td>
+      <td style="color:var(--gold);font-weight:700;">${latest.profit_percentage||0}%</td>
       <td>
-        <span id="subAccId_${r.id}" style="font-family:monospace;">••••••••</span>
-        <button onclick="toggleSubField('subAccId_${r.id}','${r.account_id}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;margin-right:6px;">👁</button>
+        <span style="display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;
+              background:${statusColor[latest.status]||'var(--muted)'}22;
+              color:${statusColor[latest.status]||'var(--muted)'};">
+          ${statusLabel[latest.status]||latest.status}
+        </span>
       </td>
-      <td style="font-size:13px;">${esc(r.server_name)}</td>
+      <td style="color:var(--muted);font-size:12px;">${latest.created_at?formatDate(latest.created_at.split('T')[0]):'—'}</td>
       <td>
-        <span id="subPass_${r.id}" style="font-family:monospace;">••••••••</span>
-        <button onclick="toggleSubField('subPass_${r.id}','${r.account_password}')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;margin-right:6px;">👁</button>
-        <button onclick="copySubField('${r.account_password}')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;">📋</button>
+        <span title="إجمالي الاشتراكات لهذا الحساب" style="background:rgba(99,102,241,.15);color:var(--accent);padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;">
+          ${count} ${count===1?'اشتراك':'اشتراكات'}
+        </span>
+        ${activeCount>0?`<span title="اشتراك نشط" style="background:rgba(16,185,129,.15);color:var(--green);padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700;margin-right:4px;">${activeCount} ✅</span>`:''}
       </td>
-      <td style="color:var(--green);font-weight:700;">$${(r.balance||0).toLocaleString()}</td>
-      <td>
-        <select onchange="updateSubStatus(${r.id}, this.value)"
-                style="padding:4px 8px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-family:Cairo,sans-serif;font-size:12px;">
-          <option value="pending"  ${r.status==='pending' ?'selected':''}>⏳ قيد المراجعة</option>
-          <option value="active"   ${r.status==='active'  ?'selected':''}>✅ نشط</option>
-          <option value="expired"  ${r.status==='expired' ?'selected':''}>❌ منتهي</option>
-          <option value="rejected" ${r.status==='rejected'?'selected':''}>🚫 مرفوض</option>
-        </select>
+      <td onclick="event.stopPropagation();">
+        <button class="btn btn-red btn-sm" onclick="deleteSubscriptionGroup('${hash}',${subs.map(s=>s.id).join(',') ? '['+subs.map(s=>s.id).join(',')+']' : '[]'})">🗑</button>
       </td>
-      <td style="color:var(--muted);font-size:12px;">${r.created_at ? formatDate(r.created_at.split('T')[0]) : '—'}</td>
-      <td>
-        <button class="btn btn-red btn-sm" onclick="deleteSubscription(${r.id})">🗑</button>
-      </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
+}
+
+// ===== EDIT SUBSCRIPTION =====
+async function openEditSub(id, hash) {
+  const sub = state.subscriptions.find(s => s.id === id);
+  if (!sub) return;
+
+  document.getElementById('editSubId').value = id;
+  document.getElementById('editSubTitle').textContent = `📋 اشتراك — ${esc(sub.server_name)}`;
+  document.getElementById('editSubServerDisp').textContent = sub.server_name || '—';
+  document.getElementById('editSubDateDisp').textContent = sub.created_at ? formatDate(sub.created_at.split('T')[0]) : '—';
+  document.getElementById('editSubAccIdEnc').textContent = sub.account_id || '';
+  document.getElementById('editSubPassEnc').textContent  = sub.account_password || '';
+  document.getElementById('editSubAccIdDisp').textContent = '••••••••';
+  document.getElementById('editSubPassDisp').textContent  = '••••••••';
+  document.getElementById('editSubBalance').value    = sub.balance || 0;
+  document.getElementById('editSubProfitPct').value  = sub.profit_percentage || 0;
+  document.getElementById('editSubStatus').value     = sub.status || 'pending';
+  document.getElementById('editSubNotes').value      = sub.notes || '';
+  document.getElementById('editSubError').style.display = 'none';
+
+  // Show delete button
+  document.getElementById('editSubDeleteBtn').onclick = () => deleteSubscription(id);
+
+  // Load subscription history for same account
+  const sameAcc = state.subscriptions.filter(s => (s.account_id_hash || String(s.id)) === hash);
+  const histEl  = document.getElementById('editSubHistory');
+  if (sameAcc.length > 1) {
+    const statusLabel = { pending:'⏳', active:'✅', expired:'❌', rejected:'🚫' };
+    histEl.innerHTML = `
+      <div style="margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:8px;">📅 تاريخ الاشتراكات لهذا الحساب (${sameAcc.length} اشتراك)</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          ${sameAcc.map((s,i) => `
+            <div onclick="openEditSub(${s.id},'${hash}')" style="display:flex;justify-content:space-between;align-items:center;background:var(--surface);border-radius:8px;padding:8px 12px;font-size:12px;${s.id===id?'border:1px solid var(--gold);':''};cursor:pointer;">
+              <span>${i+1}. ${s.created_at?formatDate(s.created_at.split('T')[0]):'—'}</span>
+              <span style="color:var(--gold);">$${(s.balance||0).toLocaleString()}</span>
+              <span>${statusLabel[s.status]||s.status} ${s.status}</span>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  } else {
+    histEl.innerHTML = '';
+  }
+
+  openModal('editSubModal');
+}
+
+async function revealEditField(dispId, encId) {
+  const dispEl = document.getElementById(dispId);
+  const encEl  = document.getElementById(encId);
+  if (!dispEl || !encEl) return;
+  if (dispEl.textContent !== '••••••••') { dispEl.textContent='••••••••'; return; }
+  dispEl.textContent = '🔄...';
+  const plain = await decryptSubData(encEl.textContent);
+  dispEl.textContent = plain;
+}
+
+async function copyEditField(encId) {
+  const encEl = document.getElementById(encId);
+  if (!encEl) return;
+  const plain = await decryptSubData(encEl.textContent);
+  navigator.clipboard?.writeText(plain).then(() => showToast('✅ تم النسخ'));
+}
+
+async function saveSubEdit() {
+  const id         = parseInt(document.getElementById('editSubId').value);
+  const balance    = parseFloat(document.getElementById('editSubBalance').value) || 0;
+  const profitPct  = parseFloat(document.getElementById('editSubProfitPct').value) || 0;
+  const status     = document.getElementById('editSubStatus').value;
+  const notes      = document.getElementById('editSubNotes').value.trim();
+  const errEl      = document.getElementById('editSubError');
+  errEl.style.display = 'none';
+
+  showLoading(true);
+  const patchHeaders = { ...svcHeaders(), 'Prefer': 'return=representation' };
+  const patchRes = await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: patchHeaders,
+    body: JSON.stringify({ balance, profit_percentage: profitPct, status, notes })
+  });
+  showLoading(false);
+  const result = patchRes.ok;
+
+  if (!result) { 
+    errEl.textContent = '⚠️ خطأ في الحفظ — تأكد من وجود الأعمدة في الجدول'; 
+    errEl.style.display = 'block'; 
+    return; 
+  }
+
+  // Update local state
+  const sub = state.subscriptions.find(s => s.id === id);
+  if (sub) { sub.balance=balance; sub.profit_percentage=profitPct; sub.status=status; sub.notes=notes; }
+
+  closeModal('editSubModal');
+  loadSubscriptions();
+  showToast('✅ تم حفظ التعديل');
+}
+
+async function deleteSubscription(id) {
+  if (!confirm('حذف هذا الاشتراك نهائياً؟')) return;
+  showLoading(true);
+  const r = await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
+  showLoading(false);
+  if (!r.ok) { showToast('⚠️ خطأ في الحذف'); return; }
+  closeModal('editSubModal');
+  loadSubscriptions();
+  showToast('🗑️ تم الحذف');
+}
+
+async function deleteSubscriptionGroup(hash, ids) {
+  const msg = ids.length > 1
+    ? `حذف كل اشتراكات هذا الحساب (${ids.length} اشتراكات) نهائياً؟`
+    : 'حذف هذا الاشتراك نهائياً؟';
+  if (!confirm(msg)) return;
+  showLoading(true);
+  // Delete all by hash
+  const r = await fetch(`${SB_URL}/subscriptions?account_id_hash=eq.${encodeURIComponent(hash)}`, { method: 'DELETE', headers: svcHeaders() });
+  // Fallback: delete by IDs
+  if (!r.ok || ids.length > 0) {
+    for (const id of ids) {
+      await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
+    }
+  }
+  showLoading(false);
+  loadSubscriptions();
+  showToast(`🗑️ تم الحذف (${ids.length} اشتراك)`);
 }
 
 const _subFieldVisible = {};
@@ -4163,35 +4876,219 @@ async function toggleSubField(elId, cipher) {
   const el = document.getElementById(elId);
   if (!el) return;
   if (_subFieldVisible[elId]) {
-    el.textContent = '••••••••'; _subFieldVisible[elId] = false;
+    el.textContent='••••••••'; _subFieldVisible[elId]=false;
   } else {
-    el.textContent = '🔄...';
+    el.textContent='🔄...';
     const plain = await decryptSubData(cipher);
-    el.textContent = plain; _subFieldVisible[elId] = true;
+    el.textContent=plain; _subFieldVisible[elId]=true;
+  }
+}
+async function copySubField(cipher) {
+  const plain = await decryptSubData(cipher);
+  navigator.clipboard?.writeText(plain).then(()=>showToast('✅ تم النسخ'));
+}
+async function updateSubStatus(id, status) {
+  showLoading(true);
+  const r = await sbPatch('subscriptions', id, { status });
+  showLoading(false);
+  if (r) { loadSubscriptions(); showToast('✅ تم تحديث الحالة'); }
+  else showToast('⚠️ فشل التحديث');
+}
+
+
+// ===== LOGIN TABS =====
+function switchLoginTab(tab) {
+  const t1=document.getElementById('loginTab1'), t2=document.getElementById('loginTab2');
+  const p1=document.getElementById('loginPanel1'), p2=document.getElementById('loginPanel2');
+  if(tab===1){
+    t1.style.background='#C9A84C'; t1.style.color='#000';
+    t2.style.background='transparent'; t2.style.color='#6B7280';
+    p1.style.display='block'; p2.style.display='none';
+  } else {
+    t2.style.background='#C9A84C'; t2.style.color='#000';
+    t1.style.background='transparent'; t1.style.color='#6B7280';
+    p1.style.display='none'; p2.style.display='block';
+    setTimeout(()=>document.getElementById('clientAccountId').focus(),100);
   }
 }
 
-async function copySubField(cipher) {
-  const plain = await decryptSubData(cipher);
-  navigator.clipboard?.writeText(plain).then(() => showToast('✅ تم النسخ'));
+// ===== HASH FUNCTION =====
+async function hashAccountId(accountId) {
+  const data = new TextEncoder().encode(accountId.trim() + 'bd_account_hash_2026');
+  const hash = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,'0')).join('');
 }
 
-async function updateSubStatus(id, status) {
-  showLoading(true);
-  await sbPatch('subscriptions', id, { status });
-  showLoading(false);
-  loadSubscriptions();
-  showToast('✅ تم تحديث الحالة');
+// ===== CLIENT LOGIN =====
+const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk';
+const BASE  = 'https://cbfaybsuzjthuwftfuac.supabase.co/rest/v1';
+const HDRS  = { 'apikey': ANON, 'Content-Type': 'application/json' };
+
+async function doClientLogin() {
+  const accountId = document.getElementById('clientAccountId').value.trim();
+  const password  = document.getElementById('clientPassword').value;
+  const errEl     = document.getElementById('clientLoginError');
+  const showCErr  = msg => { errEl.textContent=msg; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px;font-size:13px;margin-top:8px;'; };
+  errEl.style.display='none';
+
+  if(!accountId){ showCErr('⚠️ أدخل رقم الحساب'); return; }
+  if(!password) { showCErr('⚠️ أدخل الرقم السري'); return; }
+
+  const btn = document.querySelector('#loginPanel2 .btn-gold');
+  btn.textContent='⏳ جاري التحقق...'; btn.disabled=true;
+
+  try {
+    const hash = await hashAccountId(accountId);
+    // Search by hash
+    let r = await fetch(`${BASE}/subscriptions?account_id_hash=eq.${encodeURIComponent(hash)}&order=id.desc`, {headers:HDRS});
+    let subs = await r.json();
+
+    // Fallback: decrypt all and compare
+    if(!subs || subs.length===0){
+      const all = await (await fetch(`${BASE}/subscriptions?order=id.desc`,{headers:HDRS})).json();
+      for(const sub of (all||[])){
+        const dec = await decryptSubData(sub.account_id);
+        if(dec.trim()===accountId.trim()){
+          subs=[sub];
+          // Save hash
+          fetch(`${BASE}/subscriptions?id=eq.${sub.id}`,{method:'PATCH',headers:{...HDRS,'Prefer':'return=minimal'},body:JSON.stringify({account_id_hash:hash})}).catch(()=>{});
+          break;
+        }
+      }
+    }
+
+    if(!subs||subs.length===0){ showCErr('⚠️ رقم الحساب غير موجود'); btn.textContent='📊 دخول حسابي'; btn.disabled=false; return; }
+
+    const sub = subs[0];
+    const stored = await decryptSubData(sub.account_password);
+    if(stored.trim()!==password.trim()){ showCErr('⚠️ الرقم السري غير صحيح'); btn.textContent='📊 دخول حسابي'; btn.disabled=false; return; }
+
+    closeLoginModal();
+    await showClientPortal(sub, hash);
+
+  } catch(e){ showCErr('⚠️ خطأ: '+e.message); }
+  btn.textContent='📊 دخول حسابي'; btn.disabled=false;
 }
 
-async function deleteSubscription(id) {
-  if (!confirm('حذف هذا الاشتراك؟')) return;
+async function showClientPortal(sub, hash) {
+  document.getElementById('landingPage').classList.add('hidden');
+  document.getElementById('clientPortal').style.display='block';
+
+  const accountId = await decryptSubData(sub.account_id);
+  document.getElementById('clientName').textContent = 'حساب: ' + accountId;
+  const sm = {active:'✅ نشط',pending:'⏳ قيد المراجعة',expired:'❌ منتهي',rejected:'🚫 مرفوض'};
+  const sc = {active:'#00C896',pending:'#C9A84C',expired:'#f87171',rejected:'#f87171'};
+  document.getElementById('clientStatus').innerHTML = `<span style="color:${sc[sub.status]||'#fff'}">${sm[sub.status]||sub.status}</span>`;
+  document.getElementById('clientBalance').textContent = '$'+(sub.balance||0).toLocaleString();
+  const days = Math.floor((Date.now()-new Date(sub.created_at))/(1000*60*60*24));
+  document.getElementById('clientDays').textContent = days;
+
+  // Load profits
+  const profits = await (await fetch(`${BASE}/profits?account_id_hash=eq.${encodeURIComponent(hash)}&order=date.desc`,{headers:HDRS})).json()||[];
+  const total = profits.reduce((s,p)=>s+(parseFloat(p.daily_profit)||0),0);
+  document.getElementById('clientTotalProfit').textContent = '$'+total.toFixed(2);
+
+  const tbody = document.getElementById('clientProfitsBody');
+  tbody.innerHTML = profits.length===0
+    ? '<tr><td colspan="4" style="padding:40px;text-align:center;color:#6B7280;">لا توجد بيانات أرباح بعد — سيتم التحديث يومياً</td></tr>'
+    : profits.map(p=>`<tr style="border-bottom:1px solid rgba(255,255,255,0.04);">
+        <td style="padding:12px 16px;color:#9CA3AF;font-size:13px;">${p.date}</td>
+        <td style="padding:12px 16px;font-weight:700;color:${parseFloat(p.daily_profit)>=0?'#00C896':'#f87171'};">${parseFloat(p.daily_profit)>=0?'+':''}$${parseFloat(p.daily_profit).toFixed(2)}</td>
+        <td style="padding:12px 16px;font-weight:700;color:#C9A84C;">$${parseFloat(p.balance||0).toFixed(2)}</td>
+        <td style="padding:12px 16px;color:#6B7280;font-size:12px;">${p.notes||'—'}</td>
+      </tr>`).join('');
+}
+
+function doClientLogout() {
+  document.getElementById('clientPortal').style.display='none';
+  document.getElementById('landingPage').classList.remove('hidden');
+}
+
+// ============ PROFITS MANAGEMENT ============
+async function loadProfits() {
+  const tbody=document.getElementById('profitsTable');
+  if(!tbody) return;
   showLoading(true);
-  await sbDelete('subscriptions', id);
+  const rows=await sbGet('profits','');
   showLoading(false);
-  loadSubscriptions();
+  if(!rows||rows.length===0){ tbody.innerHTML=`<tr><td colspan="7"><div class="empty-state"><div class="icon">💹</div><p>لا توجد بيانات</p></div></td></tr>`; return; }
+  tbody.innerHTML=rows.map((r,i)=>`<tr>
+    <td>${i+1}</td>
+    <td style="font-family:monospace;font-size:11px;color:var(--muted);" title="${esc(r.account_id_hash||'')}">${esc(r.account_id_hash||'').substring(0,10)}...</td>
+    <td style="font-size:12px;">${r.date||'—'}</td>
+    <td style="font-weight:800;color:${parseFloat(r.daily_profit)>=0?'var(--green)':'var(--red)'};">${parseFloat(r.daily_profit)>=0?'+':''}$${parseFloat(r.daily_profit||0).toFixed(2)}</td>
+    <td style="color:var(--gold);font-weight:700;">$${parseFloat(r.balance||0).toFixed(2)}</td>
+    <td style="color:var(--muted);font-size:12px;">${esc(r.notes||'—')}</td>
+    <td style="display:flex;gap:4px;">
+      <button class="btn btn-ghost btn-sm" onclick="openEditProfit(${r.id},${parseFloat(r.daily_profit)||0},${parseFloat(r.balance)||0},'${esc(r.date||'')}','${esc(r.notes||'')}')">✏️</button>
+      <button class="btn btn-red btn-sm" onclick="deleteProfit(${r.id})">🗑</button>
+    </td>
+  </tr>`).join('');
+}
+
+async function addProfit() {
+  const accountId=document.getElementById('profAccountId').value.trim();
+  const date=document.getElementById('profDate').value;
+  const daily=parseFloat(document.getElementById('profDailyProfit').value)||0;
+  const bal=parseFloat(document.getElementById('profBalance').value)||0;
+  const notes=document.getElementById('profNotes').value.trim();
+  const errEl=document.getElementById('profitError');
+  errEl.style.display='none';
+  if(!accountId){errEl.textContent='⚠️ أدخل رقم الحساب';errEl.style.display='block';return;}
+  if(!date){errEl.textContent='⚠️ أدخل التاريخ';errEl.style.display='block';return;}
+  showLoading(true);
+  const hash=await hashAccountId(accountId);
+  const row=await sbPost('profits',{account_id_hash:hash,date,daily_profit:daily,balance:bal,notes});
+  showLoading(false);
+  if(!row){errEl.textContent='⚠️ خطأ في الحفظ';errEl.style.display='block';return;}
+  closeModal('addProfitModal');
+  ['profAccountId','profDailyProfit','profBalance','profNotes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('profDate').value='';
+  const psel = document.getElementById('profAccountSelect');
+  if(psel) psel.value='';
+  loadProfits();
+  showToast('✅ تم حفظ الربح');
+}
+
+async function deleteProfit(id) {
+  if(!confirm('حذف هذا السجل؟')) return;
+  showLoading(true);
+  await sbDelete('profits',id);
+  showLoading(false);
+  loadProfits();
   showToast('🗑️ تم الحذف');
 }
+
+function openEditProfit(id, daily, balance, date, notes) {
+  document.getElementById('editProfitId').value = id;
+  document.getElementById('editProfitDate').value = date;
+  document.getElementById('editProfitDaily').value = daily;
+  document.getElementById('editProfitBalance').value = balance;
+  document.getElementById('editProfitNotes').value = notes;
+  document.getElementById('editProfitError').style.display = 'none';
+  openModal('editProfitModal');
+}
+
+async function saveEditProfit() {
+  const id      = parseInt(document.getElementById('editProfitId').value);
+  const date    = document.getElementById('editProfitDate').value;
+  const daily   = parseFloat(document.getElementById('editProfitDaily').value) || 0;
+  const balance = parseFloat(document.getElementById('editProfitBalance').value) || 0;
+  const notes   = document.getElementById('editProfitNotes').value.trim();
+  const errEl   = document.getElementById('editProfitError');
+  errEl.style.display = 'none';
+  if (!date) { errEl.textContent = '⚠️ أدخل التاريخ'; errEl.style.display='block'; return; }
+  showLoading(true);
+  const r = await sbPatch('profits', id, { date, daily_profit: daily, balance, notes });
+  showLoading(false);
+  if (!r) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.display='block'; return; }
+  closeModal('editProfitModal');
+  loadProfits();
+  showToast('✅ تم التعديل');
+}
+
+// Update submitSubscription to save hash
+const _origSubmit = typeof submitSubscription !== 'undefined' ? submitSubscription : null;
 
 </script>
 </body>
