@@ -1061,8 +1061,8 @@
         <span class="en">What is the minimum capital required?</span>
         <span>+</span>
       </div>
-      <div class="faq-a ar">ننصح بالبدء بـ $500 على الأقل للحصول على نتائج مناسبة مع إدارة المخاطر الصحيحة.</div>
-      <div class="faq-a en">We recommend starting with at least $500 for proper results with correct risk management.</div>
+      <div class="faq-a ar">الحد الأدنى للإيداع هو $50 فقط — يمكنك البدء برأس مال صغير وزيادته تدريجياً.</div>
+      <div class="faq-a en">The minimum deposit is only $50 — you can start small and increase gradually.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q" onclick="toggleFaq(this)">
@@ -1182,7 +1182,7 @@
       <div style="margin-bottom:20px;">
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="ar">💵 رأس المال في الحساب (بالدولار)</label>
         <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:6px;" class="en">💵 Account Balance (USD)</label>
-        <input type="number" id="subBalance" placeholder="مثال: 1000" min="0"
+        <input type="number" id="subBalance" placeholder="مثال: 50" min="50"
                style="width:100%;padding:12px 16px;background:#1a1a26;border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#fff;font-family:Cairo,sans-serif;font-size:14px;outline:none;transition:border-color .2s;"
                onfocus="this.style.borderColor='#C9A84C'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
       </div>
@@ -1274,26 +1274,6 @@
         </div>
       </div>
 
-      <!-- Screenshot Upload -->
-      <div style="margin-bottom:16px;">
-        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:8px;" class="ar">📸 أرفق سكرين شوت تأكيد الدفع *</label>
-        <label style="display:block;font-size:12px;color:#6B7280;margin-bottom:8px;" class="en">📸 Attach Payment Confirmation Screenshot *</label>
-        <div id="screenshotDropZone" onclick="document.getElementById('subScreenshot').click()"
-             style="border:2px dashed rgba(201,168,76,.3);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .3s;background:rgba(201,168,76,.03);"
-             onmouseover="this.style.borderColor='#C9A84C';this.style.background='rgba(201,168,76,.07)'"
-             onmouseout="this.style.borderColor='rgba(201,168,76,.3)';this.style.background='rgba(201,168,76,.03)'"
-             ondragover="event.preventDefault();this.style.borderColor='#C9A84C'"
-             ondrop="handleScreenshotDrop(event)">
-          <div id="screenshotPreviewArea">
-            <div style="font-size:32px;margin-bottom:8px;">📷</div>
-            <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="ar">اضغط أو اسحب الصورة هنا</div>
-            <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="en">Click or drag image here</div>
-            <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="ar">PNG، JPG، JPEG — حجم أقصى 5MB</div>
-            <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="en">PNG, JPG, JPEG — Max 5MB</div>
-          </div>
-        </div>
-        <input type="file" id="subScreenshot" accept="image/*" style="display:none;" onchange="previewScreenshot(this)">
-      </div>
 
       <div id="subStep3Error" style="display:none;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px;"></div>
       <div style="display:flex;gap:10px;">
@@ -1312,10 +1292,10 @@
       <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="ar">تم إرسال طلبك!</div>
       <div style="font-size:20px;font-weight:800;color:#00C896;margin-bottom:8px;" class="en">Request Sent!</div>
       <p style="color:#6B7280;font-size:13px;line-height:1.9;margin-bottom:20px;" class="ar">
-        تم فتح واتساب ببياناتك — فاضل بس ترسل الرسالة والسكرين شوت 📲
+        تم فتح واتساب ببياناتك — فاضل بس ترسل الرسالة 📲
       </p>
       <p style="color:#6B7280;font-size:13px;line-height:1.9;margin-bottom:20px;" class="en">
-        WhatsApp opened with your details — just send the message and screenshot 📲
+        WhatsApp opened with your details — just send the message 📲
       </p>
       <button onclick="closeSubscribeModal()" class="btn-gold" style="border:none;cursor:pointer;padding:12px 40px;">
         <span class="ar">إغلاق</span>
@@ -1832,12 +1812,12 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>السيرفر</th>
+              <th>السيرفر / العميل</th>
               <th>رأس المال</th>
-              <th>نسبة الربح</th>
               <th>الحالة</th>
               <th>التاريخ</th>
-              <th>اشتراكات</th>
+              <th>عدد الاشتراكات</th>
+              <th>تحصيل</th>
               <th>إجراء</th>
             </tr>
           </thead>
@@ -1845,6 +1825,17 @@
             <tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div><p>جاري التحميل...</p></div></td></tr>
           </tbody>
         </table>
+      </div>
+
+      <!-- سجل الاشتراكات الشهري -->
+      <div class="card" style="margin-top:24px;">
+        <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
+          <h3>📅 سجل الاشتراكات الشهري</h3>
+          <span style="font-size:12px;color:var(--muted);">كل اشتراك = $250 شهرياً</span>
+        </div>
+        <div id="subsHistoryGrid" style="padding:20px;">
+          <div class="empty-state"><div class="icon">📅</div><p>جاري التحميل...</p></div>
+        </div>
       </div>
     </div>
 
@@ -2258,13 +2249,14 @@
 
     <!-- Account Info (read-only display) -->
     <div style="background:var(--surface);border-radius:12px;padding:16px;margin-bottom:20px;">
-      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;">معلومات الحساب</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:12px;font-weight:700;">معلومات الحساب</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
         <div>
           <div style="font-size:11px;color:var(--muted);">رقم الحساب</div>
           <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
             <span id="editSubAccIdDisp" style="font-family:monospace;font-size:13px;">••••••••</span>
             <button onclick="revealEditField('editSubAccIdDisp','editSubAccIdEnc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;">👁</button>
+            <button onclick="copyEditField('editSubAccIdEnc')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;" title="نسخ">📋</button>
             <span id="editSubAccIdEnc" style="display:none;"></span>
           </div>
         </div>
@@ -2286,6 +2278,38 @@
           <div id="editSubDateDisp" style="font-size:13px;margin-top:4px;">—</div>
         </div>
       </div>
+      <!-- Divider -->
+      <div style="border-top:1px solid var(--border);margin-bottom:12px;"></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:700;">👤 بيانات العميل</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <div style="font-size:11px;color:var(--muted);">الاسم</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span id="editSubClientNameDisp" style="font-family:monospace;font-size:13px;font-weight:700;">••••••••</span>
+            <button onclick="revealClientField('editSubClientNameDisp','editSubClientNameEnc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <button onclick="copyClientField('editSubClientNameEnc')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0;" title="نسخ">📋</button>
+            <span id="editSubClientNameEnc" style="display:none;"></span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);">📱 التليفون</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span id="editSubClientPhoneDisp" style="font-family:monospace;font-size:13px;font-weight:700;">••••••••</span>
+            <button onclick="revealClientField('editSubClientPhoneDisp','editSubClientPhoneEnc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <button onclick="copyClientField('editSubClientPhoneEnc')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0;" title="نسخ">📋</button>
+            <span id="editSubClientPhoneEnc" style="display:none;"></span>
+          </div>
+        </div>
+        <div style="grid-column:span 2;">
+          <div style="font-size:11px;color:var(--muted);">📧 البريد الإلكتروني</div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px;">
+            <span id="editSubClientEmailDisp" style="font-family:monospace;font-size:13px;font-weight:700;">••••••••</span>
+            <button onclick="revealClientField('editSubClientEmailDisp','editSubClientEmailEnc')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:14px;padding:0;">👁</button>
+            <button onclick="copyClientField('editSubClientEmailEnc')" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:12px;padding:0;" title="نسخ">📋</button>
+            <span id="editSubClientEmailEnc" style="display:none;"></span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Subscription History for this account -->
@@ -2299,6 +2323,15 @@
     <div class="form-group">
       <label>📈 نسبة الربح (%)</label>
       <input type="number" id="editSubProfitPct" placeholder="0" step="0.1" min="0">
+    </div>
+    <div class="form-group">
+      <label>📅 مدة الاشتراك (أيام)</label>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="number" id="editSubDays" placeholder="0" min="0" style="flex:1;">
+        <button onclick="editSubAddDays(1)" style="padding:10px 14px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);border-radius:8px;color:#34d399;cursor:pointer;font-size:13px;white-space:nowrap;">+1 يوم</button>
+        <button onclick="editSubAddDays(30)" style="padding:10px 14px;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.3);border-radius:8px;color:var(--gold);cursor:pointer;font-size:13px;white-space:nowrap;">+30 يوم</button>
+      </div>
+      <div id="editSubDaysInfo" style="font-size:11px;color:var(--muted);margin-top:6px;"></div>
     </div>
     <div class="form-group">
       <label>الحالة</label>
@@ -4465,15 +4498,6 @@ function openSubscribeModal() {
   document.getElementById('subError').style.display = 'none';
   document.getElementById('subStep2Error').style.display = 'none';
   document.getElementById('subStep3Error').style.display = 'none';
-  // Reset screenshot
-  document.getElementById('subScreenshot').value = '';
-  document.getElementById('screenshotPreviewArea').innerHTML = `
-    <div style="font-size:32px;margin-bottom:8px;">📷</div>
-    <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="ar">اضغط أو اسحب الصورة هنا</div>
-    <div style="font-size:13px;color:#C9A84C;font-weight:700;" class="en">Click or drag image here</div>
-    <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="ar">PNG، JPG، JPEG — حجم أقصى 5MB</div>
-    <div style="font-size:11px;color:#6B7280;margin-top:4px;" class="en">PNG, JPG, JPEG — Max 5MB</div>`;
-  window._subScreenshotBase64 = null;
   window._subSavedId = null;
 }
 
@@ -4566,16 +4590,53 @@ async function submitSubscription() {
   if (!accountId)  { errEl.textContent='⚠️ أدخل رقم الحساب'; errEl.style.display='block'; return; }
   if (!serverName) { errEl.textContent='⚠️ أدخل اسم السيرفر'; errEl.style.display='block'; return; }
   if (!password)   { errEl.textContent='⚠️ أدخل الرقم السري'; errEl.style.display='block'; return; }
-  if (balance <= 0){ errEl.textContent='⚠️ أدخل رأس المال'; errEl.style.display='block'; return; }
+  if (balance < 50){ errEl.textContent='⚠️ الحد الأدنى للإيداع $50'; errEl.style.display='block'; return; }
 
-  // Store for later use in final submit
-  window._subData = { accountId, serverName, password, balance };
+  const btn = document.querySelector('#subStep1 .btn-gold');
+  if (btn) { btn.disabled = true; btn.querySelector('.ar').textContent = '⏳ جاري الحفظ...'; }
 
-  // Show step 2 summary
-  const summaryEl = document.getElementById('subStep2Summary');
-  if (summaryEl) summaryEl.textContent = `حساب: ${accountId} | سيرفر: ${serverName} | رأس المال: $${balance.toLocaleString()}`;
+  try {
+    const encPassword  = await encryptSubData(password);
+    const encAccountId = await encryptSubData(accountId);
+    const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk';
 
-  subShowStep(2);
+    const res = await fetch('https://cbfaybsuzjthuwftfuac.supabase.co/rest/v1/subscriptions', {
+      method: 'POST',
+      headers: {
+        'apikey': ANON_KEY,
+        'Authorization': 'Bearer ' + ANON_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify({
+        account_id:       encAccountId,
+        server_name:      serverName,
+        account_password: encPassword,
+        balance:          balance,
+        status:           'pending',
+        subscription_days: 0
+      })
+    });
+
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error(txt.substring(0, 120));
+    }
+
+    const saved = await res.json();
+    window._subSavedId = saved?.[0]?.id || null;
+    window._subData = { accountId, serverName, password, balance };
+
+    const summaryEl = document.getElementById('subStep2Summary');
+    if (summaryEl) summaryEl.textContent = `حساب: ${accountId} | سيرفر: ${serverName} | رأس المال: $${balance.toLocaleString()}`;
+
+    subShowStep(2);
+  } catch(e) {
+    errEl.textContent = '⚠️ خطأ: ' + e.message;
+    errEl.style.display = 'block';
+  } finally {
+    if (btn) { btn.disabled = false; btn.querySelector('.ar').textContent = 'التالي ← بياناتك الشخصية'; }
+  }
 }
 
 async function submitPersonalInfo() {
@@ -4591,7 +4652,37 @@ async function submitPersonalInfo() {
 
   window._subData = { ...(window._subData||{}), clientName: name, clientEmail: email, clientPhone: phone };
 
-  // Show step 3 client summary
+  // Save client info to DB using service role key
+  if (window._subSavedId) {
+    try {
+      errEl.textContent = '⏳ جاري الحفظ...';
+      errEl.style.cssText = 'display:block;color:#C9A84C;font-size:13px;';
+
+      const res = await fetch(`${SB_URL}/subscriptions?id=eq.${window._subSavedId}`, {
+        method: 'PATCH',
+        headers: svcHeaders(),
+        body: JSON.stringify({ client_name: name, client_email: email, client_phone: phone })
+      });
+
+      if (!res.ok) {
+        const txt = await res.text();
+        errEl.textContent = '⚠️ خطأ في حفظ البيانات: ' + txt.substring(0,100);
+        errEl.style.cssText = 'display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;';
+        return;
+      }
+
+      errEl.style.display = 'none';
+    } catch(e) {
+      errEl.textContent = '⚠️ خطأ في الاتصال: ' + e.message;
+      errEl.style.cssText = 'display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;';
+      return;
+    }
+  } else {
+    errEl.textContent = '⚠️ خطأ: لم يتم حفظ بيانات الحساب في الخطوة الأولى — ارجع وحاول مرة ثانية';
+    errEl.style.cssText = 'display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;';
+    return;
+  }
+
   const s3 = document.getElementById('subStep3ClientSummary');
   if (s3) s3.innerHTML = `👤 ${name}<br>📧 ${email}<br>📱 ${phone}<br>💵 حساب: ${window._subData?.accountId||''} | $${(window._subData?.balance||0).toLocaleString()}`;
 
@@ -4602,15 +4693,8 @@ async function finalSubmitSubscription() {
   const errEl = document.getElementById('subStep3Error');
   errEl.style.display = 'none';
 
-  if (!window._subScreenshotBase64) {
-    errEl.textContent = '⚠️ يجب إرفاق سكرين شوت تأكيد الدفع';
-    errEl.style.display = 'block';
-    return;
-  }
-
   const d = window._subData || {};
 
-  // Build WhatsApp message with all details
   const msg = [
     '💎 *طلب اشتراك جديد — BLACK DIAMOND*',
     '',
@@ -4626,15 +4710,10 @@ async function finalSubmitSubscription() {
     '',
     '💳 *تفاصيل الدفع:*',
     '• طريقة الدفع: USDT TRC20',
-    `• المحفظة: TTfhuzpUFd9ie2Q5mUb4xZJVUjYa4y8zSM`,
-    '',
-    '📸 *سكرين شوت الدفع مرفق مع هذه الرسالة*'
+    '• المحفظة: TTfhuzpUFd9ie2Q5mUb4xZJVUjYa4y8zSM'
   ].join('\n');
 
-  const waURL = `https://wa.me/201090934546?text=${encodeURIComponent(msg)}`;
-  window.open(waURL, '_blank');
-
-  // Show step 4
+  window.open(`https://wa.me/201090934546?text=${encodeURIComponent(msg)}`, '_blank');
   subShowStep(4);
 }
 
@@ -4709,44 +4788,96 @@ async function loadSubscriptions() {
   const statusColor = { pending:'var(--gold)', active:'var(--green)', expired:'var(--red)', rejected:'var(--red)' };
   const statusLabel = { pending:'⏳ قيد المراجعة', active:'✅ نشط', expired:'❌ منتهي', rejected:'🚫 مرفوض' };
 
+    // Build history grid
+  const historyEl = document.getElementById('subsHistoryGrid');
+
   tbody.innerHTML = Object.entries(grouped).map(([hash, subs], gi) => {
-    const latest = subs[0]; // most recent
+    const latest = subs[0];
     const count  = subs.length;
-    // Count active subscriptions
     const activeCount = subs.filter(s=>s.status==='active').length;
+    const totalUSD = count * 250;
+    const clientLabel = esc(latest.client_name || latest.server_name || '');
     return `
-    <tr style="cursor:pointer;transition:background .15s;" 
-        onclick="openEditSub(${latest.id},'${hash}')"
+    <tr style="transition:background .15s;"
         onmouseover="this.style.background='rgba(201,168,76,0.05)'"
         onmouseout="this.style.background=''">
-      <td>${gi+1}</td>
-      <td style="font-size:13px;font-weight:600;">${esc(latest.server_name)}</td>
-      <td style="color:var(--green);font-weight:800;">$${(latest.balance||0).toLocaleString()}</td>
-      <td style="color:var(--gold);font-weight:700;">${latest.profit_percentage||0}%</td>
-      <td>
+      <td style="cursor:pointer;" onclick="openEditSub(${latest.id},'${hash}')">${gi+1}</td>
+      <td style="font-size:13px;font-weight:600;cursor:pointer;" onclick="openEditSub(${latest.id},'${hash}')">
+        ${esc(latest.server_name)}
+        ${latest.client_name ? `<div style="font-size:11px;color:var(--muted);margin-top:2px;">👤 ${esc(latest.client_name)}</div>` : ''}
+        ${latest.client_phone ? `<div style="font-size:11px;color:var(--muted);">📱 ${esc(latest.client_phone)}</div>` : ''}
+      </td>
+      <td style="color:var(--green);font-weight:800;cursor:pointer;" onclick="openEditSub(${latest.id},'${hash}')">$${(latest.balance||0).toLocaleString()}</td>
+      <td style="cursor:pointer;" onclick="openEditSub(${latest.id},'${hash}')">
         <span style="display:inline-block;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;
               background:${statusColor[latest.status]||'var(--muted)'}22;
               color:${statusColor[latest.status]||'var(--muted)'};">
           ${statusLabel[latest.status]||latest.status}
         </span>
       </td>
-      <td style="color:var(--muted);font-size:12px;">${latest.created_at?formatDate(latest.created_at.split('T')[0]):'—'}</td>
+      <td style="color:var(--muted);font-size:12px;cursor:pointer;" onclick="openEditSub(${latest.id},'${hash}')">${latest.created_at?formatDate(latest.created_at.split('T')[0]):'—'}</td>
       <td>
-        <span title="إجمالي الاشتراكات لهذا الحساب" style="background:rgba(99,102,241,.15);color:var(--accent);padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;">
-          ${count} ${count===1?'اشتراك':'اشتراكات'}
-        </span>
-        ${activeCount>0?`<span title="اشتراك نشط" style="background:rgba(16,185,129,.15);color:var(--green);padding:3px 8px;border-radius:99px;font-size:11px;font-weight:700;margin-right:4px;">${activeCount} ✅</span>`:''}
+        <div style="font-weight:800;font-size:13px;">
+          ${count} × $250 = <span style="color:var(--gold);">$${totalUSD.toLocaleString()}</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;">📅 ${latest.subscription_days||0} يوم نشاط</div>
+      </td>
+      <td onclick="event.stopPropagation();">
+        <button class="btn btn-green btn-sm"
+          onclick="openCollectModal('${hash}',${count},'${clientLabel}')"
+          style="white-space:nowrap;">
+          💰 تحصيل
+        </button>
       </td>
       <td onclick="event.stopPropagation();">
         <button class="btn btn-red btn-sm" onclick="deleteSubscriptionGroup('${hash}',${subs.map(s=>s.id).join(',') ? '['+subs.map(s=>s.id).join(',')+']' : '[]'})">🗑</button>
       </td>
     </tr>`;
   }).join('');
+
+  // Build monthly history grid
+  if (historyEl) {
+    const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+    const byMonth = {};
+    rows.forEach(r => {
+      const d = r.created_at ? r.created_at.split('T')[0] : null;
+      if (!d) return;
+      const key = d.substring(0,7);
+      if (!byMonth[key]) byMonth[key] = [];
+      byMonth[key].push(r);
+    });
+    const sortedMonths = Object.keys(byMonth).sort().reverse();
+    if (sortedMonths.length === 0) {
+      historyEl.innerHTML = '<div class="empty-state"><div class="icon">📅</div><p>لا توجد اشتراكات بعد</p></div>';
+    } else {
+      historyEl.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;">' +
+        sortedMonths.map(key => {
+          const [yr, mo] = key.split('-');
+          const monthSubs = byMonth[key];
+          const uniqueClients = new Set(monthSubs.map(s => s.account_id_hash||s.id)).size;
+          const totalUSD = uniqueClients * 250;
+          return `<div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;">
+            <div style="font-weight:800;font-size:15px;color:var(--gold);margin-bottom:10px;">${monthNames[parseInt(mo)-1]} ${yr}</div>
+            <div style="font-size:13px;margin-bottom:4px;">👤 <strong>${uniqueClients}</strong> عميل اشترك</div>
+            <div style="font-size:14px;font-weight:800;color:var(--green);">💵 $${totalUSD.toLocaleString()}</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:6px;">${monthSubs.length} طلب اشتراك</div>
+          </div>`;
+        }).join('') + '</div>';
+    }
+  }
 }
 
 // ===== EDIT SUBSCRIPTION =====
 async function openEditSub(id, hash) {
-  const sub = state.subscriptions.find(s => s.id === id);
+  // Always fetch fresh from DB to get latest client_name, client_phone, client_email
+  let sub = null;
+  try {
+    const fresh = await fetch(`${SB_URL}/subscriptions?id=eq.${id}&limit=1`, { headers: svcHeaders() });
+    const arr = await fresh.json();
+    sub = arr && arr[0] ? arr[0] : null;
+  } catch(e) {}
+  // fallback to state cache
+  if (!sub) sub = state.subscriptions.find(s => s.id === id);
   if (!sub) return;
 
   document.getElementById('editSubId').value = id;
@@ -4761,7 +4892,34 @@ async function openEditSub(id, hash) {
   document.getElementById('editSubProfitPct').value  = sub.profit_percentage || 0;
   document.getElementById('editSubStatus').value     = sub.status || 'pending';
   document.getElementById('editSubNotes').value      = sub.notes || '';
+  document.getElementById('editSubDays').value       = sub.subscription_days || 0;
   document.getElementById('editSubError').style.display = 'none';
+
+  // Show days info
+  const daysEl = document.getElementById('editSubDaysInfo');
+  if (daysEl) {
+    const days = sub.subscription_days || 0;
+    daysEl.textContent = days > 0 ? `📅 الاشتراك شغال منذ ${days} يوم` : '📅 لم يبدأ الاشتراك بعد';
+  }
+
+  // Show client personal info - always show dots, store plain text in enc spans
+  const clientNameEncEl  = document.getElementById('editSubClientNameEnc');
+  const clientPhoneEncEl = document.getElementById('editSubClientPhoneEnc');
+  const clientEmailEncEl = document.getElementById('editSubClientEmailEnc');
+  const hasClientData = sub.client_name || sub.client_email || sub.client_phone;
+
+  if (clientNameEncEl)  { clientNameEncEl.textContent = sub.client_name  || ''; clientNameEncEl.setAttribute('data-val', sub.client_name  || ''); }
+  if (clientPhoneEncEl) { clientPhoneEncEl.textContent = sub.client_phone || ''; clientPhoneEncEl.setAttribute('data-val', sub.client_phone || ''); }
+  if (clientEmailEncEl) { clientEmailEncEl.textContent = sub.client_email || ''; clientEmailEncEl.setAttribute('data-val', sub.client_email || ''); }
+
+  // Reset visibility state
+  ['editSubClientNameDisp','editSubClientPhoneDisp','editSubClientEmailDisp','editSubAccIdDisp','editSubPassDisp'].forEach(k => { _fieldShown[k] = false; });
+  const nameDisp  = document.getElementById('editSubClientNameDisp');
+  const phoneDisp = document.getElementById('editSubClientPhoneDisp');
+  const emailDisp = document.getElementById('editSubClientEmailDisp');
+  if (nameDisp)  nameDisp.textContent  = hasClientData && sub.client_name  ? '••••••••' : '—';
+  if (phoneDisp) phoneDisp.textContent = hasClientData && sub.client_phone ? '••••••••' : '—';
+  if (emailDisp) emailDisp.textContent = hasClientData && sub.client_email ? '••••••••' : '—';
 
   // Show delete button
   document.getElementById('editSubDeleteBtn').onclick = () => deleteSubscription(id);
@@ -4790,21 +4948,100 @@ async function openEditSub(id, hash) {
   openModal('editSubModal');
 }
 
+// ===== REVEAL / COPY HELPERS =====
+// Track visibility state by element id
+const _fieldShown = {};
+
+// For encrypted fields (account_id, password) — decrypt then show
 async function revealEditField(dispId, encId) {
   const dispEl = document.getElementById(dispId);
   const encEl  = document.getElementById(encId);
-  if (!dispEl || !encEl) return;
-  if (dispEl.textContent !== '••••••••') { dispEl.textContent='••••••••'; return; }
-  dispEl.textContent = '🔄...';
-  const plain = await decryptSubData(encEl.textContent);
-  dispEl.textContent = plain;
+  if (!dispEl || !encEl) { showToast('⚠️ خطأ: عنصر غير موجود'); return; }
+
+  if (_fieldShown[dispId]) {
+    // Hide it
+    dispEl.textContent = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+    _fieldShown[dispId] = false;
+    return;
+  }
+
+  const cipher = encEl.textContent.trim();
+  if (!cipher) { showToast('⚠️ لا توجد بيانات محفوظة'); return; }
+
+  dispEl.textContent = '...';
+  try {
+    const plain = await decryptSubData(cipher);
+    dispEl.textContent = plain || '(فارغ)';
+    _fieldShown[dispId] = true;
+  } catch(e) {
+    dispEl.textContent = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+    showToast('⚠️ فشل فك التشفير');
+  }
 }
 
 async function copyEditField(encId) {
   const encEl = document.getElementById(encId);
-  if (!encEl) return;
-  const plain = await decryptSubData(encEl.textContent);
-  navigator.clipboard?.writeText(plain).then(() => showToast('✅ تم النسخ'));
+  if (!encEl) { showToast('⚠️ خطأ'); return; }
+  const cipher = encEl.textContent.trim();
+  if (!cipher) { showToast('⚠️ لا توجد بيانات'); return; }
+  try {
+    const plain = await decryptSubData(cipher);
+    if (!plain) { showToast('⚠️ البيانات فارغة'); return; }
+    _doCopy(plain);
+  } catch(e) { showToast('⚠️ فشل النسخ'); }
+}
+
+// For plain text fields (client name, phone, email) — no decryption
+function revealClientField(dispId, encId) {
+  const dispEl = document.getElementById(dispId);
+  const encEl  = document.getElementById(encId);
+  if (!dispEl || !encEl) { showToast('⚠️ خطأ: عنصر غير موجود'); return; }
+
+  if (_fieldShown[dispId]) {
+    dispEl.textContent = '\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022';
+    _fieldShown[dispId] = false;
+    return;
+  }
+
+  const plain = encEl.getAttribute('data-val') || encEl.textContent.trim();
+  if (!plain) { showToast('⚠️ لا توجد بيانات محفوظة لهذا الحقل'); return; }
+  dispEl.textContent = plain;
+  _fieldShown[dispId] = true;
+}
+
+function copyClientField(encId) {
+  const encEl = document.getElementById(encId);
+  if (!encEl) { showToast('⚠️ خطأ'); return; }
+  const plain = encEl.getAttribute('data-val') || encEl.textContent.trim();
+  if (!plain) { showToast('⚠️ لا توجد بيانات'); return; }
+  _doCopy(plain);
+}
+
+function _doCopy(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text)
+      .then(() => showToast('✅ تم النسخ'))
+      .catch(() => _doCopyFallback(text));
+  } else {
+    _doCopyFallback(text);
+  }
+}
+function _doCopyFallback(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); showToast('✅ تم النسخ'); }
+  catch(e) { showToast('⚠️ فشل النسخ — حاول مرة ثانية'); }
+  document.body.removeChild(ta);
+}
+
+function editSubAddDays(n) {
+  const inp = document.getElementById('editSubDays');
+  inp.value = (parseInt(inp.value) || 0) + n;
+  const daysEl = document.getElementById('editSubDaysInfo');
+  if (daysEl) daysEl.textContent = `📅 سيصبح ${inp.value} يوم`;
 }
 
 async function saveSubEdit() {
@@ -4813,6 +5050,7 @@ async function saveSubEdit() {
   const profitPct  = parseFloat(document.getElementById('editSubProfitPct').value) || 0;
   const status     = document.getElementById('editSubStatus').value;
   const notes      = document.getElementById('editSubNotes').value.trim();
+  const days       = parseInt(document.getElementById('editSubDays').value) || 0;
   const errEl      = document.getElementById('editSubError');
   errEl.style.display = 'none';
 
@@ -4821,7 +5059,7 @@ async function saveSubEdit() {
   const patchRes = await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, {
     method: 'PATCH',
     headers: patchHeaders,
-    body: JSON.stringify({ balance, profit_percentage: profitPct, status, notes })
+    body: JSON.stringify({ balance, profit_percentage: profitPct, status, notes, subscription_days: days })
   });
   showLoading(false);
   const result = patchRes.ok;
@@ -4832,9 +5070,8 @@ async function saveSubEdit() {
     return; 
   }
 
-  // Update local state
   const sub = state.subscriptions.find(s => s.id === id);
-  if (sub) { sub.balance=balance; sub.profit_percentage=profitPct; sub.status=status; sub.notes=notes; }
+  if (sub) { sub.balance=balance; sub.profit_percentage=profitPct; sub.status=status; sub.notes=notes; sub.subscription_days=days; }
 
   closeModal('editSubModal');
   loadSubscriptions();
@@ -4842,33 +5079,59 @@ async function saveSubEdit() {
 }
 
 async function deleteSubscription(id) {
-  if (!confirm('حذف هذا الاشتراك نهائياً؟')) return;
+  if (!confirm('حذف هذا الاشتراك نهائياً؟\nسيتم حذف كل الأرباح المرتبطة به أيضاً')) return;
   showLoading(true);
-  const r = await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
+
+  // Get the subscription to find its hash
+  const sub = state.subscriptions.find(s => s.id === id);
+  const hash = sub ? (sub.account_id_hash || null) : null;
+
+  // Delete subscription
+  await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
+
+  // Delete related profits (by account_id_hash)
+  if (hash) {
+    // Check if this is the LAST subscription for this account
+    const sameSubs = state.subscriptions.filter(s => (s.account_id_hash === hash) && s.id !== id);
+    if (sameSubs.length === 0) {
+      // No more subscriptions for this account — delete all profits
+      await fetch(`${SB_URL}/profits?account_id_hash=eq.${encodeURIComponent(hash)}`, {
+        method: 'DELETE',
+        headers: svcHeaders()
+      });
+    }
+  }
+
   showLoading(false);
-  if (!r.ok) { showToast('⚠️ خطأ في الحذف'); return; }
   closeModal('editSubModal');
   loadSubscriptions();
-  showToast('🗑️ تم الحذف');
+  showToast('🗑️ تم حذف الاشتراك وأرباحه');
 }
 
 async function deleteSubscriptionGroup(hash, ids) {
   const msg = ids.length > 1
-    ? `حذف كل اشتراكات هذا الحساب (${ids.length} اشتراكات) نهائياً؟`
-    : 'حذف هذا الاشتراك نهائياً؟';
+    ? `حذف كل اشتراكات هذا الحساب (${ids.length} اشتراكات) ونسبة أرباحه نهائياً؟`
+    : 'حذف هذا الاشتراك وأرباحه نهائياً؟';
   if (!confirm(msg)) return;
   showLoading(true);
-  // Delete all by hash
-  const r = await fetch(`${SB_URL}/subscriptions?account_id_hash=eq.${encodeURIComponent(hash)}`, { method: 'DELETE', headers: svcHeaders() });
+
+  // Delete all subscriptions for this account
+  await fetch(`${SB_URL}/subscriptions?account_id_hash=eq.${encodeURIComponent(hash)}`, {
+    method: 'DELETE', headers: svcHeaders()
+  });
   // Fallback: delete by IDs
-  if (!r.ok || ids.length > 0) {
-    for (const id of ids) {
-      await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
-    }
+  for (const id of ids) {
+    await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
   }
+
+  // Delete ALL profits for this account
+  await fetch(`${SB_URL}/profits?account_id_hash=eq.${encodeURIComponent(hash)}`, {
+    method: 'DELETE', headers: svcHeaders()
+  });
+
   showLoading(false);
   loadSubscriptions();
-  showToast(`🗑️ تم الحذف (${ids.length} اشتراك)`);
+  showToast(`🗑️ تم حذف الحساب وكل أرباحه (${ids.length} اشتراك)`);
 }
 
 const _subFieldVisible = {};
@@ -4980,8 +5243,8 @@ async function showClientPortal(sub, hash) {
   const sc = {active:'#00C896',pending:'#C9A84C',expired:'#f87171',rejected:'#f87171'};
   document.getElementById('clientStatus').innerHTML = `<span style="color:${sc[sub.status]||'#fff'}">${sm[sub.status]||sub.status}</span>`;
   document.getElementById('clientBalance').textContent = '$'+(sub.balance||0).toLocaleString();
-  const days = Math.floor((Date.now()-new Date(sub.created_at))/(1000*60*60*24));
-  document.getElementById('clientDays').textContent = days;
+  const days = sub.subscription_days || 0;
+  document.getElementById('clientDays').textContent = days + ' يوم';
 
   // Load profits
   const profits = await (await fetch(`${BASE}/profits?account_id_hash=eq.${encodeURIComponent(hash)}&order=date.desc`,{headers:HDRS})).json()||[];
@@ -5038,7 +5301,25 @@ async function addProfit() {
   if(!date){errEl.textContent='⚠️ أدخل التاريخ';errEl.style.display='block';return;}
   showLoading(true);
   const hash=await hashAccountId(accountId);
+
+  // Save profit
   const row=await sbPost('profits',{account_id_hash:hash,date,daily_profit:daily,balance:bal,notes});
+
+  // Auto-increment subscription_days for matching subscription
+  if (row) {
+    const matchedSubs = (state.subscriptions||[]).filter(s=>(s.account_id_hash||String(s.id))===hash && s.status==='active');
+    const targetSub   = matchedSubs.length ? matchedSubs[0] : (state.subscriptions||[]).find(s=>(s.account_id_hash||String(s.id))===hash);
+    if (targetSub) {
+      const newDays = (targetSub.subscription_days || 0) + 1;
+      await fetch(`${SB_URL}/subscriptions?id=eq.${targetSub.id}`, {
+        method: 'PATCH',
+        headers: { ...svcHeaders(), 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ subscription_days: newDays })
+      });
+      targetSub.subscription_days = newDays;
+    }
+  }
+
   showLoading(false);
   if(!row){errEl.textContent='⚠️ خطأ في الحفظ';errEl.style.display='block';return;}
   closeModal('addProfitModal');
@@ -5047,7 +5328,7 @@ async function addProfit() {
   const psel = document.getElementById('profAccountSelect');
   if(psel) psel.value='';
   loadProfits();
-  showToast('✅ تم حفظ الربح');
+  showToast('✅ تم حفظ الربح — وتم إضافة يوم للاشتراك 📅');
 }
 
 async function deleteProfit(id) {
@@ -5090,6 +5371,101 @@ async function saveEditProfit() {
 // Update submitSubscription to save hash
 const _origSubmit = typeof submitSubscription !== 'undefined' ? submitSubscription : null;
 
+
+// ============ COLLECT SUBSCRIPTION ============
+let _collectData = {};
+
+function openCollectModal(hash, count, clientName) {
+  _collectData = { hash, count, clientName };
+  const totalUSD = count * 250;
+  document.getElementById('collectSubInfo').innerHTML = `
+    <div>👤 <strong>${clientName || '—'}</strong></div>
+    <div>🔄 عدد الاشتراكات: <strong style="color:var(--accent);">${count}</strong></div>
+    <div>💵 الإجمالي بالدولار: <strong style="color:var(--gold);">$${totalUSD.toLocaleString()}</strong></div>
+  `;
+  document.getElementById('collectDollarRate').value = '';
+  document.getElementById('collectAmountEGP').textContent = '';
+  document.getElementById('collectCalcResult').style.display = 'none';
+  document.getElementById('collectError').style.display = 'none';
+
+  // Live calc on rate change
+  document.getElementById('collectDollarRate').oninput = function() {
+    const rate = parseFloat(this.value);
+    if (rate > 0) {
+      const egp = (totalUSD * rate).toLocaleString('ar-EG', {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('collectAmountEGP').textContent = egp + ' جنيه';
+      document.getElementById('collectCalcResult').style.display = 'block';
+    } else {
+      document.getElementById('collectCalcResult').style.display = 'none';
+    }
+  };
+  openModal('collectModal');
+}
+
+async function confirmCollect() {
+  const rate  = parseFloat(document.getElementById('collectDollarRate').value);
+  const errEl = document.getElementById('collectError');
+  errEl.style.display = 'none';
+
+  if (!rate || rate <= 0) {
+    errEl.textContent = '⚠️ أدخل سعر الدولار بالجنيه';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  const totalUSD = _collectData.count * 250;
+  const totalEGP = Math.round(totalUSD * rate);
+  const today    = new Date().toISOString().split('T')[0];
+  const label    = `💰 تحصيل اشتراك — ${_collectData.clientName || 'عميل'} (${_collectData.count} × $250 @ ${rate} ج)`;
+
+  showLoading(true);
+  // نضيف كـ customer جديد في جدول customers عشان يظهر في الأرباح
+  const row = await sbPost('customers', {
+    name:     label,
+    phone:    '—',
+    job_type: '💰 اشتراك Black Diamond',
+    price:    totalEGP,
+    date:     today,
+    added_by: state.currentUser?.name || 'admin'
+  });
+  showLoading(false);
+
+  if (!row) {
+    errEl.textContent = '⚠️ خطأ في الحفظ — حاول مرة ثانية';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  state.customers = state.customers || [];
+  state.customers.unshift(mapCustomer(row));
+  closeModal('collectModal');
+  updateDashboard();
+  showToast(`✅ تم إضافة ${totalEGP.toLocaleString()} جنيه للأرباح 🎉`);
+}
+
 </script>
+
+<!-- ===== COLLECT MODAL ===== -->
+<div class="modal-overlay" id="collectModal">
+  <div class="modal" style="width:420px;">
+    <div class="modal-close" onclick="closeModal('collectModal')">✕</div>
+    <h3>💰 تحصيل اشتراك</h3>
+    <div id="collectSubInfo" style="background:var(--surface);border-radius:12px;padding:14px;margin-bottom:20px;font-size:13px;line-height:2;"></div>
+    <div class="form-group">
+      <label>💵 سعر الدولار بالجنيه المصري</label>
+      <input type="number" id="collectDollarRate" placeholder="مثال: 49.5" step="0.01" min="1"
+             style="font-size:18px;font-weight:700;text-align:center;">
+    </div>
+    <div id="collectCalcResult" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:10px;padding:14px;margin-bottom:16px;text-align:center;display:none;">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">المبلغ بالجنيه</div>
+      <div id="collectAmountEGP" style="font-size:28px;font-weight:900;color:var(--green);"></div>
+    </div>
+    <div id="collectError" style="display:none;color:var(--red);font-size:13px;margin-bottom:12px;padding:10px;background:rgba(239,68,68,.1);border-radius:8px;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-green" onclick="confirmCollect()" style="flex:1;justify-content:center;">✅ تأكيد التحصيل وإضافة للأرباح</button>
+      <button class="btn btn-ghost" onclick="closeModal('collectModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
