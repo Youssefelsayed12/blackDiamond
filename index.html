@@ -4832,11 +4832,21 @@ async function loadSubscriptions() {
         <div style="font-size:11px;color:var(--muted);margin-top:2px;">📅 ${latest.subscription_days||0} يوم نشاط</div>
       </td>
       <td onclick="event.stopPropagation();">
-        <button class="btn btn-green btn-sm"
-          onclick="openCollectModal('${hash}',${count},'${clientLabel}')"
-          style="white-space:nowrap;">
-          💰 تحصيل
-        </button>
+        ${(() => {
+          const collected = subs.reduce((a, s) => a + (s.collected_count || 0), 0);
+          const remaining = count - collected;
+          if (remaining <= 0) {
+            return `<button class="btn btn-sm" disabled
+              style="white-space:nowrap;background:rgba(107,114,128,.15);color:#6B7280;border:1px solid #374151;cursor:not-allowed;">
+              ✅ تم التحصيل
+            </button>`;
+          }
+          return `<button class="btn btn-green btn-sm"
+            onclick="openCollectModal('${hash}',${count},${collected},'${clientLabel}')"
+            style="white-space:nowrap;">
+            💰 تحصيل ${remaining < count ? `(${remaining} متبقي)` : ''}
+          </button>`;
+        })()}
       </td>
       <td onclick="event.stopPropagation();">
         <button class="btn btn-red btn-sm" onclick="deleteSubscriptionGroup('${hash}',${subs.map(s=>s.id).join(',') ? '['+subs.map(s=>s.id).join(',')+']' : '[]'})">🗑</button>
@@ -5384,20 +5394,22 @@ const _origSubmit = typeof submitSubscription !== 'undefined' ? submitSubscripti
 // ============ COLLECT SUBSCRIPTION ============
 let _collectData = {};
 
-function openCollectModal(hash, count, clientName) {
-  _collectData = { hash, count, clientName };
-  const totalUSD = count * 250;
+function openCollectModal(hash, count, collected, clientName) {
+  const remaining = count - collected;
+  _collectData = { hash, count, collected, remaining, clientName };
+  const totalUSD = remaining * 250;
   document.getElementById('collectSubInfo').innerHTML = `
     <div>👤 <strong>${clientName || '—'}</strong></div>
     <div>🔄 عدد الاشتراكات: <strong style="color:var(--accent);">${count}</strong></div>
-    <div>💵 الإجمالي بالدولار: <strong style="color:var(--gold);">$${totalUSD.toLocaleString()}</strong></div>
+    <div>✅ تم تحصيله: <strong style="color:var(--green);">${collected}</strong></div>
+    <div>⏳ متبقي للتحصيل: <strong style="color:var(--gold);">${remaining}</strong></div>
+    <div>💵 الإجمالي المستحق: <strong style="color:var(--gold);">$${totalUSD.toLocaleString()}</strong></div>
   `;
   document.getElementById('collectDollarRate').value = '';
   document.getElementById('collectAmountEGP').textContent = '';
   document.getElementById('collectCalcResult').style.display = 'none';
   document.getElementById('collectError').style.display = 'none';
 
-  // Live calc on rate change
   document.getElementById('collectDollarRate').oninput = function() {
     const rate = parseFloat(this.value);
     if (rate > 0) {
@@ -5422,13 +5434,15 @@ async function confirmCollect() {
     return;
   }
 
-  const totalUSD = _collectData.count * 250;
+  const { hash, remaining, clientName } = _collectData;
+  const totalUSD = remaining * 250;
   const totalEGP = Math.round(totalUSD * rate);
   const today    = new Date().toISOString().split('T')[0];
-  const label    = `💰 تحصيل اشتراك — ${_collectData.clientName || 'عميل'} (${_collectData.count} × $250 @ ${rate} ج)`;
+  const label    = `💰 تحصيل اشتراك — ${clientName || 'عميل'} (${remaining} × $250 @ ${rate} ج)`;
 
   showLoading(true);
-  // نضيف كـ customer جديد في جدول customers عشان يظهر في الأرباح
+
+  // Save to customers/profits
   const row = await sbPost('customers', {
     name:     label,
     phone:    '—',
@@ -5437,17 +5451,31 @@ async function confirmCollect() {
     date:     today,
     added_by: state.currentUser?.name || 'admin'
   });
-  showLoading(false);
 
   if (!row) {
+    showLoading(false);
     errEl.textContent = '⚠️ خطأ في الحفظ — حاول مرة ثانية';
     errEl.style.display = 'block';
     return;
   }
 
+  // Update collected_count on ALL subscriptions with this hash
+  const matchedSubs = (state.subscriptions||[]).filter(s => (s.account_id_hash||String(s.id)) === hash);
+  for (const sub of matchedSubs) {
+    const newCollected = (sub.collected_count || 0) + 1;
+    await fetch(`${SB_URL}/subscriptions?id=eq.${sub.id}`, {
+      method: 'PATCH',
+      headers: { ...svcHeaders(), 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ collected_count: newCollected })
+    });
+    sub.collected_count = newCollected;
+  }
+
+  showLoading(false);
   state.customers = state.customers || [];
   state.customers.unshift(mapCustomer(row));
   closeModal('collectModal');
+  loadSubscriptions();
   updateDashboard();
   showToast(`✅ تم إضافة ${totalEGP.toLocaleString()} جنيه للأرباح 🎉`);
 }
