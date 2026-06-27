@@ -4,23 +4,37 @@
 <meta charset="UTF-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- ===== SECURITY HEADERS ===== -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cbfaybsuzjthuwftfuac.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net https://wa.me; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://cdn.jsdelivr.net; connect-src 'self' https://cbfaybsuzjthuwftfuac.supabase.co https://wa.me; frame-ancestors 'none';">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+<meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains">
 <title>نظام إدارة العملاء</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a0e1a;
-    --surface: #111827;
+    --bg: #0a0a0f;
+    --surface: #12121a;
     --card: #1a2235;
-    --border: #1e2d45;
-    --accent: #3b82f6;
-    --accent2: #06b6d4;
-    --gold: #f59e0b;
-    --green: #10b981;
+    --border: rgba(255,255,255,0.06);
+    --accent: #d4af37;
+    --accent2: #a855f7;
+    --gold: #d4af37;
+    --green: #22c55e;
     --red: #ef4444;
-    --text: #e2e8f0;
-    --muted: #64748b;
+    --text: #e8e8ec;
+    --muted: #8b8b9a;
     --radius: 12px;
-  }
+  
+  /* Responsive Font Sizes */
+  --font-xs: clamp(10px, 1.2vw, 12px);
+  --font-sm: clamp(11px, 1.4vw, 13px);
+  --font-base: clamp(12px, 1.6vw, 14px);
+  --font-md: clamp(13px, 1.8vw, 15px);
+  --font-lg: clamp(14px, 2vw, 16px);
+  --font-xl: clamp(16px, 2.5vw, 20px);
+}
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     font-family: 'Cairo', sans-serif;
@@ -177,7 +191,7 @@
   .page-header p { color: var(--muted); font-size: 13px; margin-top: 4px; }
 
   /* ===== STATS CARDS ===== */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 28px; }
   .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -196,6 +210,7 @@
   .stat-card.gold::before { background: linear-gradient(90deg, var(--gold), #f97316); }
   .stat-card.green::before { background: linear-gradient(90deg, var(--green), #34d399); }
   .stat-card.red::before { background: linear-gradient(90deg, var(--red), #f87171); }
+  .stat-card.purple::before { background: linear-gradient(90deg, #a855f7, #c084fc); }
   .stat-icon { font-size: 28px; margin-bottom: 10px; }
   .stat-value { font-size: 28px; font-weight: 900; margin-bottom: 4px; }
   .stat-label { color: var(--muted); font-size: 12px; font-weight: 600; }
@@ -367,13 +382,13 @@
 
   /* ===== TASKS ===== */
   .task-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin-bottom: 12px;
+    background: #1c1f2e;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 14px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
     display: flex; align-items: flex-start; gap: 14px;
-    transition: all .2s;
+    transition: all .25s ease;
     position: relative;
     overflow: hidden;
   }
@@ -381,34 +396,38 @@
     content: '';
     position: absolute;
     right: 0; top: 0; bottom: 0;
-    width: 4px;
+    width: 3px;
+    border-radius: 0 14px 14px 0;
   }
-  .task-card.high::before { background: var(--red); }
-  .task-card.medium::before { background: var(--gold); }
-  .task-card.low::before { background: var(--green); }
-  .task-card.done { opacity: .6; }
-  .task-card:hover { border-color: var(--accent); transform: translateX(-2px); }
+  .task-card.high::before { background: #e57373; }
+  .task-card.medium::before { background: #ffb74d; }
+  .task-card.low::before { background: #81c784; }
+  .task-card.done { opacity: .55; background: #181a24; }
+  .task-card:hover { border-color: rgba(255,255,255,0.1); transform: translateX(-3px); box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
   .task-check {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 2px solid var(--border);
+    width: 20px; height: 20px; border-radius: 6px;
+    border: 2px solid rgba(255,255,255,0.12);
     cursor: pointer; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
     transition: all .2s; margin-top: 2px;
+    background: transparent;
   }
-  .task-check.checked { background: var(--green); border-color: var(--green); }
-  .task-check:hover { border-color: var(--green); }
+  .task-check.checked { background: #66bb6a; border-color: #66bb6a; }
+  .task-check:hover { border-color: #66bb6a; }
   .task-body { flex: 1; }
-  .task-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-  .task-title.done-text { text-decoration: line-through; color: var(--muted); }
-  .task-desc { font-size: 12px; color: var(--muted); margin-bottom: 8px; line-height: 1.6; }
-  .task-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .priority-badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
-  .priority-high { background: rgba(239,68,68,0.15); color: #f87171; }
-  .priority-medium { background: rgba(245,158,11,0.15); color: #fbbf24; }
-  .priority-low { background: rgba(16,185,129,0.15); color: #34d399; }
-  .task-date { font-size: 11px; color: var(--muted); }
+  .task-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; color: #e0e0e0; }
+  .task-title.done-text { text-decoration: line-through; color: #6b7280; }
+  .task-desc { font-size: 12px; color: #6b7280; margin-bottom: 10px; line-height: 1.6; }
+  .task-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .priority-badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .priority-high { background: rgba(229,115,115,0.12); color: #e57373; }
+  .priority-medium { background: rgba(255,183,77,0.12); color: #ffb74d; }
+  .priority-low { background: rgba(129,199,132,0.12); color: #81c784; }
+  .task-date { font-size: 11px; color: #6b7280; }
   .task-actions { display: flex; gap: 6px; flex-shrink: 0; }
-  .task-filter-btn.active { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; border-color: transparent; }
+  .task-filter-btn.active { background: #3d5a80; color: #e0e0e0; border-color: transparent; }
+  .task-filter-btn { transition: all .2s; }
+  .task-filter-btn:hover { background: rgba(255,255,255,0.05); }
 
   .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
   .tag-admin { background: rgba(245,158,11,0.15); color: var(--gold); }
@@ -418,24 +437,109 @@
   .alert-success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: #34d399; }
   .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #f87171; }
 
+  /* ===== CART STYLES ===== */
+  .cart-tab-bar {
+    display: flex;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-bottom: none;
+  }
+  .cart-tab-btn {
+    flex: 1;
+    padding: 13px;
+    border: none;
+    font-family: 'Cairo', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .25s ease;
+  }
+  .cart-tab-btn.active {
+    background: #3d5a80;
+    color: #e0e0e0;
+  }
+  .cart-tab-btn:not(.active) {
+    background: #1c1f2e;
+    color: #6b7280;
+    border-right: 1px solid rgba(255,255,255,0.04);
+  }
+  .cart-tab-btn:not(.active):hover {
+    background: #252836;
+    color: #9ca3af;
+  }
+  .cart-card {
+    background: #1c1f2e;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 0 0 12px 12px;
+    border-top: none;
+    overflow: hidden;
+  }
+  .cart-card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .cart-card-header h3 { font-size: 15px; font-weight: 700; color: #e0e0e0; }
+  .cart-card-body { padding: 0; }
+  .cart-table { width: 100%; border-collapse: collapse; }
+  .cart-table thead tr { border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .cart-table th {
+    text-align: right;
+    padding: 12px 16px;
+    font-size: 11px;
+    color: #6b7280;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+  }
+  .cart-table td {
+    padding: 14px 16px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+  }
+  .cart-table tr:last-child td { border-bottom: none; }
+  .cart-table tr:hover td { background: rgba(61,90,128,0.04); }
+  .cart-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .cart-badge-blue { background: rgba(100,149,237,0.12); color: #6495ed; }
+  .cart-badge-green { background: rgba(102,187,106,0.12); color: #66bb6a; }
+  .cart-badge-gold { background: rgba(255,183,77,0.12); color: #ffb74d; }
+  .cart-empty {
+    text-align: center;
+    padding: 48px;
+    color: #6b7280;
+  }
+  .cart-empty .icon { font-size: 48px; margin-bottom: 12px; }
+  .cart-empty p { font-size: 14px; }
+
 /* ===== LANDING PAGE STYLES ===== */
 
 :root {
-  --void: #020408;
-  --deep: #050a12;
-  --card: #0a1628;
-  --border: rgba(0,180,255,0.1);
-  --gold: #C9A84C;
-  --gold2: #F0D080;
-  --neon: #00b4ff;
-  --neon2: #0066ff;
-  --neon3: #00ffcc;
-  --blue: #1E90FF;
-  --green: #00C896;
-  --red: #FF4560;
-  --text: #e8f4ff;
-  --muted: #4a7fa5;
-  --subtle: #0d1f35;
+  --void: #0a0a0f;
+  --deep: #12121a;
+  --card: #1a1a2e;
+  --border: rgba(212,175,55,0.12);
+  --gold: #d4af37;
+  --gold2: #f0d878;
+  --neon: #d4af37;
+  --neon2: #b8941f;
+  --neon3: #c9a84c;
+  --blue: #a855f7;
+  --green: #22c55e;
+  --red: #ef4444;
+  --text: #e8e8ec;
+  --muted: #8b8b9a;
+  --subtle: #16162a;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -872,6 +976,272 @@
   font-size:20px; cursor:pointer; transition:color .2s;
 }
 .login-modal-close:hover { color:#fff; }
+
+
+/* ============ RESPONSIVE STYLES ============ */
+
+/* Base responsive font */
+.app-container, .page, .card, .card-body, .form-group, .form-group label, 
+.form-group input, .form-group select, .form-group textarea, .btn, .table-container,
+table, thead, tbody, th, td, .stat-label, .stat-value, .badge, .empty-state, 
+.empty-state p, .search-row, .date-row, .finance-row, .task-card, .task-header,
+.task-title, .task-meta, .cart-item, .cart-item-info, .cart-item-title, .cart-item-price,
+.compare-table, .compare-table th, .compare-table td, .jard-table, .jard-table th, .jard-table td,
+.user-card, .user-info, .user-name, .user-role, .sub-card, .sub-info, .sub-name, .sub-status,
+.profit-row, .profit-label, .profit-value, .settings-section, .settings-title, .settings-desc,
+.backup-card, .backup-title, .backup-desc, .modal-content, .modal-header, .modal-body, .modal-footer {
+  font-size: var(--font-base) !important;
+}
+
+/* Headings */
+h1, h2, h3, .page-header h2, .section-header h2, .card-header h3, .stat-value,
+.profit-display, .price-display, .total-display, .modal-title {
+  font-size: var(--font-xl) !important;
+}
+
+/* Small text */
+.stat-label, .form-group label, .badge, .task-meta, .cart-item-price, .user-role,
+.sub-status, .profit-label, .settings-desc, .backup-desc, .empty-state p,
+.modal-body p, .card-body p, .form-group small, .form-group .hint {
+  font-size: var(--font-sm) !important;
+}
+
+/* Extra small */
+.badge-small, .tag, .timestamp, .date, .hint, .note, .footer-note {
+  font-size: var(--font-xs) !important;
+}
+
+/* Table cells */
+table th, table td {
+  font-size: var(--font-sm) !important;
+  padding: 8px 10px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 200px !important;
+}
+
+/* Table header */
+table thead th {
+  font-size: var(--font-xs) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  padding: 6px 8px !important;
+}
+
+/* Make tables scrollable horizontally */
+.table-container, .card-body > table, .page > .card > table {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Card padding */
+.card {
+  padding: 12px !important;
+}
+
+.card-header {
+  padding: 10px 12px !important;
+}
+
+.card-body {
+  padding: 10px 12px !important;
+}
+
+/* Form elements */
+.form-group {
+  margin-bottom: 10px !important;
+}
+
+.form-group label {
+  margin-bottom: 4px !important;
+  font-size: var(--font-xs) !important;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  padding: 8px 10px !important;
+  font-size: var(--font-sm) !important;
+}
+
+/* Buttons */
+.btn {
+  padding: 8px 14px !important;
+  font-size: var(--font-sm) !important;
+}
+
+.btn-sm {
+  padding: 4px 8px !important;
+  font-size: var(--font-xs) !important;
+}
+
+/* Stats grid */
+.stats-grid {
+  gap: 8px !important;
+}
+
+.stat-card {
+  padding: 10px !important;
+}
+
+.stat-icon {
+  font-size: 20px !important;
+  margin-bottom: 4px !important;
+}
+
+.stat-value {
+  font-size: var(--font-lg) !important;
+}
+
+.stat-label {
+  font-size: var(--font-xs) !important;
+}
+
+/* Search row */
+.search-row, .date-row, .finance-row {
+  gap: 8px !important;
+}
+
+/* Task cards */
+.task-card {
+  padding: 10px !important;
+}
+
+.task-header {
+  margin-bottom: 6px !important;
+}
+
+.task-title {
+  font-size: var(--font-sm) !important;
+}
+
+.task-meta {
+  font-size: var(--font-xs) !important;
+}
+
+/* Cart items */
+.cart-item {
+  padding: 8px !important;
+}
+
+.cart-item-title {
+  font-size: var(--font-sm) !important;
+}
+
+.cart-item-price {
+  font-size: var(--font-xs) !important;
+}
+
+/* User cards */
+.user-card {
+  padding: 8px !important;
+}
+
+.user-name {
+  font-size: var(--font-sm) !important;
+}
+
+.user-role {
+  font-size: var(--font-xs) !important;
+}
+
+/* Subscription cards */
+.sub-card {
+  padding: 8px !important;
+}
+
+.sub-name {
+  font-size: var(--font-sm) !important;
+}
+
+.sub-status {
+  font-size: var(--font-xs) !important;
+}
+
+/* Modal */
+.modal-content {
+  padding: 16px !important;
+  max-width: 95vw !important;
+  width: 95vw !important;
+}
+
+.modal-header {
+  margin-bottom: 12px !important;
+}
+
+.modal-title {
+  font-size: var(--font-lg) !important;
+}
+
+.modal-body {
+  margin-bottom: 12px !important;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px !important;
+}
+
+.sidebar-item {
+  padding: 8px 12px !important;
+  font-size: var(--font-sm) !important;
+}
+
+.sidebar-icon {
+  font-size: 16px !important;
+  margin-left: 8px !important;
+}
+
+/* Mobile specific */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 8px !important;
+  }
+
+  .sidebar {
+    width: 180px !important;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  table th, table td {
+    padding: 6px 8px !important;
+    font-size: var(--font-xs) !important;
+  }
+
+  .search-row, .date-row, .finance-row {
+    flex-direction: column !important;
+  }
+
+  .form-group {
+    width: 100% !important;
+  }
+
+  .modal-content {
+    padding: 12px !important;
+  }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  table th, table td {
+    padding: 4px 6px !important;
+    font-size: 10px !important;
+  }
+
+  .btn {
+    padding: 6px 10px !important;
+    font-size: 11px !important;
+  }
+}
 </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
@@ -1592,9 +1962,14 @@
           <div class="stat-label">عملاء هذا الشهر</div>
         </div>
         <div class="stat-card gold">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value" id="statSubscriptions">0 ج</div>
+          <div class="stat-label">إجمالي الاشتراكات</div>
+        </div>
+        <div class="stat-card purple">
           <div class="stat-icon">💵</div>
           <div class="stat-value" id="statRevenue">0 ج</div>
-          <div class="stat-label">إجمالي الأرباح</div>
+          <div class="stat-label">إجمالي أرباح العملاء</div>
         </div>
         <div class="stat-card red">
           <div class="stat-icon">💸</div>
@@ -1647,38 +2022,85 @@
     <div class="page" id="page-search">
       <div class="page-header">
         <h2>🔍 البحث المتقدم</h2>
-        <p>ابحث عن أي عميل بأي معيار</p>
+        <p>ابحث عن العملاء أو الاشتراكات</p>
       </div>
       <div class="card">
         <div class="card-body">
-          <div class="search-row">
-            <div class="form-group" style="margin:0">
-              <label>اسم العميل</label>
-              <input type="text" id="sName" placeholder="ابحث بالاسم...">
-            </div>
-            <div class="form-group" style="margin:0">
-              <label>البريد الإلكتروني</label>
-              <input type="text" id="sEmail" placeholder="ابحث بالبريد...">
-            </div>
-            <div class="form-group" style="margin:0">
-              <label>رقم الهاتف</label>
-              <input type="text" id="sPhone" placeholder="ابحث بالرقم...">
-            </div>
-            <button class="btn btn-primary" onclick="doSearch()">🔍 بحث</button>
+          <!-- Search Type Toggle -->
+          <div style="display:flex;gap:8px;margin-bottom:16px;padding:12px;background:rgba(212,175,55,0.05);border-radius:10px;border:1px solid rgba(212,175,55,0.15);flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:var(--font-sm);color:var(--text);padding:6px 12px;border-radius:8px;transition:all 0.3s;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.3);" id="lblCustomers" onclick="setSearchType('customers')">
+              <input type="radio" name="searchType" value="customers" checked onchange="setSearchType('customers')" style="accent-color:#d4af37;cursor:pointer;">
+              <span>👤 العملاء</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:var(--font-sm);color:var(--muted);padding:6px 12px;border-radius:8px;transition:all 0.3s;border:1px solid transparent;" id="lblSubscriptions" onclick="setSearchType('subscriptions')">
+              <input type="radio" name="searchType" value="subscriptions" onchange="setSearchType('subscriptions')" style="accent-color:#d4af37;cursor:pointer;">
+              <span>💰 الاشتراكات</span>
+            </label>
           </div>
-          <div class="search-row">
-            <div class="form-group" style="margin:0">
-              <label>العنوان</label>
-              <input type="text" id="sAddress" placeholder="ابحث بالعنوان...">
+
+          <!-- Customer Search Fields -->
+          <div id="customerSearchFields">
+            <div class="search-row">
+              <div class="form-group" style="margin:0">
+                <label>اسم العميل</label>
+                <input type="text" id="sName" placeholder="ابحث بالاسم...">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>البريد الإلكتروني</label>
+                <input type="text" id="sEmail" placeholder="ابحث بالبريد...">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>رقم الهاتف</label>
+                <input type="text" id="sPhone" placeholder="ابحث بالرقم...">
+              </div>
+              <button class="btn btn-primary" onclick="doSearch()">🔍 بحث</button>
             </div>
-            <div class="form-group" style="margin:0">
-              <label>نوع الشغل</label>
-              <input type="text" id="sJobType" placeholder="ابحث بنوع الشغل...">
+            <div class="search-row">
+              <div class="form-group" style="margin:0">
+                <label>العنوان</label>
+                <input type="text" id="sAddress" placeholder="ابحث بالعنوان...">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>نوع الشغل</label>
+                <input type="text" id="sJobType" placeholder="ابحث بنوع الشغل...">
+              </div>
+              <button class="btn btn-ghost" onclick="clearSearch()">✕ مسح</button>
             </div>
-            <button class="btn btn-ghost" onclick="clearSearch()">✕ مسح</button>
           </div>
+
+          <!-- Subscription Search Fields (hidden by default) -->
+          <div id="subscriptionSearchFields" style="display:none;">
+            <div class="search-row">
+              <div class="form-group" style="margin:0">
+                <label>اسم المشترك</label>
+                <input type="text" id="sSubName" placeholder="ابحث باسم المشترك...">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>البريد الإلكتروني</label>
+                <input type="text" id="sSubEmail" placeholder="ابحث بالبريد...">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>حالة الاشتراك</label>
+                <select id="sSubStatus" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:var(--font-sm);cursor:pointer;">
+                  <option value="">الكل</option>
+                  <option value="active">✅ نشط</option>
+                  <option value="pending">⏳ قيد المراجعة</option>
+                  <option value="expired">❌ منتهي</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="doSubSearch()">🔍 بحث</button>
+            </div>
+            <div class="search-row">
+              <div class="form-group" style="margin:0">
+                <label>رقم الهاتف</label>
+                <input type="text" id="sSubPhone" placeholder="ابحث بالرقم...">
+              </div>
+              <button class="btn btn-ghost" onclick="clearSubSearch()">✕ مسح</button>
+            </div>
+          </div>
+
           <hr class="divider">
-          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;font-weight:700;">📅 بحث بالفترة الزمنية (تاريخ التسجيل)</p>
+          <p style="font-size:var(--font-xs);color:var(--muted);margin-bottom:12px;font-weight:700;">📅 بحث بالفترة الزمنية (تاريخ التسجيل)</p>
           <div class="date-row">
             <div class="form-group" style="margin:0">
               <label>من تاريخ</label>
@@ -1691,14 +2113,30 @@
             <button class="btn btn-gold" onclick="doSearch()">📅 بحث بالتاريخ</button>
           </div>
         </div>
-        <table>
-          <thead>
-            <tr><th>#</th><th>الاسم</th><th>العنوان</th><th>الهاتف</th><th>البريد</th><th>نوع الشغل</th><th>السعر</th><th>تاريخ التسجيل</th></tr>
-          </thead>
-          <tbody id="searchTable">
-            <tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض النتائج</p></div></td></tr>
-          </tbody>
-        </table>
+
+        <!-- Customer Results Table -->
+        <div id="customerResults">
+          <table>
+            <thead>
+              <tr><th>#</th><th>الاسم</th><th>العنوان</th><th>الهاتف</th><th>البريد</th><th>نوع الشغل</th><th>السعر</th><th>تاريخ التسجيل</th></tr>
+            </thead>
+            <tbody id="searchTable">
+              <tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض النتائج</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Subscription Results Table (hidden by default) -->
+        <div id="subscriptionResults" style="display:none;">
+          <table>
+            <thead>
+              <tr><th>#</th><th>الاسم</th><th>البريد</th><th>الهاتف</th><th>الحالة</th><th>تاريخ البدء</th><th>تاريخ الانتهاء</th><th>المبلغ</th></tr>
+            </thead>
+            <tbody id="subSearchTable">
+              <tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض نتائج الاشتراكات</p></div></td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -1709,8 +2147,13 @@
         <p>إدارة أرباح تسجيل البيانات والمسحوبات</p>
       </div>
       <div class="finance-row">
+        <div class="stat-card gold" style="padding:24px;">
+          <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:8px;">💰 إجمالي الاشتراكات</div>
+          <div class="profit-display" id="totalSubscriptionDisp" style="color:var(--gold);">0 جنيه</div>
+          <div style="font-size:12px;color:var(--muted);">إيرادات الاشتراكات الشهرية</div>
+        </div>
         <div class="stat-card green" style="padding:24px;">
-          <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:8px;">💵 إجمالي الأرباح</div>
+          <div style="font-size:13px;color:var(--muted);font-weight:700;margin-bottom:8px;">💵 إجمالي أرباح العملاء</div>
           <div class="profit-display" id="totalProfitDisp">0 جنيه</div>
           <div style="font-size:12px;color:var(--muted);">مجموع أسعار جميع العملاء</div>
         </div>
@@ -2035,86 +2478,83 @@
     <div class="page" id="page-tasks">
       <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
         <div>
-          <h2>✅ إدارة المهام</h2>
-          <p>تابع مهامك اليومية وأعمالك</p>
+          <h2 style="color:#e0e0e0;font-weight:700;">✅ إدارة المهام</h2>
+          <p style="color:#6b7280;">تابع مهامك اليومية وأعمالك</p>
         </div>
-        <button class="btn btn-primary" onclick="openAddTaskModal()">➕ إضافة مهمة</button>
+        <button class="btn" onclick="openAddTaskModal()" style="background:#3d5a80;color:#e0e0e0;border:none;padding:10px 20px;border-radius:10px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='#4a6fa5'" onmouseout="this.style.background='#3d5a80'">➕ إضافة مهمة</button>
       </div>
 
       <!-- Tasks Stats -->
-      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;">
-        <div class="stat-card blue">
-          <div class="stat-icon">📋</div>
-          <div class="stat-value" id="taskStatTotal">0</div>
-          <div class="stat-label">إجمالي المهام</div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:24px;gap:12px;">
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:18px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:26px;margin-bottom:6px;">📋</div>
+          <div style="font-size:24px;font-weight:800;color:#e0e0e0;margin-bottom:4px;" id="taskStatTotal">0</div>
+          <div style="font-size:12px;color:#6b7280;font-weight:500;">إجمالي المهام</div>
         </div>
-        <div class="stat-card gold">
-          <div class="stat-icon">⏳</div>
-          <div class="stat-value" id="taskStatPending">0</div>
-          <div class="stat-label">قيد التنفيذ</div>
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:18px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:26px;margin-bottom:6px;">⏳</div>
+          <div style="font-size:24px;font-weight:800;color:#ffb74d;margin-bottom:4px;" id="taskStatPending">0</div>
+          <div style="font-size:12px;color:#6b7280;font-weight:500;">قيد التنفيذ</div>
         </div>
-        <div class="stat-card green">
-          <div class="stat-icon">✅</div>
-          <div class="stat-value" id="taskStatDone">0</div>
-          <div class="stat-label">مكتملة</div>
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:18px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:26px;margin-bottom:6px;">✅</div>
+          <div style="font-size:24px;font-weight:800;color:#81c784;margin-bottom:4px;" id="taskStatDone">0</div>
+          <div style="font-size:12px;color:#6b7280;font-weight:500;">مكتملة</div>
         </div>
       </div>
 
       <!-- Filter Tabs -->
-      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-        <button class="btn btn-primary btn-sm task-filter-btn active" onclick="filterTasks('all', this)">الكل</button>
-        <button class="btn btn-ghost btn-sm task-filter-btn" onclick="filterTasks('pending', this)">⏳ قيد التنفيذ</button>
-        <button class="btn btn-ghost btn-sm task-filter-btn" onclick="filterTasks('done', this)">✅ مكتملة</button>
-        <button class="btn btn-ghost btn-sm task-filter-btn" onclick="filterTasks('high', this)">🔴 عالية الأولوية</button>
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;background:#181a24;padding:6px;border-radius:12px;width:fit-content;">
+        <button class="btn btn-sm task-filter-btn active" onclick="filterTasks('all', this)" style="border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;">الكل</button>
+        <button class="btn btn-ghost btn-sm task-filter-btn" onclick="filterTasks('pending', this)" style="border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;border:1px solid transparent;">⏳ قيد التنفيذ</button>
+        <button class="btn btn-ghost btn-sm task-filter-btn" onclick="filterTasks('done', this)" style="border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;border:1px solid transparent;">✅ مكتملة</button>
+        <button class="btn btn-ghost btn-sm task-filter-btn" onclick="filterTasks('high', this)" style="border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;border:1px solid transparent;">🔴 عالية الأولوية</button>
       </div>
 
       <!-- Tasks List -->
       <div id="tasksList"></div>
-    </div>
-
-    <!-- Cart -->
+    </div><!-- Cart -->
     <div class="page" id="page-cart">
       <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;">
         <div>
-          <h2>🛒 سلة المشتريات</h2>
-          <p>تسجيل وتتبع المنتجات والمشتريات</p>
+          <h2 style="color:#e0e0e0;font-weight:700;">🛒 سلة المشتريات</h2>
+          <p style="color:#6b7280;">تسجيل وتتبع المنتجات والمشتريات</p>
         </div>
-        <button class="btn btn-primary" onclick="openAddCartModal()">➕ إضافة منتج</button>
+        <button class="btn" onclick="openAddCartModal()" style="background:#3d5a80;color:#e0e0e0;border:none;padding:10px 20px;border-radius:10px;font-weight:600;transition:all .2s;" onmouseover="this.style.background='#4a6fa5'" onmouseout="this.style.background='#3d5a80'">➕ إضافة منتج</button>
       </div>
 
       <!-- Cart Stats -->
-      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
-        <div class="stat-card blue">
-          <div class="stat-icon">⏳</div>
-          <div class="stat-value" id="cartStatTotal">0</div>
-          <div class="stat-label">قيد الشراء</div>
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;gap:12px;">
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:16px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:22px;margin-bottom:4px;">⏳</div>
+          <div style="font-size:20px;font-weight:800;color:#6495ed;margin-bottom:2px;" id="cartStatTotal">0</div>
+          <div style="font-size:11px;color:#6b7280;font-weight:500;">قيد الشراء</div>
         </div>
-        <div class="stat-card green">
-          <div class="stat-icon">✅</div>
-          <div class="stat-value" id="cartStatPurchased">0</div>
-          <div class="stat-label">تم الشراء</div>
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:16px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:22px;margin-bottom:4px;">✅</div>
+          <div style="font-size:20px;font-weight:800;color:#81c784;margin-bottom:2px;" id="cartStatPurchased">0</div>
+          <div style="font-size:11px;color:#6b7280;font-weight:500;">تم الشراء</div>
         </div>
-        <div class="stat-card gold">
-          <div class="stat-icon">💵</div>
-          <div class="stat-value" id="cartStatEGP">0 ج</div>
-          <div class="stat-label">متوقع بالجنيه</div>
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:16px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:22px;margin-bottom:4px;">💵</div>
+          <div style="font-size:20px;font-weight:800;color:#ffb74d;margin-bottom:2px;" id="cartStatEGP">0 ج</div>
+          <div style="font-size:11px;color:#6b7280;font-weight:500;">متوقع بالجنيه</div>
         </div>
-        <div class="stat-card red">
-          <div class="stat-icon">💸</div>
-          <div class="stat-value" id="cartStatSpent">0 ج</div>
-          <div class="stat-label">تم صرفه</div>
+        <div style="background:#1c1f2e;border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:16px;text-align:center;transition:all .2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.04)'">
+          <div style="font-size:22px;margin-bottom:4px;">💸</div>
+          <div style="font-size:20px;font-weight:800;color:#e57373;margin-bottom:2px;" id="cartStatSpent">0 ج</div>
+          <div style="font-size:11px;color:#6b7280;font-weight:500;">تم صرفه</div>
         </div>
       </div>
 
-
-      <!-- Tab Switcher (inside card style) -->
-      <div style="display:flex;border-radius:12px 12px 0 0;overflow:hidden;border:1px solid var(--border);border-bottom:none;">
-        <button id="tabBtnPending" onclick="switchCartTab('pending')" style="flex:1;padding:13px;background:var(--accent);color:white;border:none;font-family:Cairo,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;">⏳ قيد الشراء</button>
-        <button id="tabBtnPurchased" onclick="switchCartTab('purchased')" style="flex:1;padding:13px;background:var(--card);color:var(--muted);border:none;border-right:1px solid var(--border);font-family:Cairo,sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;">✅ تم الشراء</button>
+      <!-- Tab Switcher -->
+      <div class="cart-tab-bar">
+        <button id="tabBtnPending" class="cart-tab-btn active" onclick="switchCartTab('pending')">⏳ قيد الشراء</button>
+        <button id="tabBtnPurchased" class="cart-tab-btn" onclick="switchCartTab('purchased')">✅ تم الشراء</button>
       </div>
 
-      <div id="cartTabPending" class="card" style="border-radius:0 0 12px 12px;border-top:none;">
-        <table>
+      <div id="cartTabPending" class="cart-card">
+        <table class="cart-table">
           <thead>
             <tr>
               <th>#</th><th>اسم المنتج</th><th>الكمية</th>
@@ -2123,18 +2563,18 @@
             </tr>
           </thead>
           <tbody id="cartTablePending">
-            <tr><td colspan="7"><div class="empty-state"><div class="icon">🛒</div><p>لا توجد منتجات قيد الشراء</p></div></td></tr>
+            <tr><td colspan="7"><div style="text-align:center;padding:48px;color:#6b7280;"><div style="font-size:48px;margin-bottom:12px;">🛒</div><p style="font-size:14px;">لا توجد منتجات قيد الشراء</p></div></td></tr>
           </tbody>
         </table>
       </div>
 
       <!-- Purchased Products Table -->
-      <div id="cartTabPurchased" class="card" style="display:none;">
-        <div class="card-header">
+      <div id="cartTabPurchased" class="cart-card" style="display:none;">
+        <div class="cart-card-header">
           <h3>✅ المشتريات المنجزة</h3>
-          <span style="font-size:12px;color:var(--muted);">يتم خصم هذه المبالغ من الأرباح تلقائياً</span>
+          <span style="font-size:12px;color:#6b7280;">يتم خصم هذه المبالغ من الأرباح تلقائياً</span>
         </div>
-        <table>
+        <table class="cart-table">
           <thead>
             <tr>
               <th>#</th><th>اسم المنتج</th><th>الكمية</th>
@@ -2142,16 +2582,11 @@
             </tr>
           </thead>
           <tbody id="cartTablePurchased">
-            <tr><td colspan="6"><div class="empty-state"><div class="icon">✅</div><p>لا توجد مشتريات منجزة بعد</p></div></td></tr>
+            <tr><td colspan="6"><div style="text-align:center;padding:48px;color:#6b7280;"><div style="font-size:48px;margin-bottom:12px;">✅</div><p style="font-size:14px;">لا توجد مشتريات منجزة بعد</p></div></td></tr>
           </tbody>
         </table>
       </div>
-    </div>
-
-  </div><!-- /main -->
-</div><!-- /appPage -->
-
-<!-- ===== ADD CART MODAL ===== -->
+    </div><!-- ===== ADD CART MODAL ===== -->
 <div class="modal-overlay" id="addCartModal">
   <div class="modal">
     <div class="modal-close" onclick="closeModal('addCartModal')">✕</div>
@@ -2597,18 +3032,47 @@ const SB_AUTH   = 'https://cbfaybsuzjthuwftfuac.supabase.co/auth/v1';
 const SB_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk';
 
 // Service role — used ONLY for admin user management
-const SB_SVC = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MDI2MDUwMSwiZXhwIjoyMDk1ODM2NTAxfQ.eAk1uxrX82LiUw4-Fuljx11qxn7cigW3sbNEZkEWcVs';
+// Edge Function URL — Service Key محفوظ في السيرفر بأمان
+const EDGE_FN = 'https://cbfaybsuzjthuwftfuac.supabase.co/functions/v1/clever-responder';
+
+async function edgeCall(action, table, id = null, body = null) {
+  try {
+    const r = await fetch(EDGE_FN, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${SB_KEY}` },
+      body: JSON.stringify({ action, table, id, body })
+    });
+    if (!r.ok) return null;
+    const d = await r.json();
+    return Array.isArray(d) ? d[0] : d;
+  } catch { return null; }
+}
+
+// ===== SECURITY: Disable console output in production =====
+(function() {
+  // Frame busting — prevent clickjacking
+  if (window.self !== window.top) {
+    window.top.location = window.self.location;
+  }
+
+  const noop = () => {};
+  console.log = noop;
+  console.error = noop;
+  console.warn = noop;
+  console.info = noop;
+  console.debug = noop;
+})();
 function svcHeaders() {
+  // يستخدم الـ anon key — العمليات الحساسة بتروح للـ Edge Function
   return {
-    'apikey': SB_SVC,
-    'Authorization': `Bearer ${SB_SVC}`,
+    'apikey': SB_KEY,
+    'Authorization': `Bearer ${SB_KEY}`,
     'Content-Type': 'application/json',
     'Prefer': 'return=representation'
   };
 }
 async function sbAdminDelete(table, id) {
-  const r = await fetch(`${SB_URL}/${table}?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
-  if (!r.ok) console.error('sbAdminDelete', table, r.status);
+  await edgeCall('delete', table, id);
 }
 
 // Token lives ONLY in memory — not localStorage, not cookies
@@ -2655,25 +3119,25 @@ async function refreshAuthToken() {
 async function sbGet(table, query = '') {
   const r = await fetch(`${SB_URL}/${table}?order=id.desc&${query}`, { headers: authHeaders() });
   if (r.status === 401) { doLogout(); return []; }
-  if (!r.ok) { console.error('sbGet', table, r.status); return []; }
+  if (!r.ok) { return []; }
   return r.json();
 }
 async function sbPost(table, body) {
   const r = await fetch(`${SB_URL}/${table}`, { method: 'POST', headers: authHeaders(), body: JSON.stringify(body) });
   if (r.status === 401) { doLogout(); return null; }
-  if (!r.ok) { console.error('sbPost', table, r.status); return null; }
+  if (!r.ok) { return null; }
   const d = await r.json(); return Array.isArray(d) ? d[0] : d;
 }
 async function sbPatch(table, id, body) {
   const r = await fetch(`${SB_URL}/${table}?id=eq.${id}`, { method: 'PATCH', headers: authHeaders(), body: JSON.stringify(body) });
   if (r.status === 401) { doLogout(); return null; }
-  if (!r.ok) { console.error('sbPatch', table, r.status); return null; }
+  if (!r.ok) { return null; }
   const d = await r.json(); return Array.isArray(d) ? d[0] : d;
 }
 async function sbDelete(table, id) {
   const r = await fetch(`${SB_URL}/${table}?id=eq.${id}`, { method: 'DELETE', headers: authHeaders() });
   if (r.status === 401) { doLogout(); return; }
-  if (!r.ok) console.error('sbDelete', table, r.status);
+  /* silent on error in production */
 }
 
 // ============ SECURITY LAYER ============
@@ -2979,12 +3443,12 @@ function viewCustomer(id) {
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
       <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">الاسم</div><div style="font-weight:700;">${esc(c.name)}</div></div>
       <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">الهاتف</div><div style="font-weight:700;">${esc(c.phone)}</div></div>
-      <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">البريد الإلكتروني</div><div style="font-weight:700;">${c.email || '—'}</div></div>
-      <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">العنوان</div><div style="font-weight:700;">${c.address || '—'}</div></div>
+      <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">البريد الإلكتروني</div><div style="font-weight:700;">${esc(c.email) || '—'}</div></div>
+      <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">العنوان</div><div style="font-weight:700;">${esc(c.address) || '—'}</div></div>
       <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">نوع الشغل</div><div><span class="badge badge-blue">${esc(c.jobType)}</span></div></div>
       <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">سعر الشغل</div><div style="font-weight:900;color:var(--green);font-size:18px;">${c.price.toLocaleString()} ج</div></div>
       <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">تاريخ التسجيل</div><div style="font-weight:700;">${formatDate(c.date)}</div></div>
-      <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">أضافه</div><div style="font-weight:700;">${c.addedBy || '—'}</div></div>
+      <div><div style="font-size:11px;color:var(--muted);margin-bottom:4px;">أضافه</div><div style="font-weight:700;">${esc(c.addedBy) || '—'}</div></div>
     </div>`;
   const actions = document.getElementById('viewActions');
   actions.innerHTML = state.currentUser.role === 'admin'
@@ -3139,7 +3603,7 @@ function renderTasks() {
   if (currentTaskFilter === 'pending') tasks = tasks.filter(t => !t.done);
   else if (currentTaskFilter === 'done') tasks = tasks.filter(t => t.done);
   else if (currentTaskFilter === 'high') tasks = tasks.filter(t => t.priority === 'high');
-  if (tasks.length === 0) { el.innerHTML = `<div class="empty-state"><div class="icon">📭</div><p>لا توجد مهام</p></div>`; return; }
+  if (tasks.length === 0) { el.innerHTML = `<div style="text-align:center;padding:48px;color:#6b7280;"><div style="font-size:48px;margin-bottom:12px;">📭</div><p style="font-size:14px;">لا توجد مهام</p></div>`; return; }
   const priorityLabel = { high: '🔴 عالية', medium: '🟡 متوسطة', low: '🟢 منخفضة' };
   const priorityClass = { high: 'priority-high', medium: 'priority-medium', low: 'priority-low' };
   el.innerHTML = tasks.map(t => `
@@ -3151,14 +3615,13 @@ function renderTasks() {
         <div class="task-meta">
           <span class="priority-badge ${priorityClass[t.priority]}">${priorityLabel[t.priority]}</span>
           ${t.dueDate ? `<span class="task-date">📅 ${formatDate(t.dueDate)}</span>` : ''}
-          ${t.startTime && t.endTime ? `<span class="task-date" style="color:var(--accent2);">🕐 ${formatTime(t.startTime)} ← ${formatTime(t.endTime)}</span>` : ''}
-          ${t.done ? '<span class="badge badge-green">مكتملة ✓</span>' : '<span class="badge badge-gold">قيد التنفيذ</span>'}
+          ${t.startTime && t.endTime ? `<span class="task-date" style="color:#8b9dc3;">🕐 ${formatTime(t.startTime)} ← ${formatTime(t.endTime)}</span>` : ''}
+          ${t.done ? '<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(129,199,132,0.12);color:#81c784;">مكتملة ✓</span>' : '<span style="display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(255,183,77,0.12);color:#ffb74d;">قيد التنفيذ</span>'}
         </div>
       </div>
-      <div class="task-actions"><button class="btn btn-red btn-sm" onclick="deleteTask(${t.id})">🗑</button></div>
+      <div class="task-actions"><button class="btn btn-sm" onclick="deleteTask(${t.id})" style="background:rgba(229,115,115,0.1);border:1px solid rgba(229,115,115,0.2);color:#e57373;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(229,115,115,0.2)'" onmouseout="this.style.background='rgba(229,115,115,0.1)'">🗑</button></div>
     </div>`).join('');
 }
-
 function updateTaskStats() {
   const tasks = state.tasks || [];
   document.getElementById('taskStatTotal').textContent = tasks.length;
@@ -3167,14 +3630,28 @@ function updateTaskStats() {
 }
 
 // ============ FINANCE ============
-function getTotalProfit() { return state.customers.reduce((s, c) => s + (c.price || 0), 0); }
+// أرباح العملاء فقط (بدون الاشتراكات)
+function getTotalProfit() {
+  return state.customers
+    .filter(c => c.jobType !== '💰 اشتراك Black Diamond')
+    .reduce((s, c) => s + (c.price || 0), 0);
+}
+// إجمالي الاشتراكات فقط
+function getTotalSubscriptions() {
+  return state.customers
+    .filter(c => c.jobType === '💰 اشتراك Black Diamond')
+    .reduce((s, c) => s + (c.price || 0), 0);
+}
 function getTotalWithdrawn() { return state.withdrawals.reduce((s, w) => s + w.amount, 0); }
-function getBalance() { return getTotalProfit() - getTotalWithdrawn(); }
+function getBalance() { return (getTotalProfit() + getTotalSubscriptions()) - getTotalWithdrawn(); }
 
 function updateFinancePage() {
   document.getElementById('totalProfitDisp').textContent = getTotalProfit().toLocaleString() + ' جنيه';
   document.getElementById('totalWithdrawDisp').textContent = getTotalWithdrawn().toLocaleString() + ' جنيه';
   document.getElementById('availableBalance').textContent = getBalance().toLocaleString() + ' جنيه';
+  // تحديث خانة الاشتراكات في الماليات
+  const subDisp = document.getElementById('totalSubscriptionDisp');
+  if (subDisp) subDisp.textContent = getTotalSubscriptions().toLocaleString() + ' جنيه';
   renderWithdrawHistory();
 }
 
@@ -3276,6 +3753,9 @@ function updateDashboard() {
   document.getElementById('statMonth').textContent = monthC;
   document.getElementById('statRevenue').textContent = getTotalProfit().toLocaleString() + ' ج';
   document.getElementById('statWithdrawn').textContent = getTotalWithdrawn().toLocaleString() + ' ج';
+  // تحديث خانة الاشتراكات في الداشبورد
+  const subEl = document.getElementById('statSubscriptions');
+  if (subEl) subEl.textContent = getTotalSubscriptions().toLocaleString() + ' ج';
   const tbody = document.getElementById('dashboardTable');
   const latest = state.customers.slice(0, 5);
   if (latest.length === 0) { tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">📭</div><p>لا يوجد عملاء</p></div></td></tr>`; return; }
@@ -3294,11 +3774,11 @@ function switchCartTab(tab) {
   const btnP = document.getElementById('tabBtnPending');
   const btnB = document.getElementById('tabBtnPurchased');
   if (tab === 'pending') {
-    btnP.style.background = 'var(--accent)'; btnP.style.color = 'white';
-    btnB.style.background = 'var(--card)';   btnB.style.color = 'var(--muted)';
+    btnP.classList.add('active');
+    btnB.classList.remove('active');
   } else {
-    btnB.style.background = 'var(--green)';  btnB.style.color = 'white';
-    btnP.style.background = 'var(--card)';   btnP.style.color = 'var(--muted)';
+    btnB.classList.add('active');
+    btnP.classList.remove('active');
   }
   document.getElementById('cartTabPending').style.display   = tab === 'pending'   ? 'block' : 'none';
   document.getElementById('cartTabPurchased').style.display = tab === 'purchased' ? 'block' : 'none';
@@ -3521,19 +4001,19 @@ function renderCart() {
   // ---- Pending ----
   const tbodyPend = document.getElementById('cartTablePending');
   if (pending.length === 0) {
-    tbodyPend.innerHTML = `<tr><td colspan="7"><div class="empty-state"><div class="icon">🛒</div><p>لا توجد منتجات قيد الشراء</p></div></td></tr>`;
+    tbodyPend.innerHTML = `<tr><td colspan="7"><div style="text-align:center;padding:48px;color:#6b7280;"><div style="font-size:48px;margin-bottom:12px;">🛒</div><p style="font-size:14px;">لا توجد منتجات قيد الشراء</p></div></td></tr>`;
   } else {
     tbodyPend.innerHTML = pending.map((p, i) => `
-      <tr style="cursor:pointer;" onclick="viewCartItem(${p.id})">
-        <td>${i+1}</td>
-        <td><strong>${esc(p.name)}</strong></td>
-        <td><span class="badge badge-blue">${p.qty}</span></td>
-        <td style="color:var(--gold);font-weight:700;">${p.priceEGP ? p.priceEGP.toLocaleString() + ' ج' : '—'}</td>
-        <td style="color:var(--green);font-weight:700;">${p.priceUSD ? '$' + p.priceUSD.toLocaleString() : '—'}</td>
-        <td style="color:var(--muted);font-size:12px;max-width:140px;">${p.notes ? p.notes.substring(0,40) + (p.notes.length>40?'…':'') : '—'}</td>
+      <tr style="cursor:pointer;transition:background .15s;" onmouseover="this.style.background='rgba(61,90,128,0.04)'" onmouseout="this.style.background=''" onclick="viewCartItem(${p.id})">
+        <td style="color:#6b7280;font-size:12px;">${i+1}</td>
+        <td style="font-weight:600;color:#e0e0e0;">${esc(p.name)}</td>
+        <td><span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(100,149,237,0.12);color:#6495ed;">${p.qty}</span></td>
+        <td style="color:#ffb74d;font-weight:700;">${p.priceEGP ? p.priceEGP.toLocaleString() + ' ج' : '—'}</td>
+        <td style="color:#81c784;font-weight:700;">${p.priceUSD ? '$' + p.priceUSD.toLocaleString() : '—'}</td>
+        <td style="color:#6b7280;font-size:12px;max-width:140px;">${p.notes ? p.notes.substring(0,40) + (p.notes.length>40?'…':'') : '—'}</td>
         <td onclick="event.stopPropagation();" style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="btn btn-green btn-sm" onclick="viewCartItem(${p.id})">👁 عرض وشراء</button>
-          <button class="btn btn-red btn-sm" onclick="deleteCartItem(${p.id})">🗑</button>
+          <button class="btn btn-sm" onclick="viewCartItem(${p.id})" style="background:rgba(129,199,132,0.12);border:1px solid rgba(129,199,132,0.25);color:#81c784;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .2s;font-weight:600;" onmouseover="this.style.background='rgba(129,199,132,0.2)'" onmouseout="this.style.background='rgba(129,199,132,0.12)'">👁 عرض وشراء</button>
+          <button class="btn btn-sm" onclick="deleteCartItem(${p.id})" style="background:rgba(229,115,115,0.1);border:1px solid rgba(229,115,115,0.2);color:#e57373;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(229,115,115,0.2)'" onmouseout="this.style.background='rgba(229,115,115,0.1)'">🗑</button>
         </td>
       </tr>`).join('');
   }
@@ -3541,27 +4021,26 @@ function renderCart() {
   // ---- Purchased ----
   const tbodyBought = document.getElementById('cartTablePurchased');
   if (purchased.length === 0) {
-    tbodyBought.innerHTML = `<tr><td colspan="6"><div class="empty-state"><div class="icon">✅</div><p>لا توجد مشتريات منجزة بعد</p></div></td></tr>`;
+    tbodyBought.innerHTML = `<tr><td colspan="6"><div style="text-align:center;padding:48px;color:#6b7280;"><div style="font-size:48px;margin-bottom:12px;">✅</div><p style="font-size:14px;">لا توجد مشتريات منجزة بعد</p></div></td></tr>`;
   } else {
     tbodyBought.innerHTML = purchased.map((p, i) => `
-      <tr style="cursor:pointer;" onclick="viewCartItem(${p.id})">
-        <td>${i+1}</td>
+      <tr style="cursor:pointer;transition:background .15s;" onmouseover="this.style.background='rgba(61,90,128,0.04)'" onmouseout="this.style.background=''" onclick="viewCartItem(${p.id})">
+        <td style="color:#6b7280;font-size:12px;">${i+1}</td>
         <td>
-          <strong>${esc(p.name)}</strong>
-          ${p.link ? `<br><span style="font-size:11px;color:var(--accent);">🔗 له رابط</span>` : ''}
+          <strong style="color:#e0e0e0;">${esc(p.name)}</strong>
+          ${p.link ? `<br><span style="font-size:11px;color:#6495ed;">🔗 له رابط</span>` : ''}
         </td>
-        <td><span class="badge badge-blue">${p.qty}</span></td>
-        <td style="color:var(--red);font-weight:900;">- ${(p.priceEGP * p.qty).toLocaleString()} ج</td>
-        <td style="color:var(--muted);font-size:12px;">${p.purchaseDate ? formatDate(p.purchaseDate) : '—'}</td>
+        <td><span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;background:rgba(100,149,237,0.12);color:#6495ed;">${p.qty}</span></td>
+        <td style="color:#e57373;font-weight:900;">- ${(p.priceEGP * p.qty).toLocaleString()} ج</td>
+        <td style="color:#6b7280;font-size:12px;">${p.purchaseDate ? formatDate(p.purchaseDate) : '—'}</td>
         <td onclick="event.stopPropagation();" style="display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="btn btn-ghost btn-sm" onclick="viewCartItem(${p.id})">👁 عرض</button>
-          <button class="btn btn-ghost btn-sm" onclick="unmarkPurchased(${p.id})">↩ تراجع</button>
-          <button class="btn btn-red btn-sm" onclick="deleteCartItem(${p.id})">🗑</button>
+          <button class="btn btn-sm" onclick="viewCartItem(${p.id})" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:#9ca3af;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.04)'">👁 عرض</button>
+          <button class="btn btn-sm" onclick="unmarkPurchased(${p.id})" style="background:rgba(255,183,77,0.1);border:1px solid rgba(255,183,77,0.2);color:#ffb74d;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,183,77,0.2)'" onmouseout="this.style.background='rgba(255,183,77,0.1)'">↩ تراجع</button>
+          <button class="btn btn-sm" onclick="deleteCartItem(${p.id})" style="background:rgba(229,115,115,0.1);border:1px solid rgba(229,115,115,0.2);color:#e57373;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(229,115,115,0.2)'" onmouseout="this.style.background='rgba(229,115,115,0.1)'">🗑</button>
         </td>
       </tr>`).join('');
   }
 }
-
 function updateCartStats() {
   const cart      = state.cart || [];
   const pending   = cart.filter(p => !p.purchased);
@@ -4499,9 +4978,14 @@ if (canvas) {
   const ctx = canvas.getContext('2d');
   let candles = [], W, H, frame = 0;
   function resizeCanvas() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+  function cryptoRand() {
+    const arr = new Uint32Array(1);
+    crypto.getRandomValues(arr);
+    return arr[0] / 0xFFFFFFFF;
+  }
   function randCandle(x) {
-    const open=H*0.3+Math.random()*H*0.4, close=open+(Math.random()-0.5)*80;
-    return {x,open,close,high:Math.min(open,close)-Math.random()*30,low:Math.max(open,close)+Math.random()*30,alpha:Math.random()};
+    const open=H*0.3+cryptoRand()*H*0.4, close=open+(cryptoRand()-0.5)*80;
+    return {x,open,close,high:Math.min(open,close)-cryptoRand()*30,low:Math.max(open,close)+cryptoRand()*30,alpha:cryptoRand()};
   }
   function initCandles() { candles=[]; for(let x=0;x<W+40;x+=40) candles.push(randCandle(x)); }
   function drawCandle(c) {
@@ -4630,7 +5114,7 @@ function previewScreenshot(input) {
     document.getElementById('screenshotPreviewArea').innerHTML = `
       <img src="${e.target.result}" style="max-width:100%;max-height:160px;border-radius:8px;object-fit:contain;" alt="preview">
       <div style="margin-top:8px;font-size:11px;color:#4ade80;">✅ <span class="ar">تم اختيار الصورة</span><span class="en">Image selected</span></div>
-      <div style="font-size:11px;color:#6B7280;margin-top:2px;">${file.name}</div>`;
+      <div style="font-size:11px;color:#6B7280;margin-top:2px;">${esc(file.name)}</div>`;
   };
   reader.readAsDataURL(file);
 }
@@ -4659,6 +5143,19 @@ async function submitSubscription() {
   if (!serverName) { errEl.textContent='⚠️ أدخل اسم السيرفر'; errEl.style.display='block'; return; }
   if (!password)   { errEl.textContent='⚠️ أدخل الرقم السري'; errEl.style.display='block'; return; }
   if (balance < 50){ errEl.textContent='⚠️ الحد الأدنى للإيداع $50'; errEl.style.display='block'; return; }
+
+  // Rate limiting: max 3 submissions per 10 minutes
+  const rlKey = '_sub_rl';
+  try {
+    const rlData = JSON.parse(sessionStorage.getItem(rlKey) || '{"count":0,"start":0}');
+    if (Date.now() - rlData.start < 600000 && rlData.count >= 3) {
+      errEl.textContent='⚠️ تجاوزت الحد المسموح به من الطلبات — انتظر 10 دقائق وحاول مجدداً';
+      errEl.style.display='block'; return;
+    }
+    if (Date.now() - rlData.start >= 600000) { rlData.count = 0; rlData.start = Date.now(); }
+    rlData.count++;
+    sessionStorage.setItem(rlKey, JSON.stringify(rlData));
+  } catch(e) { /* ignore */ }
 
   const btn = document.querySelector('#subStep1 .btn-gold');
   if (btn) { btn.disabled = true; btn.querySelector('.ar').textContent = '⏳ جاري الحفظ...'; }
@@ -4752,7 +5249,7 @@ async function submitPersonalInfo() {
   }
 
   const s3 = document.getElementById('subStep3ClientSummary');
-  if (s3) s3.innerHTML = `👤 ${name}<br>📧 ${email}<br>📱 ${phone}<br>💵 حساب: ${window._subData?.accountId||''} | $${(window._subData?.balance||0).toLocaleString()}`;
+  if (s3) s3.innerHTML = `👤 ${esc(name)}<br>📧 ${esc(email)}<br>📱 ${esc(phone)}<br>💵 حساب: ${esc(window._subData?.accountId||'')} | $${(window._subData?.balance||0).toLocaleString()}`;
 
   subShowStep(3);
 }
@@ -5275,6 +5772,16 @@ async function doClientLogin() {
   if(!accountId){ showCErr('⚠️ أدخل رقم الحساب'); return; }
   if(!password) { showCErr('⚠️ أدخل الرقم السري'); return; }
 
+  // Rate limiting: max 5 attempts per 5 minutes
+  const cRlKey = '_cl_rl';
+  try {
+    const cRl = JSON.parse(sessionStorage.getItem(cRlKey) || '{"count":0,"start":0}');
+    if (Date.now() - cRl.start >= 300000) { cRl.count = 0; cRl.start = Date.now(); }
+    if (cRl.count >= 5) { showCErr('⚠️ تجاوزت عدد المحاولات — انتظر 5 دقائق'); return; }
+    cRl.count++;
+    sessionStorage.setItem(cRlKey, JSON.stringify(cRl));
+  } catch(e) { /* ignore */ }
+
   const btn = document.querySelector('#loginPanel2 .btn-gold');
   btn.textContent='⏳ جاري التحقق...'; btn.disabled=true;
 
@@ -5458,7 +5965,7 @@ function openCollectModal(hash, count, collected, clientName) {
   _collectData = { hash, count, collected, remaining, clientName };
   const totalUSD = remaining * 250;
   document.getElementById('collectSubInfo').innerHTML = `
-    <div>👤 <strong>${clientName || '—'}</strong></div>
+    <div>👤 <strong>${esc(clientName) || '—'}</strong></div>
     <div>🔄 عدد الاشتراكات: <strong style="color:var(--accent);">${count}</strong></div>
     <div>✅ تم تحصيله: <strong style="color:var(--green);">${collected}</strong></div>
     <div>⏳ متبقي للتحصيل: <strong style="color:var(--gold);">${remaining}</strong></div>
@@ -5539,6 +6046,105 @@ async function confirmCollect() {
   showToast(`✅ تم إضافة ${totalEGP.toLocaleString()} جنيه للأرباح 🎉`);
 }
 
+
+
+/* ===== SUBSCRIPTION STATS UPDATE ===== */
+function updateSubscriptionStats() {
+  // الاشتراكات بتتحسب تلقائياً من getTotalSubscriptions() — مش محتاجين نعيد الحساب هنا
+  updateDashboard();
+  updateFinancePage();
+}
+
+// Hook into existing loadData function
+const originalLoadData = loadData;
+loadData = async function() {
+  await originalLoadData();
+  updateSubscriptionStats();
+};
+
+
+/* ===== SEARCH TOGGLE FUNCTIONS ===== */
+function setSearchType(type) {
+  const customerFields = document.getElementById('customerSearchFields');
+  const subscriptionFields = document.getElementById('subscriptionSearchFields');
+  const customerResults = document.getElementById('customerResults');
+  const subscriptionResults = document.getElementById('subscriptionResults');
+  const lblCustomers = document.getElementById('lblCustomers');
+  const lblSubscriptions = document.getElementById('lblSubscriptions');
+
+  if (type === 'customers') {
+    customerFields.style.display = 'block';
+    subscriptionFields.style.display = 'none';
+    customerResults.style.display = 'block';
+    subscriptionResults.style.display = 'none';
+    lblCustomers.style.background = 'rgba(212,175,55,0.15)';
+    lblCustomers.style.color = '#d4af37';
+    lblCustomers.style.border = '1px solid rgba(212,175,55,0.3)';
+    lblSubscriptions.style.background = 'transparent';
+    lblSubscriptions.style.color = 'var(--muted)';
+    lblSubscriptions.style.border = '1px solid transparent';
+  } else {
+    customerFields.style.display = 'none';
+    subscriptionFields.style.display = 'block';
+    customerResults.style.display = 'none';
+    subscriptionResults.style.display = 'block';
+    lblSubscriptions.style.background = 'rgba(212,175,55,0.15)';
+    lblSubscriptions.style.color = '#d4af37';
+    lblSubscriptions.style.border = '1px solid rgba(212,175,55,0.3)';
+    lblCustomers.style.background = 'transparent';
+    lblCustomers.style.color = 'var(--muted)';
+    lblCustomers.style.border = '1px solid transparent';
+  }
+}
+
+function doSubSearch() {
+  const name = document.getElementById('sSubName').value.toLowerCase();
+  const email = document.getElementById('sSubEmail').value.toLowerCase();
+  const status = document.getElementById('sSubStatus').value;
+  const phone = document.getElementById('sSubPhone').value.toLowerCase();
+
+  const tbody = document.getElementById('subSearchTable');
+  tbody.innerHTML = '';
+
+  // Filter subscriptions
+  let results = subscriptions.filter(sub => {
+    const matchName = !name || (sub.name && sub.name.toLowerCase().includes(name));
+    const matchEmail = !email || (sub.email && sub.email.toLowerCase().includes(email));
+    const matchStatus = !status || sub.status === status;
+    const matchPhone = !phone || (sub.phone && sub.phone.toLowerCase().includes(phone));
+    return matchName && matchEmail && matchStatus && matchPhone;
+  });
+
+  if (results.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">📭</div><p>لا توجد نتائج للبحث</p></div></td></tr>';
+    return;
+  }
+
+  results.forEach((sub, i) => {
+    const statusBadge = sub.status === 'active' ? '<span style="display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(34,197,94,0.15);color:var(--green);font-size:var(--font-xs);font-weight:700;">✅ نشط</span>' :
+                       sub.status === 'pending' ? '<span style="display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(212,175,55,0.15);color:var(--gold);font-size:var(--font-xs);font-weight:700;">⏳ قيد المراجعة</span>' :
+                       '<span style="display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(239,68,68,0.15);color:var(--red);font-size:var(--font-xs);font-weight:700;">❌ منتهي</span>';
+
+    tbody.innerHTML += `<tr>
+      <td>${i+1}</td>
+      <td>${sub.name || '-'}</td>
+      <td>${sub.email || '-'}</td>
+      <td>${sub.phone || '-'}</td>
+      <td>${statusBadge}</td>
+      <td>${sub.startDate || '-'}</td>
+      <td>${sub.endDate || '-'}</td>
+      <td>${formatCurrency(sub.amount || 0)}</td>
+    </tr>`;
+  });
+}
+
+function clearSubSearch() {
+  document.getElementById('sSubName').value = '';
+  document.getElementById('sSubEmail').value = '';
+  document.getElementById('sSubStatus').value = '';
+  document.getElementById('sSubPhone').value = '';
+  document.getElementById('subSearchTable').innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض نتائج الاشتراكات</p></div></td></tr>';
+}
 </script>
 
 <!-- ===== COLLECT MODAL ===== -->
