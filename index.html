@@ -3100,14 +3100,15 @@ let _refreshToken = null;
 let _tokenRefreshTimer = null;
 
 function authHeaders() {
-  // ✅ Security Fix: لو مفيش token يعمل logout فوراً — مش بيرجع anon key
-  if (!_token) {
+  // ✅ Security Fix: لو مفيش token وفيه user مسجّل دخوله يعمل logout
+  // بس مش بنمنع الـ login request نفسه
+  if (!_token && state.currentUser) {
     doLogout();
     throw new Error('Session expired — please log in again');
   }
   return {
     'apikey':        SB_KEY,
-    'Authorization': `Bearer ${_token}`,
+    'Authorization': `Bearer ${_token || SB_KEY}`,
     'Content-Type':  'application/json',
     'Prefer':        'return=representation'
   };
