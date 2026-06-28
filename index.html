@@ -4797,33 +4797,41 @@ function checkTasksAndNotify() {
 
 // ============ ACCOUNTS (Password Manager) ============
 
-// ✅ التشفير بيتم على السيرفر بالكامل عن طريق Edge Function
-// المفتاح محفوظ في Supabase Secrets — مش ظاهر في الكود خالص
+// ============ تشفير الأكونتات — محلي مع مفتاح قوي ============
 const BD_ENCRYPT_FN = 'https://cbfaybsuzjthuwftfuac.supabase.co/functions/v1/bd-encrypt';
+const _ACC_SALT = 'BD$2026#AccVault!@XYZ_cbfaybsuzjthuwftfuac';
+const _SUB_SALT = 'BD$2026#SubVault!@XYZ_cbfaybsuzjthuwftfuac';
+
+async function _getKey(salt) {
+  const km = await crypto.subtle.importKey(
+    'raw', new TextEncoder().encode(salt),
+    { name: 'PBKDF2' }, false, ['deriveKey']
+  );
+  return crypto.subtle.deriveKey(
+    { name: 'PBKDF2', salt: new TextEncoder().encode('bd_v2_salt'), iterations: 150000, hash: 'SHA-256' },
+    km, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']
+  );
+}
 
 async function encryptText(text) {
   if (!text) return '';
   try {
-    const r = await fetch(BD_ENCRYPT_FN, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_token}` },
-      body: JSON.stringify({ action: 'encrypt', text, salt_type: 'acc' })
-    });
-    const d = await r.json();
-    return d.result || text;
+    const key = await _getKey(_ACC_SALT);
+    const iv  = crypto.getRandomValues(new Uint8Array(12));
+    const enc = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(text));
+    const combined = new Uint8Array(iv.length + enc.byteLength);
+    combined.set(iv); combined.set(new Uint8Array(enc), iv.length);
+    return btoa(String.fromCharCode(...combined));
   } catch { return text; }
 }
 
 async function decryptText(cipher) {
   if (!cipher) return '';
   try {
-    const r = await fetch(BD_ENCRYPT_FN, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_token}` },
-      body: JSON.stringify({ action: 'decrypt', text: cipher, salt_type: 'acc' })
-    });
-    const d = await r.json();
-    return d.result || '🔒 مشفر';
+    const combined = Uint8Array.from(atob(cipher), c => c.charCodeAt(0));
+    const key = await _getKey(_ACC_SALT);
+    const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: combined.slice(0,12) }, key, combined.slice(12));
+    return new TextDecoder().decode(dec);
   } catch { return '🔒 مشفر'; }
 }
 
@@ -5326,29 +5334,25 @@ async function finalSubmitSubscription() {
   subShowStep(4);
 }
 
-// ✅ تشفير بيانات الاشتراكات — عن طريق Edge Function على السيرفر
+// ============ تشفير بيانات الاشتراكات — محلي ============
 async function encryptSubData(text) {
   if (!text) return '';
   try {
-    const r = await fetch(BD_ENCRYPT_FN, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_token || SB_KEY}` },
-      body: JSON.stringify({ action: 'encrypt', text, salt_type: 'sub' })
-    });
-    const d = await r.json();
-    return d.result || text;
+    const key = await _getKey(_SUB_SALT);
+    const iv  = crypto.getRandomValues(new Uint8Array(12));
+    const enc = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(text));
+    const combined = new Uint8Array(iv.length + enc.byteLength);
+    combined.set(iv); combined.set(new Uint8Array(enc), iv.length);
+    return btoa(String.fromCharCode(...combined));
   } catch { return text; }
 }
 async function decryptSubData(cipher) {
   if (!cipher) return '';
   try {
-    const r = await fetch(BD_ENCRYPT_FN, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${_token || SB_KEY}` },
-      body: JSON.stringify({ action: 'decrypt', text: cipher, salt_type: 'sub' })
-    });
-    const d = await r.json();
-    return d.result || '🔒 مشفر';
+    const combined = Uint8Array.from(atob(cipher), c => c.charCodeAt(0));
+    const key = await _getKey(_SUB_SALT);
+    const dec = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: combined.slice(0,12) }, key, combined.slice(12));
+    return new TextDecoder().decode(dec);
   } catch { return '🔒 مشفر'; }
 }
 
