@@ -5297,7 +5297,12 @@ async function submitPersonalInfo() {
 
       const res = await fetch(`${SB_URL}/subscriptions?id=eq.${window._subSavedId}`, {
         method: 'PATCH',
-        headers: authHeaders(),
+        headers: {
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + SB_KEY,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
         body: JSON.stringify({ client_name: name, client_email: email, client_phone: phone })
       });
 
