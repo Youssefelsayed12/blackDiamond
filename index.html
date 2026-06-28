@@ -2402,18 +2402,6 @@ table thead th {
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
 
-        <!-- Excel Cards -->
-        <div class="card" style="padding:24px;text-align:center;">
-          <div style="font-size:48px;margin-bottom:12px;">📊</div>
-          <h3 style="margin-bottom:8px;">تصدير Excel</h3>
-          <p style="color:var(--muted);font-size:13px;margin-bottom:20px;">تصدير كل البيانات في ملف Excel منظم</p>
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <button class="btn btn-primary" onclick="exportExcel('all')">📥 تصدير كل البيانات</button>
-            <button class="btn btn-ghost" onclick="exportExcel('customers')">👤 العملاء فقط</button>
-            <button class="btn btn-ghost" onclick="exportExcel('finance')">💰 المالية فقط</button>
-          </div>
-        </div>
-
         <!-- PDF Cards -->
         <div class="card" style="padding:24px;text-align:center;">
           <div style="font-size:48px;margin-bottom:12px;">📄</div>
@@ -2432,8 +2420,7 @@ table thead th {
       <div class="card" style="margin-top:20px;padding:20px;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.2);">
         <div style="font-size:13px;color:var(--muted);line-height:2;">
           <strong style="color:var(--accent);">ℹ️ معلومات:</strong><br>
-          • Excel — بيصدر ملف .xlsx تقدر تفتحه في Excel أو Google Sheets<br>
-          • PDF — بيفتح صفحة طباعة تقدر تحفظها كـ PDF من المتصفح<br>
+          • PDF — بيحمّل ملف HTML تقدر تفتحه في المتصفح وتطبعه كـ PDF<br>
           • البيانات بتشمل: العملاء، المسحوبات، المهام، سلة المشتريات
         </div>
       </div>
@@ -4570,12 +4557,36 @@ function exportExcel(type) {
       ...state.tasks.map((t,i) => [i+1, t.title, t.desc||'', t.priority, t.dueDate||'', t.done?'منتهية':'جارية'])
     ];
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(taskData), 'المهام');
+
+    // ✅ إضافة الاشتراكات في التقرير الشامل
+    if (state.subscriptions && state.subscriptions.length > 0) {
+      const subsData = [
+        ['#', 'السيرفر', 'رأس المال ($)', 'نسبة الربح (%)', 'الحالة', 'تاريخ الاشتراك', 'أيام النشاط'],
+        ...state.subscriptions.map((s,i) => [i+1, s.server_name||'—', s.balance||0, s.profit_percent||0, s.status||'—', s.created_at?s.created_at.split('T')[0]:'—', s.subscription_days||0])
+      ];
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(subsData), 'الاشتراكات');
+    }
   }
 
   const date = new Date().toISOString().split('T')[0];
   const name = type==='all'?'كل_البيانات':type==='customers'?'العملاء':'المالية';
-  XLSX.writeFile(wb, `نظام_ادارة_العملاء_${name}_${date}.xlsx`);
-  showToast('✅ تم تصدير Excel بنجاح');
+
+  // ✅ حل موبايل — blob download بدل writeFile مباشرة
+  try {
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob  = new Blob([wbout], { type: 'application/octet-stream' });
+    const url   = URL.createObjectURL(blob);
+    const a     = document.createElement('a');
+    a.href      = url;
+    a.download  = `نظام_ادارة_العملاء_${name}_${date}.xlsx`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    showToast('✅ تم تصدير Excel بنجاح');
+  } catch(e) {
+    showToast('⚠️ خطأ في التصدير: ' + e.message);
+  }
 }
 
 // ============ BACKUP — PDF ============
@@ -4610,8 +4621,8 @@ function exportPDF(type) {
       </table>`;
   }
 
-  const w = window.open('','_blank','noopener,noreferrer');
-  w.document.write(`<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
+  // ✅ حل موبايل — بنحول لـ blob بدل window.open
+  const html = `<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
     <title>${title}</title>
     <style>
       body{font-family:Cairo,Arial,sans-serif;color:#111;padding:30px;direction:rtl;}
@@ -4629,9 +4640,18 @@ function exportPDF(type) {
     <p style="color:#666;font-size:13px;">تاريخ التصدير: ${date}</p>
     ${body}
     <div class="footer">نظام إدارة العملاء — Black Diamond</div>
-  </body></html>`);
-  w.document.close();
-  setTimeout(()=>w.print(), 500);
+  </body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const dateStr = new Date().toISOString().split('T')[0];
+  const fname = type==='all'?'تقرير_شامل':type==='customers'?'تقرير_العملاء':'التقرير_المالي';
+  a.href     = url;
+  a.download = `${fname}_${dateStr}.html`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  showToast('✅ تم تحميل التقرير — افتحه في المتصفح واطبعه كـ PDF');
 }
 
 
@@ -5277,7 +5297,7 @@ async function submitPersonalInfo() {
 
       const res = await fetch(`${SB_URL}/subscriptions?id=eq.${window._subSavedId}`, {
         method: 'PATCH',
-        headers: svcHeaders(),
+        headers: authHeaders(),
         body: JSON.stringify({ client_name: name, client_email: email, client_phone: phone })
       });
 
@@ -5488,7 +5508,7 @@ async function openEditSub(id, hash) {
   // Always fetch fresh from DB to get latest client_name, client_phone, client_email
   let sub = null;
   try {
-    const fresh = await fetch(`${SB_URL}/subscriptions?id=eq.${id}&limit=1`, { headers: svcHeaders() });
+    const fresh = await fetch(`${SB_URL}/subscriptions?id=eq.${id}&limit=1`, { headers: authHeaders() });
     const arr = await fresh.json();
     sub = arr && arr[0] ? arr[0] : null;
   } catch(e) {}
@@ -5671,7 +5691,7 @@ async function saveSubEdit() {
   errEl.style.display = 'none';
 
   showLoading(true);
-  const patchHeaders = { ...svcHeaders(), 'Prefer': 'return=representation' };
+  const patchHeaders = { ...authHeaders(), 'Prefer': 'return=representation' };
   const patchRes = await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, {
     method: 'PATCH',
     headers: patchHeaders,
@@ -5703,7 +5723,7 @@ async function deleteSubscription(id) {
   const hash = sub ? (sub.account_id_hash || null) : null;
 
   // Delete subscription
-  await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
+  await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: authHeaders() });
 
   // Delete related profits (by account_id_hash)
   if (hash) {
@@ -5713,7 +5733,7 @@ async function deleteSubscription(id) {
       // No more subscriptions for this account — delete all profits
       await fetch(`${SB_URL}/profits?account_id_hash=eq.${encodeURIComponent(hash)}`, {
         method: 'DELETE',
-        headers: svcHeaders()
+        headers: authHeaders()
       });
     }
   }
@@ -5733,16 +5753,16 @@ async function deleteSubscriptionGroup(hash, ids) {
 
   // Delete all subscriptions for this account
   await fetch(`${SB_URL}/subscriptions?account_id_hash=eq.${encodeURIComponent(hash)}`, {
-    method: 'DELETE', headers: svcHeaders()
+    method: 'DELETE', headers: authHeaders()
   });
   // Fallback: delete by IDs
   for (const id of ids) {
-    await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: svcHeaders() });
+    await fetch(`${SB_URL}/subscriptions?id=eq.${id}`, { method: 'DELETE', headers: authHeaders() });
   }
 
   // Delete ALL profits for this account
   await fetch(`${SB_URL}/profits?account_id_hash=eq.${encodeURIComponent(hash)}`, {
-    method: 'DELETE', headers: svcHeaders()
+    method: 'DELETE', headers: authHeaders()
   });
 
   showLoading(false);
@@ -5942,7 +5962,7 @@ async function addProfit() {
       const newDays = (targetSub.subscription_days || 0) + 1;
       await fetch(`${SB_URL}/subscriptions?id=eq.${targetSub.id}`, {
         method: 'PATCH',
-        headers: { ...svcHeaders(), 'Prefer': 'return=minimal' },
+        headers: { ...authHeaders(), 'Prefer': 'return=minimal' },
         body: JSON.stringify({ subscription_days: newDays })
       });
       targetSub.subscription_days = newDays;
@@ -6045,7 +6065,7 @@ async function confirmCollect() {
     return;
   }
 
-  const { hash, remaining, clientName } = _collectData;
+  const { hash, count, remaining, clientName } = _collectData;
   const totalUSD = remaining * 250;
   const totalEGP = Math.round(totalUSD * rate);
   const today    = new Date().toISOString().split('T')[0];
@@ -6073,10 +6093,11 @@ async function confirmCollect() {
   // Update collected_count on ALL subscriptions with this hash
   const matchedSubs = (state.subscriptions||[]).filter(s => (s.account_id_hash||String(s.id)) === hash);
   for (const sub of matchedSubs) {
-    const newCollected = (sub.collected_count || 0) + 1;
+    // ✅ التحصيل مرة واحدة بس لكل اشتراك — مش بيزيد أكتر من كده
+    const newCollected = Math.min((sub.collected_count || 0) + 1, count);
     await fetch(`${SB_URL}/subscriptions?id=eq.${sub.id}`, {
       method: 'PATCH',
-      headers: { ...svcHeaders(), 'Prefer': 'return=minimal' },
+      headers: { ...authHeaders(), 'Prefer': 'return=minimal' },
       body: JSON.stringify({ collected_count: newCollected })
     });
     sub.collected_count = newCollected;
@@ -6087,6 +6108,7 @@ async function confirmCollect() {
   state.customers.unshift(mapCustomer(row));
   closeModal('collectModal');
   loadSubscriptions();
+  loadCustomers();
   updateDashboard();
   showToast(`✅ تم إضافة ${totalEGP.toLocaleString()} جنيه للأرباح 🎉`);
 }
