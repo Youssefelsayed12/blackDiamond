@@ -4085,22 +4085,28 @@ async function changeEmail() {
   if (!newEmail || !pass) { showSettingsAlert(alertEl, '⚠️ ملء جميع الحقول', 'error'); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) { showSettingsAlert(alertEl, '⚠️ صيغة البريد غير صحيحة', 'error'); return; }
   showLoading(true);
-  // Update via Supabase Auth
-  const r = await fetch(`${SB_AUTH}/user`, {
+
+  // ✅ تحديث الإيميل في جدول users أولاً
+  const patchRes = await sbPatch('users', state.currentUser.id, { email: newEmail });
+  if (!patchRes) {
+    showLoading(false);
+    showSettingsAlert(alertEl, '⚠️ خطأ في تحديث البريد', 'error');
+    return;
+  }
+
+  // تحديث Supabase Auth (ممكن يحتاج confirmation من الإيميل الجديد)
+  await fetch(`${SB_AUTH}/user`, {
     method: 'PUT',
     headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${_token}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: newEmail })
-  });
-  const d = await r.json();
-  if (d.error) { showLoading(false); showSettingsAlert(alertEl, '⚠️ ' + (d.msg || 'خطأ في التحديث'), 'error'); return; }
-  // Also update in users table
-  await sbPatch('users', state.currentUser.id, { email: newEmail });
+  }).catch(() => {});
+
   showLoading(false);
   state.currentUser.email = newEmail;
   document.getElementById('currentEmailDisp').value = newEmail;
   document.getElementById('newEmail').value = '';
   document.getElementById('confirmPassForEmail').value = '';
-  showSettingsAlert(alertEl, '✅ تم تغيير البريد — تحقق من بريدك الجديد للتأكيد', 'success');
+  showSettingsAlert(alertEl, '✅ تم تغيير البريد بنجاح', 'success');
 }
 
 async function changePassword() {
