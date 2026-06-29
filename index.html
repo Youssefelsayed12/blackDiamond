@@ -4719,7 +4719,7 @@ async function addUser() {
     const ins = await fetch(`${SB_URL}/users`, {
       method: 'POST',
       headers: svcHeaders(),
-      body: JSON.stringify({ email, name, role, password: 'supabase_auth' })
+      body: JSON.stringify({ email, name, role })
     });
     showLoading(false);
 
