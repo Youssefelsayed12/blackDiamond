@@ -2464,7 +2464,7 @@ table thead th {
             <label>تأكيد كلمة المرور الجديدة</label>
             <input type="password" id="confirmNewPass" placeholder="أعد إدخال كلمة المرور الجديدة" autocomplete="new-password">
           </div>
-          <button class="btn btn-primary" onclick="changePassword()">🔒 تغيير كلمة المرور</button>
+          <button class="btn btn-primary" onclick="changePassword()" type="button">🔒 تغيير كلمة المرور</button>
         </div>
       </div>
     </div>
@@ -3078,7 +3078,10 @@ function svcHeaders() {
   };
 }
 async function sbAdminDelete(table, id) {
-  await edgeCall('delete', table, id);
+  await fetch(`${SB_URL}/${table}?id=eq.${id}`, {
+    method: 'DELETE',
+    headers: authHeaders()
+  });
 }
 
 // Token lives ONLY in memory — not localStorage, not cookies
@@ -4106,6 +4109,7 @@ async function changePassword() {
   const confirm = document.getElementById('confirmNewPass').value;
   const alertEl = document.getElementById('passAlert');
   alertEl.style.display = 'none';
+  if (!alertEl) { alert('خطأ: العنصر passAlert غير موجود'); return; }
   if (!current || !newP || !confirm) { showSettingsAlert(alertEl, '⚠️ ملء جميع الحقول', 'error'); return; }
   if (newP !== confirm) { showSettingsAlert(alertEl, '⚠️ كلمتا المرور غير متطابقتان', 'error'); return; }
   if (newP.length < 8) { showSettingsAlert(alertEl, '⚠️ 8 أحرف على الأقل', 'error'); return; }
@@ -4718,7 +4722,7 @@ async function addUser() {
     // تأكد من إعدادات RLS في Supabase قبل الاعتماد على هذا الجزء.
     const ins = await fetch(`${SB_URL}/users`, {
       method: 'POST',
-      headers: svcHeaders(),
+      headers: authHeaders(),
       body: JSON.stringify({ email, name, role })
     });
     showLoading(false);
