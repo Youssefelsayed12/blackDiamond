@@ -2432,22 +2432,11 @@ table thead th {
         <p>تغيير بيانات الحساب</p>
       </div>
       <div class="settings-grid">
-        <div class="settings-card">
-          <h4>📧 تغيير البريد الإلكتروني</h4>
-          <div class="alert alert-success" id="emailAlert"></div>
-          <div class="form-group">
-            <label>البريد الحالي</label>
-            <input type="email" id="currentEmailDisp" disabled style="opacity:.6;">
-          </div>
-          <div class="form-group">
-            <label>البريد الجديد</label>
-            <input type="email" id="newEmail" placeholder="أدخل البريد الجديد">
-          </div>
-          <div class="form-group">
-            <label>كلمة المرور للتأكيد</label>
-            <input type="password" id="confirmPassForEmail" placeholder="أدخل كلمة المرور" autocomplete="current-password">
-          </div>
-          <button class="btn btn-primary" onclick="changeEmail()">💾 حفظ البريد</button>
+        <div style="display:none" id="emailChangeHidden">
+          <input type="email" id="currentEmailDisp">
+          <input type="email" id="newEmail">
+          <input type="password" id="confirmPassForEmail">
+          <div id="emailAlert"></div>
         </div>
         <div class="settings-card">
           <h4>🔑 تغيير كلمة المرور</h4>
