@@ -2143,6 +2143,14 @@ table thead th {
                 <label>رقم الهاتف</label>
                 <input type="text" id="sSubPhone" placeholder="ابحث بالرقم...">
               </div>
+              <div class="form-group" style="margin:0">
+                <label>من تاريخ</label>
+                <input type="date" id="sSubDateFrom">
+              </div>
+              <div class="form-group" style="margin:0">
+                <label>إلى تاريخ</label>
+                <input type="date" id="sSubDateTo">
+              </div>
               <button class="btn btn-ghost" onclick="clearSubSearch()">✕ مسح</button>
             </div>
           </div>
@@ -6213,6 +6221,8 @@ function doSubSearch() {
   const email = document.getElementById('sSubEmail').value.toLowerCase();
   const status = document.getElementById('sSubStatus').value;
   const phone = document.getElementById('sSubPhone').value.toLowerCase();
+  const dateFrom = document.getElementById('sSubDateFrom').value;
+  const dateTo = document.getElementById('sSubDateTo').value;
 
   const tbody = document.getElementById('subSearchTable');
   tbody.innerHTML = '';
@@ -6223,7 +6233,10 @@ function doSubSearch() {
     const matchEmail = !email || (sub.client_email && sub.client_email.toLowerCase().includes(email));
     const matchStatus = !status || sub.status === status;
     const matchPhone = !phone || (sub.client_phone && sub.client_phone.toLowerCase().includes(phone));
-    return matchName && matchEmail && matchStatus && matchPhone;
+    const subDate = sub.created_at ? sub.created_at.split('T')[0] : '';
+    const matchDateFrom = !dateFrom || (subDate && subDate >= dateFrom);
+    const matchDateTo = !dateTo || (subDate && subDate <= dateTo);
+    return matchName && matchEmail && matchStatus && matchPhone && matchDateFrom && matchDateTo;
   });
 
   if (results.length === 0) {
@@ -6252,6 +6265,8 @@ function doSubSearch() {
 function clearSubSearch() {
   document.getElementById('sSubName').value = '';
   document.getElementById('sSubEmail').value = '';
+  document.getElementById('sSubDateFrom').value = '';
+  document.getElementById('sSubDateTo').value = '';
   document.getElementById('sSubStatus').value = '';
   document.getElementById('sSubPhone').value = '';
   document.getElementById('subSearchTable').innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض نتائج الاشتراكات</p></div></td></tr>';
