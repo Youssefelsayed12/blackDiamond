@@ -2070,108 +2070,59 @@ table thead th {
     <div class="page" id="page-search">
       <div class="page-header">
         <h2>🔍 البحث المتقدم</h2>
-        <p>ابحث عن العملاء أو الاشتراكات</p>
+        <p>ابحث عن العملاء</p>
       </div>
       <div class="card">
         <div class="card-body">
-          <!-- Search Type Toggle -->
-          <div style="display:flex;gap:8px;margin-bottom:16px;padding:12px;background:rgba(212,175,55,0.05);border-radius:10px;border:1px solid rgba(212,175,55,0.15);flex-wrap:wrap;">
-            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:var(--font-sm);color:var(--text);padding:6px 12px;border-radius:8px;transition:all 0.3s;background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.3);" id="lblCustomers" onclick="setSearchType('customers')">
-              <input type="radio" name="searchType" value="customers" checked onchange="setSearchType('customers')" style="accent-color:#d4af37;cursor:pointer;">
-              <span>👤 العملاء</span>
-            </label>
-            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;font-size:var(--font-sm);color:var(--muted);padding:6px 12px;border-radius:8px;transition:all 0.3s;border:1px solid transparent;" id="lblSubscriptions" onclick="setSearchType('subscriptions')">
-              <input type="radio" name="searchType" value="subscriptions" onchange="setSearchType('subscriptions')" style="accent-color:#d4af37;cursor:pointer;">
-              <span>💰 الاشتراكات</span>
-            </label>
-          </div>
-
           <!-- Customer Search Fields -->
           <div id="customerSearchFields">
             <div class="search-row">
               <div class="form-group" style="margin:0">
                 <label>اسم العميل</label>
-                <input type="text" id="sName" placeholder="ابحث بالاسم...">
+                <input type="text" id="sName" placeholder="ابحث بالاسم..." oninput="doSearch()">
               </div>
               <div class="form-group" style="margin:0">
                 <label>البريد الإلكتروني</label>
-                <input type="text" id="sEmail" placeholder="ابحث بالبريد...">
+                <input type="text" id="sEmail" placeholder="ابحث بالبريد..." oninput="doSearch()">
               </div>
               <div class="form-group" style="margin:0">
                 <label>رقم الهاتف</label>
-                <input type="text" id="sPhone" placeholder="ابحث بالرقم...">
+                <input type="text" id="sPhone" placeholder="ابحث بالرقم..." oninput="doSearch()">
               </div>
-              <button class="btn btn-primary" onclick="doSearch()">🔍 بحث</button>
             </div>
             <div class="search-row">
               <div class="form-group" style="margin:0">
                 <label>العنوان</label>
-                <input type="text" id="sAddress" placeholder="ابحث بالعنوان...">
+                <input type="text" id="sAddress" placeholder="ابحث بالعنوان..." oninput="doSearch()">
               </div>
               <div class="form-group" style="margin:0">
                 <label>نوع الشغل</label>
-                <input type="text" id="sJobType" placeholder="ابحث بنوع الشغل...">
+                <input type="text" id="sJobType" placeholder="ابحث بنوع الشغل..." oninput="doSearch()">
               </div>
               <button class="btn btn-ghost" onclick="clearSearch()">✕ مسح</button>
             </div>
-          </div>
-
-          <!-- Subscription Search Fields (hidden by default) -->
-          <div id="subscriptionSearchFields" style="display:none;">
-            <div class="search-row">
-              <div class="form-group" style="margin:0">
-                <label>اسم المشترك</label>
-                <input type="text" id="sSubName" placeholder="ابحث باسم المشترك...">
-              </div>
-              <div class="form-group" style="margin:0">
-                <label>البريد الإلكتروني</label>
-                <input type="text" id="sSubEmail" placeholder="ابحث بالبريد...">
-              </div>
-              <div class="form-group" style="margin:0">
-                <label>حالة الاشتراك</label>
-                <select id="sSubStatus" style="width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:var(--font-sm);cursor:pointer;">
-                  <option value="">الكل</option>
-                  <option value="active">✅ نشط</option>
-                  <option value="pending">⏳ قيد المراجعة</option>
-                  <option value="expired">❌ منتهي</option>
-                </select>
-              </div>
-              <button class="btn btn-primary" onclick="doSubSearch()">🔍 بحث</button>
-            </div>
-            <div class="search-row">
-              <div class="form-group" style="margin:0">
-                <label>رقم الهاتف</label>
-                <input type="text" id="sSubPhone" placeholder="ابحث بالرقم...">
-              </div>
+            <hr class="divider">
+            <p style="font-size:var(--font-xs);color:var(--muted);margin-bottom:12px;font-weight:700;">📅 بحث بالفترة الزمنية (تاريخ التسجيل)</p>
+            <div class="date-row">
               <div class="form-group" style="margin:0">
                 <label>من تاريخ</label>
-                <input type="date" id="sSubDateFrom">
+                <input type="date" id="sDateFrom" oninput="doSearch()">
               </div>
               <div class="form-group" style="margin:0">
                 <label>إلى تاريخ</label>
-                <input type="date" id="sSubDateTo">
+                <input type="date" id="sDateTo" oninput="doSearch()">
               </div>
-              <button class="btn btn-ghost" onclick="clearSubSearch()">✕ مسح</button>
             </div>
           </div>
 
-          <hr class="divider">
-          <p style="font-size:var(--font-xs);color:var(--muted);margin-bottom:12px;font-weight:700;">📅 بحث بالفترة الزمنية (تاريخ التسجيل)</p>
-          <div class="date-row">
-            <div class="form-group" style="margin:0">
-              <label>من تاريخ</label>
-              <input type="date" id="sDateFrom">
-            </div>
-            <div class="form-group" style="margin:0">
-              <label>إلى تاريخ</label>
-              <input type="date" id="sDateTo">
-            </div>
-            <button class="btn btn-gold" onclick="doSearch()">📅 بحث بالتاريخ</button>
-          </div>
+
         </div>
 
         <!-- Customer Results Table -->
         <div id="customerResults">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+            <button class="btn btn-primary" onclick="exportSearchResultsPDF()">📄 تقرير PDF لنتائج البحث</button>
+          </div>
           <table>
             <thead>
               <tr><th>#</th><th>الاسم</th><th>العنوان</th><th>الهاتف</th><th>البريد</th><th>نوع الشغل</th><th>السعر</th><th>تاريخ التسجيل</th></tr>
@@ -2183,16 +2134,7 @@ table thead th {
         </div>
 
         <!-- Subscription Results Table (hidden by default) -->
-        <div id="subscriptionResults" style="display:none;">
-          <table>
-            <thead>
-              <tr><th>#</th><th>الاسم</th><th>البريد</th><th>الهاتف</th><th>الحالة</th><th>تاريخ البدء</th><th>تاريخ الانتهاء</th><th>المبلغ</th></tr>
-            </thead>
-            <tbody id="subSearchTable">
-              <tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض نتائج الاشتراكات</p></div></td></tr>
-            </tbody>
-          </table>
-        </div>
+
       </div>
     </div>
 
@@ -3440,7 +3382,7 @@ function showPage(page, el) {
   if (page === 'subs')     { loadSubscriptions(); }
   if (page === 'profits')  { loadProfits(); }
   if (page === 'accounts') { renderAccounts(); updateAccStats(); }
-  if (page === 'search') renderSearchTable(state.customers);
+  if (page === 'search') { window._lastSearchResults = state.customers; renderSearchTable(state.customers); }
 }
 
 function toggleSidebar() {
@@ -3558,10 +3500,12 @@ function doSearch() {
     if (dateTo && c.date > dateTo) return false;
     return true;
   });
+  window._lastSearchResults = results;
   renderSearchTable(results);
 }
 function clearSearch() {
   ['sName','sEmail','sPhone','sAddress','sJobType','sDateFrom','sDateTo'].forEach(id => document.getElementById(id).value = '');
+  window._lastSearchResults = state.customers;
   renderSearchTable(state.customers);
 }
 function renderSearchTable(data) {
@@ -4701,6 +4645,93 @@ function exportPDF(type) {
   showToast('✅ تم تحميل التقرير — افتحه في المتصفح واطبعه كـ PDF');
 }
 
+
+function exportSearchResultsPDF() {
+  const results = window._lastSearchResults || [];
+  if (results.length === 0) {
+    showToast('⚠️ لا توجد نتائج بحث لتصديرها');
+    return;
+  }
+  const date = new Date().toLocaleDateString('ar-EG');
+  const body = `
+    <h2>👥 نتائج البحث (${results.length})</h2>
+    <table><thead><tr><th>#</th><th>الاسم</th><th>العنوان</th><th>الهاتف</th><th>البريد</th><th>نوع الشغل</th><th>السعر</th><th>التاريخ</th></tr></thead>
+    <tbody>${results.map((c,i)=>`<tr><td>${i+1}</td><td>${esc(c.name)}</td><td>${esc(c.address)||'—'}</td><td>${esc(c.phone)}</td><td>${esc(c.email)||'—'}</td><td>${esc(c.jobType)||'—'}</td><td>${(c.price||0).toLocaleString()} ج</td><td>${c.date||''}</td></tr>`).join('')}</tbody>
+    </table>`;
+
+  const html = `<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
+    <title>نتائج البحث</title>
+    <style>
+      body{font-family:Cairo,Arial,sans-serif;color:#111;padding:30px;direction:rtl;}
+      h1{font-size:22px;color:#3b82f6;border-bottom:2px solid #3b82f6;padding-bottom:8px;}
+      h2{font-size:16px;margin:24px 0 10px;color:#333;}
+      table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+      th{background:#f5f5f5;padding:8px 10px;font-size:12px;text-align:right;border:1px solid #ddd;}
+      td{padding:8px 10px;border:1px solid #eee;font-size:12px;}
+      tr:nth-child(even){background:#fafafa;}
+      .footer{margin-top:30px;font-size:11px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:12px;}
+      @media print{body{padding:10px}}
+    </style>
+  </head><body>
+    <h1>📋 نتائج البحث — نظام إدارة العملاء</h1>
+    <p style="color:#666;font-size:13px;">تاريخ التصدير: ${date}</p>
+    ${body}
+    <div class="footer">نظام إدارة العملاء — Black Diamond</div>
+  </body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const dateStr = new Date().toISOString().split('T')[0];
+  a.href     = url;
+  a.download = `نتائج_البحث_${dateStr}.html`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  showToast('✅ تم تحميل التقرير — افتحه في المتصفح واطبعه كـ PDF');
+}
+
+function exportSubscriptionsPDF() {
+  const date = new Date().toLocaleDateString('ar-EG');
+  const subs = state.subscriptions || [];
+
+  const statusLabel = s => s==='active' ? '✅ نشط' : s==='pending' ? '⏳ قيد المراجعة' : s==='rejected' ? '🚫 مرفوض' : '❌ منتهي';
+
+  let body = `
+    <h2>💰 الاشتراكات (${subs.length})</h2>
+    <table><thead><tr><th>#</th><th>السيرفر</th><th>رأس المال</th><th>الحالة</th><th>تاريخ الاشتراك</th><th>أيام النشاط</th></tr></thead>
+    <tbody>${subs.map((s,i)=>`<tr><td>${i+1}</td><td>${esc(s.server_name||'—')}</td><td>$${(s.balance||0).toLocaleString()}</td><td>${statusLabel(s.status)}</td><td>${s.created_at?s.created_at.split('T')[0]:'—'}</td><td>${s.subscription_days||0} يوم</td></tr>`).join('')}</tbody>
+    </table>`;
+
+  const html = `<!DOCTYPE html><html dir="rtl"><head><meta charset="UTF-8">
+    <title>تقرير الاشتراكات</title>
+    <style>
+      body{font-family:Cairo,Arial,sans-serif;color:#111;padding:30px;direction:rtl;}
+      h1{font-size:22px;color:#3b82f6;border-bottom:2px solid #3b82f6;padding-bottom:8px;}
+      h2{font-size:16px;margin:24px 0 10px;color:#333;}
+      table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+      th{background:#f5f5f5;padding:8px 10px;font-size:12px;text-align:right;border:1px solid #ddd;}
+      td{padding:8px 10px;border:1px solid #eee;font-size:12px;}
+      tr:nth-child(even){background:#fafafa;}
+      .footer{margin-top:30px;font-size:11px;color:#999;text-align:center;border-top:1px solid #eee;padding-top:12px;}
+      @media print{body{padding:10px}}
+    </style>
+  </head><body>
+    <h1>📋 تقرير الاشتراكات — نظام إدارة العملاء</h1>
+    <p style="color:#666;font-size:13px;">تاريخ التصدير: ${date}</p>
+    ${body}
+    <div class="footer">نظام إدارة العملاء — Black Diamond</div>
+  </body></html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const dateStr = new Date().toISOString().split('T')[0];
+  a.href     = url;
+  a.download = `تقرير_الاشتراكات_${dateStr}.html`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  showToast('✅ تم تحميل التقرير — افتحه في المتصفح واطبعه كـ PDF');
+}
 
 // ============ USER MANAGEMENT ============
 async function loadUsers() {
@@ -6182,95 +6213,7 @@ loadData = async function() {
 };
 
 
-/* ===== SEARCH TOGGLE FUNCTIONS ===== */
-function setSearchType(type) {
-  const customerFields = document.getElementById('customerSearchFields');
-  const subscriptionFields = document.getElementById('subscriptionSearchFields');
-  const customerResults = document.getElementById('customerResults');
-  const subscriptionResults = document.getElementById('subscriptionResults');
-  const lblCustomers = document.getElementById('lblCustomers');
-  const lblSubscriptions = document.getElementById('lblSubscriptions');
-
-  if (type === 'customers') {
-    customerFields.style.display = 'block';
-    subscriptionFields.style.display = 'none';
-    customerResults.style.display = 'block';
-    subscriptionResults.style.display = 'none';
-    lblCustomers.style.background = 'rgba(212,175,55,0.15)';
-    lblCustomers.style.color = '#d4af37';
-    lblCustomers.style.border = '1px solid rgba(212,175,55,0.3)';
-    lblSubscriptions.style.background = 'transparent';
-    lblSubscriptions.style.color = 'var(--muted)';
-    lblSubscriptions.style.border = '1px solid transparent';
-  } else {
-    customerFields.style.display = 'none';
-    subscriptionFields.style.display = 'block';
-    customerResults.style.display = 'none';
-    subscriptionResults.style.display = 'block';
-    lblSubscriptions.style.background = 'rgba(212,175,55,0.15)';
-    lblSubscriptions.style.color = '#d4af37';
-    lblSubscriptions.style.border = '1px solid rgba(212,175,55,0.3)';
-    lblCustomers.style.background = 'transparent';
-    lblCustomers.style.color = 'var(--muted)';
-    lblCustomers.style.border = '1px solid transparent';
-  }
-}
-
-function doSubSearch() {
-  const name = document.getElementById('sSubName').value.toLowerCase();
-  const email = document.getElementById('sSubEmail').value.toLowerCase();
-  const status = document.getElementById('sSubStatus').value;
-  const phone = document.getElementById('sSubPhone').value.toLowerCase();
-  const dateFrom = document.getElementById('sSubDateFrom').value;
-  const dateTo = document.getElementById('sSubDateTo').value;
-
-  const tbody = document.getElementById('subSearchTable');
-  tbody.innerHTML = '';
-
-  // Filter subscriptions (state.subscriptions = raw rows from DB)
-  let results = (state.subscriptions || []).filter(sub => {
-    const matchName = !name || (sub.client_name && sub.client_name.toLowerCase().includes(name));
-    const matchEmail = !email || (sub.client_email && sub.client_email.toLowerCase().includes(email));
-    const matchStatus = !status || sub.status === status;
-    const matchPhone = !phone || (sub.client_phone && sub.client_phone.toLowerCase().includes(phone));
-    const subDate = sub.created_at ? sub.created_at.split('T')[0] : '';
-    const matchDateFrom = !dateFrom || (subDate && subDate >= dateFrom);
-    const matchDateTo = !dateTo || (subDate && subDate <= dateTo);
-    return matchName && matchEmail && matchStatus && matchPhone && matchDateFrom && matchDateTo;
-  });
-
-  if (results.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">📭</div><p>لا توجد نتائج للبحث</p></div></td></tr>';
-    return;
-  }
-
-  results.forEach((sub, i) => {
-    const statusBadge = sub.status === 'active' ? '<span style="display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(34,197,94,0.15);color:var(--green);font-size:var(--font-xs);font-weight:700;">✅ نشط</span>' :
-                       sub.status === 'pending' ? '<span style="display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(212,175,55,0.15);color:var(--gold);font-size:var(--font-xs);font-weight:700;">⏳ قيد المراجعة</span>' :
-                       '<span style="display:inline-block;padding:4px 10px;border-radius:6px;background:rgba(239,68,68,0.15);color:var(--red);font-size:var(--font-xs);font-weight:700;">❌ منتهي</span>';
-
-    tbody.innerHTML += `<tr>
-      <td>${i+1}</td>
-      <td>${esc(sub.client_name) || '-'}</td>
-      <td>${esc(sub.client_email) || '-'}</td>
-      <td>${esc(sub.client_phone) || '-'}</td>
-      <td>${statusBadge}</td>
-      <td>${sub.created_at ? formatDate(sub.created_at.split('T')[0]) : '-'}</td>
-      <td>${sub.subscription_days ? sub.subscription_days + ' يوم' : '-'}</td>
-      <td>$${parseFloat(sub.balance || 0).toLocaleString()}</td>
-    </tr>`;
-  });
-}
-
-function clearSubSearch() {
-  document.getElementById('sSubName').value = '';
-  document.getElementById('sSubEmail').value = '';
-  document.getElementById('sSubDateFrom').value = '';
-  document.getElementById('sSubDateTo').value = '';
-  document.getElementById('sSubStatus').value = '';
-  document.getElementById('sSubPhone').value = '';
-  document.getElementById('subSearchTable').innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">🔍</div><p>أدخل معايير البحث لعرض نتائج الاشتراكات</p></div></td></tr>';
-}
+/* Subscription search removed — search page now customers-only */
 
 </script>
 
