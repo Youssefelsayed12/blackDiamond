@@ -1965,6 +1965,9 @@ table thead th {
       <div id="navProfits" class="nav-item" onclick="showPage('profits', this)">
         <span class="nav-icon">💹</span> إدخال الأرباح
       </div>
+      <div id="navDaily" class="nav-item" onclick="showPage('daily', this)">
+        <span class="nav-icon">📅</span> متابعة الأداء اليومي
+      </div>
       <div id="navAccounts" class="nav-item" onclick="showPage('accounts', this)">
         <span class="nav-icon">🔑</span> تخزين الأكونتات
       </div>
@@ -2280,6 +2283,56 @@ table thead th {
           <tbody id="profitsTable">
             <tr><td colspan="7"><div class="empty-state"><div class="icon">💹</div><p>لا توجد بيانات بعد</p></div></td></tr>
           </tbody>
+        </table>
+      </div>
+    </div>
+
+        <!-- ===== DAILY PERFORMANCE TRACKER PAGE ===== -->
+    <div class="page" id="page-daily">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div><h2>📅 متابعة الأداء اليومي (شخصي)</h2></div>
+        <button class="btn btn-ghost" onclick="resetDailyTable()">🔄 تصفير الجدول</button>
+      </div>
+
+      <div class="card" style="margin-bottom:20px;padding:18px 20px;" id="dailySummaryCard">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;text-align:center;">
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">مبلغ البداية</div>
+            <div style="font-size:18px;font-weight:800;color:var(--text);" id="dailyStatStart">—</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">آخر رصيد</div>
+            <div style="font-size:18px;font-weight:800;color:var(--gold);" id="dailyStatLatest">—</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">صافي الربح</div>
+            <div style="font-size:18px;font-weight:800;color:var(--green);" id="dailyStatProfit">—</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">نسبة الأداء الكلي</div>
+            <div style="font-size:18px;font-weight:800;color:var(--gold);" id="dailyStatPercent">—</div>
+          </div>
+          <div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:4px;">عدد الأيام المسجلة</div>
+            <div style="font-size:18px;font-weight:800;color:var(--text);" id="dailyStatCount">0 / 30</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="overflow-x:auto;padding:0;">
+        <table style="min-width:700px;">
+          <thead>
+            <tr>
+              <th style="width:60px;">اليوم</th>
+              <th>التاريخ</th>
+              <th>مبلغ البداية ($)</th>
+              <th>نسبة الربح (%)</th>
+              <th>مبلغ الربح ($)</th>
+              <th>الإجمالي ($)</th>
+              <th style="width:50px;text-align:center;">تم</th>
+            </tr>
+          </thead>
+          <tbody id="dailyTableBody"></tbody>
         </table>
       </div>
     </div>
@@ -3133,6 +3186,13 @@ async function sbDelete(table, id) {
   if (r.status === 401) { doLogout(); return; }
   /* silent on error in production */
 }
+// تحديث دفعة صفوف بطلب واحد بدل ما نبعت طلب منفصل لكل صف (upsert بالـ id)
+async function sbUpsertBatch(table, rows) {
+  const headers = { ...authHeaders(), 'Prefer': 'resolution=merge-duplicates,return=minimal' };
+  const r = await fetch(`${SB_URL}/${table}`, { method: 'POST', headers, body: JSON.stringify(rows) });
+  if (r.status === 401) { doLogout(); return false; }
+  return r.ok;
+}
 
 // ============ SECURITY LAYER ============
 
@@ -3316,6 +3376,7 @@ async function doLogin() {
     document.getElementById('navSubs').style.display     = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navProfits').style.display  = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navAccounts').style.display = user.role === 'admin' ? 'flex' : 'none';
+    document.getElementById('navDaily').style.display    = user.role === 'admin' ? 'flex' : 'none';
     document.getElementById('navBackup').style.display  = user.role === 'admin' ? 'flex' : 'none';
     resetSessionTimer();
     updateDashboard();
@@ -3382,6 +3443,7 @@ function showPage(page, el) {
   if (page === 'subs')     { loadSubscriptions(); }
   if (page === 'profits')  { loadProfits(); }
   if (page === 'accounts') { renderAccounts(); updateAccStats(); }
+  if (page === 'daily') { loadDailyRecord(); }
   if (page === 'search') { window._lastSearchResults = state.customers; renderSearchTable(state.customers); }
 }
 
@@ -6072,6 +6134,263 @@ async function deleteProfit(id) {
   showToast('🗑️ تم الحذف');
 }
 
+/* ============ DAILY PERFORMANCE TRACKER (30 DAYS) ============ */
+
+/* ============ DAILY PERFORMANCE TRACKER (30 DAYS) — مستقل تماماً ============ */
+
+let _loadingDailyRecord = false; // قفل يمنع نداءين متزامنين من إنشاء أيام مكررة
+
+async function loadDailyRecord() {
+  if (_loadingDailyRecord) return; // لو فيه تحميل شغال بالفعل، متعملش تاني
+  _loadingDailyRecord = true;
+  try {
+    showLoading(true);
+    let rows = (await sbGet('daily_tracker', '') || []).sort((a,b) => a.day_number - b.day_number || a.id - b.id);
+
+    // لو الجدول فاضي، ننشئ 30 يوم فاضي جاهزين للكتابة المباشرة فوراً
+    if (!rows.length) {
+      const today = new Date().toISOString().split('T')[0];
+      const newRows = [];
+      for (let d = 1; d <= 30; d++) {
+        newRows.push({
+          day_number: d,
+          date: today,
+          start_amount: 0,
+          profit_percent: 0,
+          profit_amount: 0,
+          total_amount: 0,
+          done: false
+        });
+      }
+      for (const r of newRows) {
+        await sbPost('daily_tracker', r);
+      }
+      rows = (await sbGet('daily_tracker', '') || []).sort((a,b) => a.day_number - b.day_number || a.id - b.id);
+    }
+
+    // ✅ تنظيف تلقائي: لو فيه أيام مكررة بنفس day_number (بسبب تحميل متزامن قديم)
+    // بنسيب أول صف بس لكل رقم يوم ونمسح الباقي، وبنقص الزيادة عن 30 يوم لو حصلت
+    const seen = new Map();
+    const duplicateIds = [];
+    for (const r of rows) {
+      if (seen.has(r.day_number)) {
+        duplicateIds.push(r.id);
+      } else {
+        seen.set(r.day_number, r);
+      }
+    }
+    let cleaned = [...seen.values()].sort((a,b) => a.day_number - b.day_number);
+    if (cleaned.length > 30) {
+      const extra = cleaned.slice(30);
+      duplicateIds.push(...extra.map(r => r.id));
+      cleaned = cleaned.slice(0, 30);
+    }
+    if (duplicateIds.length) {
+      for (const id of duplicateIds) {
+        await sbDelete('daily_tracker', id);
+      }
+      showToast(`⚠️ تم حذف ${duplicateIds.length} صف مكرر كان بيسبب حساب غلط`);
+      rows = cleaned;
+    }
+
+    showLoading(false);
+    state.dailyTracker = rows;
+    updateDailySummary(rows);
+    renderDailyTable(rows);
+  } finally {
+    _loadingDailyRecord = false;
+  }
+}
+
+async function resetDailyTable() {
+  if (!confirm('هيتم مسح كل بيانات الجدول والبدء من جديد بـ 30 يوم فاضي. متأكد؟')) return;
+  showLoading(true);
+  const existing = await sbGet('daily_tracker', '');
+  for (const row of (existing || [])) {
+    await sbDelete('daily_tracker', row.id);
+  }
+  showLoading(false);
+  showToast('✅ تم تصفير الجدول');
+  loadDailyRecord();
+}
+
+function updateDailySummary(rows) {
+  const filled = rows.filter(r => parseFloat(r.start_amount) > 0 || parseFloat(r.profit_amount) !== 0);
+  if (!filled.length) {
+    document.getElementById('dailyStatStart').textContent   = '—';
+    document.getElementById('dailyStatLatest').textContent  = '—';
+    document.getElementById('dailyStatProfit').textContent  = '—';
+    document.getElementById('dailyStatPercent').textContent = '—';
+    document.getElementById('dailyStatCount').textContent   = `0 / 30`;
+    return;
+  }
+  const first  = filled[0];
+  const latest = filled[filled.length - 1];
+  const startAmount = parseFloat(first.start_amount);
+  const latestTotal = parseFloat(latest.total_amount);
+  const netProfit    = latestTotal - startAmount;
+  const percentTotal = startAmount > 0 ? (netProfit / startAmount * 100) : 0;
+
+  document.getElementById('dailyStatStart').textContent   = `$${formatMoney(startAmount)}`;
+  document.getElementById('dailyStatLatest').textContent  = `$${formatMoney(latestTotal)}`;
+  document.getElementById('dailyStatProfit').textContent  = `${netProfit>=0?'+':''}$${formatMoney(netProfit)}`;
+  document.getElementById('dailyStatPercent').textContent = `${percentTotal>=0?'+':''}${round2(percentTotal).toFixed(2)}%`;
+  document.getElementById('dailyStatCount').textContent   = `${filled.length} / 30`;
+}
+
+function renderDailyTable(rows) {
+  const tbody = document.getElementById('dailyTableBody');
+  tbody.innerHTML = rows.map(r => {
+    const profitColor = parseFloat(r.profit_amount) >= 0 ? 'var(--green)' : 'var(--red)';
+    const isDone = !!r.done;
+    return `<tr style="${isDone ? 'opacity:.6;' : ''}">
+      <td style="font-weight:800;color:var(--gold);">${r.day_number}</td>
+      <td>
+        <input type="date" value="${r.date}" data-id="${r.id}" data-field="date"
+          onchange="updateDailyCell(this)"
+          style="background:transparent;border:1px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text);font-family:Cairo,sans-serif;font-size:13px;width:130px;">
+      </td>
+      <td>
+        <input type="number" step="0.01" value="${round2(r.start_amount).toFixed(2)}" data-id="${r.id}" data-field="start_amount"
+          onchange="updateDailyCell(this)"
+          style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text);font-weight:700;font-family:Cairo,sans-serif;font-size:13px;width:100px;">
+      </td>
+      <td>
+        <input type="number" step="0.01" value="${parseFloat(r.profit_percent).toFixed(2)}" data-id="${r.id}" data-field="profit_percent"
+          onchange="updateDailyCell(this)"
+          style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text);font-family:Cairo,sans-serif;font-size:13px;width:80px;">
+        <span style="color:var(--muted);font-size:12px;">%</span>
+      </td>
+      <td>
+        <input type="number" step="0.01" value="${round2(r.profit_amount).toFixed(2)}" data-id="${r.id}" data-field="profit_amount"
+          onchange="updateDailyCell(this)"
+          style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 8px;color:${profitColor};font-weight:700;font-family:Cairo,sans-serif;font-size:13px;width:100px;">
+      </td>
+      <td style="font-weight:800;color:var(--gold);font-size:14px;">$${formatMoney(r.total_amount)}</td>
+      <td style="text-align:center;">
+        <input type="checkbox" ${isDone ? 'checked' : ''} data-id="${r.id}"
+          onchange="toggleDailyDone(this)"
+          style="width:20px;height:20px;accent-color:var(--gold);cursor:pointer;">
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// تقريب لعلامتين عشريتين بالضبط
+function round2(n) {
+  return Math.round((parseFloat(n || 0) + Number.EPSILON) * 100) / 100;
+}
+
+// تنسيق الرقم بفواصل الآلاف + علامتين عشريتين (مثال: 3000 → 3,000.00)
+function formatMoney(n) {
+  return round2(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// تعديل خلية مباشرة جوه الجدول — بيحسب تلقائي ويحدّث كل الأيام اللي بعدها تسلسلياً
+async function updateDailyCell(inputEl) {
+  const id    = parseInt(inputEl.dataset.id);
+  const field = inputEl.dataset.field;
+  let rows    = (state.dailyTracker || []).slice().sort((a,b) => a.day_number - b.day_number);
+  const idx   = rows.findIndex(r => r.id === id);
+  if (idx === -1) return;
+
+  const row = rows[idx];
+
+  // التاريخ بيتحدث لوحده من غير أي حساب — منفصل تماماً
+  if (field === 'date') {
+    const newVal = inputEl.value;
+    if (newVal === row.date) return;
+    await sbPatch('daily_tracker', id, { date: newVal });
+    row.date = newVal;
+    showToast('✅ تم تحديث التاريخ');
+    return;
+  }
+
+  // ✅ الحل الجذري: بنحدّث بس "المدخلات الخام" (مبلغ بداية اليوم الأول + نسبة كل يوم)
+  // وبعدين بنعيد حساب السلسلة *مرة واحدة نظيفة* من الصفر لغاية آخر يوم — مفيش أي تراكم فوق تراكم قديم
+
+  if (field === 'start_amount' && idx === 0) {
+    // مبلغ البداية بيتعدل بس في اليوم الأول
+    row.start_amount = round2(parseFloat(inputEl.value) || 0);
+  } else if (field === 'profit_percent') {
+    const inputVal = parseFloat(inputEl.value);
+    row.profit_percent = isNaN(inputVal) ? 0 : inputVal;
+    // النسبة الجديدة بتتطبق على نفس اليوم وكل الأيام اللي بعده
+    for (let i = idx; i < rows.length; i++) {
+      rows[i].profit_percent = row.profit_percent;
+    }
+  } else if (field === 'profit_amount') {
+    // لو المستخدم كتب مبلغ ربح مباشرة، بنحسب النسبة المكافئة بناءً على بداية اليوم ده وقت الحساب النهائي
+    row._manualProfitAmount = round2(parseFloat(inputEl.value) || 0);
+  }
+
+  showLoading(true);
+
+  // إعادة حساب السلسلة كاملة من الصفر — مصدر وحيد للحقيقة، بدون أي اعتماد على قيم قديمة متراكمة
+  // (الحساب بيتم محلياً في المتصفح، من غير أي طلب شبكة جوه اللوب — أسرع بكتير)
+  const updates = [];
+  let runningTotal = round2(rows[0].start_amount || 0);
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
+    const dayStart = runningTotal;
+    let dayPercent = parseFloat(r.profit_percent) || 0;
+    let dayProfit;
+
+    if (i === idx && field === 'profit_amount') {
+      dayProfit  = r._manualProfitAmount;
+      dayPercent = dayStart > 0 ? round2(dayProfit / dayStart * 100) : 0;
+    } else {
+      dayProfit = round2(dayStart * (dayPercent / 100));
+    }
+
+    const dayTotal = round2(dayStart + dayProfit);
+
+    r.start_amount   = dayStart;
+    r.profit_percent = dayPercent;
+    r.profit_amount  = dayProfit;
+    r.total_amount   = dayTotal;
+
+    updates.push({
+      id: r.id,
+      day_number: r.day_number,
+      date: r.date,
+      start_amount: dayStart,
+      profit_percent: dayPercent,
+      profit_amount: dayProfit,
+      total_amount: dayTotal,
+      done: !!r.done
+    });
+
+    runningTotal = dayTotal;
+  }
+
+  // طلب واحد بس بيبعت كل الصفوف اللي اتغيرت دفعة واحدة، بدل طلب لكل يوم
+  const ok = await sbUpsertBatch('daily_tracker', updates);
+
+  showLoading(false);
+
+  if (!ok) {
+    showToast('⚠️ حصل خطأ أثناء الحفظ — جرّب تاني');
+    loadDailyRecord();
+    return;
+  }
+
+  // تحديث الجدول والملخص محلياً من غير ما نرجع نجيب البيانات من Supabase تاني
+  state.dailyTracker = rows;
+  updateDailySummary(rows);
+  renderDailyTable(rows);
+}
+
+async function toggleDailyDone(checkboxEl) {
+  const id = parseInt(checkboxEl.dataset.id);
+  const done = checkboxEl.checked;
+  await sbPatch('daily_tracker', id, { done });
+  const row = (state.dailyTracker || []).find(r => r.id === id);
+  if (row) row.done = done;
+  const tr = checkboxEl.closest('tr');
+  if (tr) tr.style.opacity = done ? '.6' : '1';
+}
+
 function openEditProfit(id, daily, balance, date, notes) {
   document.getElementById('editProfitId').value = id;
   document.getElementById('editProfitDate').value = date;
@@ -6081,6 +6400,7 @@ function openEditProfit(id, daily, balance, date, notes) {
   document.getElementById('editProfitError').style.display = 'none';
   openModal('editProfitModal');
 }
+
 
 async function saveEditProfit() {
   const id      = parseInt(document.getElementById('editProfitId').value);
