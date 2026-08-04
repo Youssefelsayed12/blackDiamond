@@ -2053,7 +2053,10 @@ table thead th {
           <h2>👤 إدارة العملاء</h2>
           <p>إضافة وعرض بيانات العملاء</p>
         </div>
-        <button class="btn btn-primary" onclick="openAddModal()">➕ إضافة عميل</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="exportExcel('customers')" aria-label="تصدير">📊 تصدير Excel</button>
+          <button class="btn btn-primary" onclick="openAddModal()">➕ إضافة عميل</button>
+        </div>
       </div>
       <div class="card">
         <table>
@@ -2143,9 +2146,15 @@ table thead th {
 
     <!-- Finance -->
     <div class="page" id="page-finance">
-      <div class="page-header">
-        <h2>💰 المالية والأرباح</h2>
-        <p>إدارة أرباح تسجيل البيانات والمسحوبات</p>
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2>💰 المالية والأرباح</h2>
+          <p>إدارة أرباح تسجيل البيانات والمسحوبات</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="exportExcel('finance')" aria-label="تصدير">📊 تصدير Excel</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportPDF('finance')" aria-label="تصدير">📄 تصدير PDF</button>
+        </div>
       </div>
       <div class="finance-row">
         <div class="stat-card gold" style="padding:24px;">
@@ -2733,6 +2742,35 @@ table thead th {
   </div>
 </div>
 
+<!-- ===== EDIT USER MODAL ===== -->
+<div class="modal-overlay" id="editUserModal">
+  <div class="modal" style="width:460px;">
+    <div class="modal-close" onclick="closeModal('editUserModal')">✕</div>
+    <h3>✏️ تعديل بيانات المستخدم</h3>
+    <input type="hidden" id="euId">
+    <div class="form-group">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="euEmail" disabled style="opacity:.6;">
+    </div>
+    <div class="form-group">
+      <label>الاسم</label>
+      <input type="text" id="euName" placeholder="اسم الموظف">
+    </div>
+    <div class="form-group">
+      <label>الصلاحية</label>
+      <select id="euRole" style="width:100%;padding:12px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:Cairo,sans-serif;font-size:14px;">
+        <option value="employee">موظف</option>
+        <option value="admin">مدير</option>
+      </select>
+    </div>
+    <div id="editUserError" class="error-msg" style="display:none;"></div>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="saveUserEdit()">💾 حفظ التعديلات</button>
+      <button class="btn btn-ghost" onclick="closeModal('editUserModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <!-- ===== ADD ACCOUNT MODAL ===== -->
 <div class="modal-overlay" id="addAccountModal">
   <div class="modal" style="width:500px;">
@@ -3001,7 +3039,8 @@ table thead th {
 <div class="modal-overlay" id="addModal">
   <div class="modal">
     <div class="modal-close" onclick="closeModal('addModal')">✕</div>
-    <h3>➕ إضافة عميل جديد</h3>
+    <h3 id="addModalTitle">➕ إضافة عميل جديد</h3>
+    <input type="hidden" id="cEditId" value="">
     <div class="form-grid">
       <div class="form-group">
         <label>الاسم الكامل *</label>
@@ -3034,7 +3073,7 @@ table thead th {
     </div>
     <p class="error-msg" id="addError" style="display:block;margin-bottom:0;">* الحقول المطلوبة</p>
     <div class="modal-actions">
-      <button class="btn btn-primary" onclick="addCustomer()">✅ إضافة العميل</button>
+      <button class="btn btn-primary" id="addModalSaveBtn" onclick="saveCustomer()">✅ إضافة العميل</button>
       <button class="btn btn-ghost" onclick="closeModal('addModal')">إلغاء</button>
     </div>
   </div>
@@ -3457,7 +3496,8 @@ function closeSidebar() {
 }
 
 // ============ CUSTOMERS ============
-async function addCustomer() {
+async function saveCustomer() {
+  const editId  = document.getElementById('cEditId').value;
   const name    = sanitizeInput(document.getElementById('cName').value, 100);
   const phone   = sanitizeInput(document.getElementById('cPhone').value, 30);
   const address = sanitizeInput(document.getElementById('cAddress').value, 200);
@@ -3472,6 +3512,21 @@ async function addCustomer() {
   }
   errEl.style.display = 'none';
   showLoading(true);
+
+  if (editId) {
+    const row = await sbPatch('customers', editId, { name, phone, address, email, job_type: jobType, price, date });
+    showLoading(false);
+    if (!row) { errEl.textContent = '⚠️ خطأ في حفظ التعديلات'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
+    const idx = state.customers.findIndex(c => c.id == editId);
+    if (idx !== -1) state.customers[idx] = { ...state.customers[idx], ...mapCustomer(row) };
+    closeModal('addModal');
+    clearAddForm();
+    renderCustomersTable();
+    updateDashboard();
+    showToast('✅ تم حفظ تعديلات العميل');
+    return;
+  }
+
   const row = await sbPost('customers', { name, phone, address, email, job_type: jobType, price, date, added_by: state.currentUser.name });
   showLoading(false);
   if (!row) { errEl.textContent = '⚠️ خطأ في الحفظ'; errEl.style.cssText='display:block;color:#f87171;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:10px 12px;font-size:13px;margin-top:8px;'; return; }
@@ -3483,10 +3538,30 @@ async function addCustomer() {
   showToast('✅ تم إضافة العميل بنجاح');
 }
 
+function openEditCustomer(id) {
+  const c = state.customers.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('cEditId').value  = c.id;
+  document.getElementById('cName').value    = c.name || '';
+  document.getElementById('cPhone').value   = c.phone || '';
+  document.getElementById('cAddress').value = c.address || '';
+  document.getElementById('cEmail').value   = c.email || '';
+  document.getElementById('cJobType').value = c.jobType || '';
+  document.getElementById('cPrice').value   = c.price || '';
+  document.getElementById('cDate').value    = c.date || '';
+  document.getElementById('addError').style.display = 'none';
+  document.getElementById('addModalTitle').textContent = '✏️ تعديل بيانات العميل';
+  document.getElementById('addModalSaveBtn').textContent = '💾 حفظ التعديلات';
+  openModal('addModal');
+}
+
 function clearAddForm() {
   ['cName','cPhone','cAddress','cEmail','cJobType','cPrice'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('cDate').value = '';
+  document.getElementById('cEditId').value = '';
   document.getElementById('addError').style.display = 'none';
+  document.getElementById('addModalTitle').textContent = '➕ إضافة عميل جديد';
+  document.getElementById('addModalSaveBtn').textContent = '✅ إضافة العميل';
 }
 
 async function deleteCustomer(id) {
@@ -3516,9 +3591,11 @@ function viewCustomer(id) {
     </div>`;
   const actions = document.getElementById('viewActions');
   actions.innerHTML = state.currentUser.role === 'admin'
-    ? `<button class="btn btn-red btn-sm" onclick="deleteCustomer(${id}); closeModal('viewModal')">🗑️ حذف</button>
+    ? `<button class="btn btn-primary btn-sm" onclick="closeModal('viewModal'); openEditCustomer(${id})">✏️ تعديل</button>
+       <button class="btn btn-red btn-sm" onclick="deleteCustomer(${id}); closeModal('viewModal')">🗑️ حذف</button>
        <button class="btn btn-ghost" onclick="closeModal('viewModal')">إغلاق</button>`
-    : `<button class="btn btn-ghost" onclick="closeModal('viewModal')">إغلاق</button>`;
+    : `<button class="btn btn-primary btn-sm" onclick="closeModal('viewModal'); openEditCustomer(${id})">✏️ تعديل</button>
+       <button class="btn btn-ghost" onclick="closeModal('viewModal')">إغلاق</button>`;
   openModal('viewModal');
 }
 
@@ -3538,6 +3615,7 @@ function renderCustomersTable() {
       <td>${formatDate(c.date)}</td>
       <td style="display:flex;gap:6px;flex-wrap:wrap;">
         <button class="btn btn-ghost btn-sm" onclick="viewCustomer(${c.id})">👁 عرض</button>
+        <button class="btn btn-ghost btn-sm" onclick="openEditCustomer(${c.id})">✏️ تعديل</button>
         ${isAdmin ? `<button class="btn btn-red btn-sm" onclick="deleteCustomer(${c.id})">🗑</button>` : ''}
       </td>
     </tr>`).join('');
@@ -4813,10 +4891,39 @@ async function loadUsers() {
       <td>${u.role==='admin'
         ? '<span class="badge badge-gold">👑 مدير</span>'
         : '<span class="badge badge-blue">👤 موظف</span>'}</td>
-      <td>${u.id !== state.currentUser.id
-        ? `<button class="btn btn-red btn-sm" data-id="${u.id}" data-email="${esc(u.email)}" onclick="deleteUser(this.dataset.id, this.dataset.email)">🗑 حذف</button>`
-        : '<span style="font-size:11px;color:var(--muted);">حسابك</span>'}</td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" data-id="${u.id}" data-name="${esc(u.name||'')}" data-email="${esc(u.email)}" data-role="${esc(u.role||'employee')}" onclick="openEditUser(this.dataset.id, this.dataset.name, this.dataset.email, this.dataset.role)">✏️ تعديل</button>
+        ${u.id !== state.currentUser.id
+          ? `<button class="btn btn-red btn-sm" data-id="${u.id}" data-email="${esc(u.email)}" onclick="deleteUser(this.dataset.id, this.dataset.email)">🗑 حذف</button>`
+          : '<span style="font-size:11px;color:var(--muted);">حسابك</span>'}
+      </td>
     </tr>`).join('');
+}
+
+function openEditUser(id, name, email, role) {
+  document.getElementById('euId').value    = id;
+  document.getElementById('euEmail').value = email;
+  document.getElementById('euName').value  = name || '';
+  document.getElementById('euRole').value  = role || 'employee';
+  document.getElementById('editUserError').style.display = 'none';
+  openModal('editUserModal');
+}
+
+async function saveUserEdit() {
+  const id      = document.getElementById('euId').value;
+  const name    = sanitizeInput(document.getElementById('euName').value, 100);
+  const role    = document.getElementById('euRole').value;
+  const errEl   = document.getElementById('editUserError');
+  const showErr = msg => { errEl.textContent = msg; errEl.style.cssText = 'display:block;color:var(--red);font-size:13px;padding:8px;background:rgba(239,68,68,.1);border-radius:8px;'; };
+  if (!name) { showErr('⚠️ أدخل الاسم'); return; }
+
+  showLoading(true);
+  const row = await sbPatch('users', id, { name, role });
+  showLoading(false);
+  if (!row) { showErr('⚠️ خطأ في حفظ التعديلات'); return; }
+  closeModal('editUserModal');
+  loadUsers();
+  showToast('✅ تم حفظ تعديلات المستخدم');
 }
 
 async function addUser() {
@@ -5016,7 +5123,8 @@ function renderAccounts() {
   const filtered = state.accounts.filter(a =>
     a.name.toLowerCase().includes(search) ||
     a.email.toLowerCase().includes(search) ||
-    (a.link||'').toLowerCase().includes(search)
+    (a.link||'').toLowerCase().includes(search) ||
+    (a.notes||'').toLowerCase().includes(search)
   );
 
   if (filtered.length === 0) {
