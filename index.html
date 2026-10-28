@@ -9,17 +9,6 @@
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
 <title>نظام إدارة العملاء</title>
-<script>
-  /* داخل تطبيق الأندرويد: الاشتراك والدفع بيتم من الموقع فقط، فبنخفي كل مداخله هنا */
-  try { if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) document.documentElement.classList.add('native-app'); } catch (e) {}
-</script>
-<style>
-  .native-app #pricing,
-  .native-app #subscribeModalOverlay,
-  .native-app .subscribe-nav,
-  .native-app [onclick*="openSubscribeModal"],
-  .native-app a[href="#pricing"] { display: none !important; }
-</style>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -5385,7 +5374,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // ===== SUBSCRIPTION MODAL =====
 function openSubscribeModal() {
-  if (document.documentElement.classList.contains('native-app')) return;
   document.getElementById('subscribeModalOverlay').style.display = 'flex';
   subShowStep(1);
   ['subAccountId','subServerName','subPassword','subBalance','subClientName','subClientEmail','subClientPhone'].forEach(id => {
