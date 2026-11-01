@@ -1,0 +1,36 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Security test</title>
+<style>body{font-family:sans-serif;background:#0b0b12;color:#eee;padding:14px}h2{color:#d4af37}.r{padding:8px 10px;margin:6px 0;border-radius:8px;font-size:14px;word-break:break-all}.ok{background:#12351f;border:1px solid #2ea44f}.bad{background:#451418;border:1px solid #f85149}.i{background:#222;border:1px solid #555}button{background:#d4af37;border:0;border-radius:10px;padding:12px 18px;font-size:16px;font-weight:700}</style></head><body>
+<h2>اختبار أمان (قراءة فقط)</h2><button id="b" onclick="run()">ابدأ الاختبار</button><div id="o"></div>
+<script>
+const U='https://cbfaybsuzjthuwftfuac.supabase.co',K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNiZmF5YnN1emp0aHV3ZnRmdWFjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNjA1MDEsImV4cCI6MjA5NTgzNjUwMX0.8VcvSzwlyvvxfj5SC7DN4V7aIyUu3CUG_X9OPNfnwgk';
+const H={apikey:K,Authorization:'Bearer '+K};
+const o=document.getElementById('o');
+function add(c,t){const d=document.createElement('div');d.className='r '+c;d.textContent=t;o.appendChild(d)}
+async function g(path,opt){try{const r=await fetch(U+path,Object.assign({headers:H},opt||{}));const t=await r.text();return{s:r.status,t}}catch(e){return{s:0,t:String(e)}}}
+async function run(){
+ o.innerHTML='';document.getElementById('b').disabled=true;
+ const tables=['users','customers','withdrawals','tasks','cart_items','accounts','subscriptions','profits','daily_tracker','login_attempts'];
+ for(const t of tables){
+  const r=await g('/rest/v1/'+t+'?select=*&limit=1');
+  let rows=null;try{rows=JSON.parse(r.t)}catch(e){}
+  if(Array.isArray(rows)&&rows.length>0) add('bad','❌ '+t+': بيرجّع بيانات للغريب! ('+r.s+')');
+  else if(Array.isArray(rows)) add('ok','✅ '+t+': رجّع فاضي ('+r.s+')');
+  else add('ok','✅ '+t+': مرفوض ('+r.s+') '+r.t.slice(0,60));
+ }
+ for(const f of ['is_admin','is_staff']){
+  const r=await g('/rest/v1/rpc/'+f,{method:'POST',headers:Object.assign({'Content-Type':'application/json'},H),body:'{}'});
+  add(r.s===200&&r.t==='true'?'bad':'i','rpc/'+f+': '+r.s+' '+r.t.slice(0,60));
+ }
+ const sc=await g('/rest/v1/');
+ add(sc.s===200&&sc.t.includes('paths')?'bad':'ok',(sc.s===200&&sc.t.includes('paths')?'⚠️ ':'✅ ')+'مخطط الجداول (OpenAPI): '+sc.s);
+ const st=await g('/storage/v1/bucket');
+ add(st.s===200&&st.t!=='[]'?'bad':'ok','Storage buckets: '+st.s+' '+st.t.slice(0,80));
+ const au=await g('/auth/v1/settings');
+ try{const j=JSON.parse(au.t);add(j.disable_signup?'ok':'bad',(j.disable_signup?'✅ ':'❌ ')+'التسجيل العام مقفول؟ '+j.disable_signup);add(j.external&&j.external.anonymous_users?'bad':'ok','دخول الضيف: '+(j.external&&j.external.anonymous_users))}catch(e){add('i','auth settings: '+au.s+' '+au.t.slice(0,80))}
+ for(const f of ['index-ts','clever-responder','bd-encrypt','bd-secure']){
+  const r=await g('/functions/v1/'+f);
+  add(r.s===404?'ok':'i','function '+f+': '+r.s+' '+r.t.slice(0,90));
+ }
+ add('i','انتهى الاختبار — صوّر الشاشة وابعتها');document.getElementById('b').disabled=false;
+}
+</script></body></html>
