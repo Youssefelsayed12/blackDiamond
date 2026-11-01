@@ -27,6 +27,9 @@ jobs:
           echo "Using $INDEX"
           mkdir -p "$RUNNER_TEMP/app/www"
           cp "$INDEX" "$RUNNER_TEMP/app/www/index.html"
+          LOGO=$(git ls-files | grep -E '(^|/)logo\.jpg$' | head -1)
+          echo "Logo: $LOGO"
+          cp "$LOGO" "$RUNNER_TEMP/app/www/logo.jpg"
           cd "$RUNNER_TEMP/app"
           cat > package.json <<'JSON'
           {
@@ -55,6 +58,20 @@ jobs:
           npm install
           npx cap add android
           npx cap sync android
+
+      - name: Set app icon from logo
+        run: |
+          RES="$RUNNER_TEMP/app/android/app/src/main/res"
+          LOGO="$RUNNER_TEMP/app/www/logo.jpg"
+          rm -rf "$RES"/mipmap-anydpi-v26
+          for d in mdpi:48 hdpi:72 xhdpi:96 xxhdpi:144 xxxhdpi:192; do
+            n=${d%%:*}; sz=${d##*:}
+            mkdir -p "$RES/mipmap-$n"
+            convert "$LOGO" -resize ${sz}x${sz} "$RES/mipmap-$n/ic_launcher.png"
+            convert "$LOGO" -resize ${sz}x${sz} -alpha set \( +clone -alpha transparent -fill white -draw "circle $((sz/2)),$((sz/2)) $((sz/2)),0" \) -compose DstIn -composite "$RES/mipmap-$n/ic_launcher_round.png"
+            cp "$RES/mipmap-$n/ic_launcher.png" "$RES/mipmap-$n/ic_launcher_foreground.png"
+          done
+          ls "$RES"/mipmap-*
 
       - name: Build and sign APK
         env:
