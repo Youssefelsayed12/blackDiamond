@@ -58,17 +58,17 @@ jobs:
 
       - name: Build and sign APK
         env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           yes | sdkmanager --licenses > /dev/null || true
           cd "$RUNNER_TEMP/app/android"
           chmod +x gradlew
           sed -i "s/versionCode 1/versionCode ${{ github.run_number }}/" app/build.gradle
-          if [ -n "$KEYSTORE_BASE64" ]; then
+          if [ -f "$GITHUB_WORKSPACE/bd.p12" ] && [ -n "$KEY_PASSWORD" ]; then
             ./gradlew assembleRelease --no-daemon
             BT=$(ls -d "$ANDROID_HOME"/build-tools/* | sort -V | tail -1)
-            echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/bd.p12"
+            cp "$GITHUB_WORKSPACE/bd.p12" "$RUNNER_TEMP/bd.p12"
+            keytool -list -keystore "$RUNNER_TEMP/bd.p12" -storepass "$KEY_PASSWORD" | head -5
             "$BT/zipalign" -p -f 4 app/build/outputs/apk/release/app-release-unsigned.apk "$RUNNER_TEMP/aligned.apk"
             "$BT/apksigner" sign --ks "$RUNNER_TEMP/bd.p12" --ks-key-alias blackdiamond \
               --ks-pass env:KEY_PASSWORD --key-pass env:KEY_PASSWORD \
